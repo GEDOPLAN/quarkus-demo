@@ -31,6 +31,7 @@
 
   <modules>
     <module>quarkus-getting-started</module>
+    <module>quarkus-config</module>
   </modules>
 
   <dependencyManagement>
