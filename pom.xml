@@ -30,6 +30,7 @@
   </repositories>
 
   <modules>
+    <module>quarkus-cdi</module>
     <module>quarkus-config</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-lifecycle-events</module>
@@ -72,7 +73,7 @@
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-utils</artifactId>
-        <version>1.8</version>
+        <version>1.9</version>
       </dependency>
 
       <!-- Logging -->
