@@ -30,12 +30,74 @@
   </repositories>
 
   <modules>
-    <module>quarkus-getting-started</module>
     <module>quarkus-config</module>
+    <module>quarkus-getting-started</module>
+    <module>quarkus-lifecycle-events</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+      <!-- JEE-Standard -->
+      <dependency>
+        <groupId>javax</groupId>
+        <artifactId>javaee-api</artifactId>
+        <version>8.0</version>
+      </dependency>
+
+      <!-- GEDOPLAN-baselibs -->
+      <dependency>
+        <groupId>de.gedoplan</groupId>
+        <artifactId>baselibs-enterprise</artifactId>
+        <version>1.5</version>
+      </dependency>
+
+      <dependency>
+        <groupId>de.gedoplan</groupId>
+        <artifactId>baselibs-faces</artifactId>
+        <version>1.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>de.gedoplan</groupId>
+        <artifactId>baselibs-naming</artifactId>
+        <version>1.3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>de.gedoplan</groupId>
+        <artifactId>baselibs-persistence</artifactId>
+        <version>1.7</version>
+      </dependency>
+
+      <dependency>
+        <groupId>de.gedoplan</groupId>
+        <artifactId>baselibs-utils</artifactId>
+        <version>1.7</version>
+      </dependency>
+
+      <!-- Logging -->
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-bom</artifactId>
+        <version>2.9.1</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <!-- Lombok -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.8</version>
+      </dependency>
+
+      <!-- Quarkus -->
       <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
