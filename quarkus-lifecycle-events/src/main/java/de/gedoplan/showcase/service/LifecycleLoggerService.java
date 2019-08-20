@@ -6,9 +6,9 @@ import javax.enterprise.context.Destroyed;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -16,9 +16,8 @@ import io.quarkus.runtime.StartupEvent;
 @Dependent
 public class LifecycleLoggerService {
 
-  // TODO Quarkus verweigert statische Producer-Methoden!
-  // @Inject
-  Log log = LogFactory.getLog(LifecycleLoggerService.class);
+  @Inject
+  Log log;
 
   void logStartup(@Observes StartupEvent event) {
     this.log.info("Startup");

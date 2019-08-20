@@ -66,13 +66,13 @@
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-persistence</artifactId>
-        <version>1.7</version>
+        <version>1.8</version>
       </dependency>
 
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-utils</artifactId>
-        <version>1.7</version>
+        <version>1.8</version>
       </dependency>
 
       <!-- Logging -->
