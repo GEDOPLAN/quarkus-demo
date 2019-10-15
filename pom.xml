@@ -34,6 +34,7 @@
     <module>quarkus-config</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-lifecycle-events</module>
+    <module>quarkus-rest-cdi-jpa</module>
   </modules>
 
   <dependencyManagement>
