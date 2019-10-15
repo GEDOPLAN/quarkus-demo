@@ -13,10 +13,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 @Path(PersonResource.PATH)
 public interface PersonResource {
@@ -40,7 +38,7 @@ public interface PersonResource {
 
   @POST
   @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  public Response createPerson(Person Person, @Context UriInfo uriInfo) throws URISyntaxException;
+  public Response createPerson(Person Person) throws URISyntaxException;
 
   @DELETE
   @Path(ID_TEMPLATE)

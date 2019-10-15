@@ -32,6 +32,9 @@ public class PersonResourceImpl implements PersonResource {
   @Inject
   Log log;
 
+  @Context
+  UriInfo uriInfo;
+
   @Override
   public List<Person> getAll() {
     return this.personRepository.findAll();
@@ -57,14 +60,14 @@ public class PersonResourceImpl implements PersonResource {
   }
 
   @Override
-  public Response createPerson(Person Person, @Context UriInfo uriInfo) throws URISyntaxException {
+  public Response createPerson(Person Person) throws URISyntaxException {
     if (Person.getId() != null) {
       throw new BadRequestException("id of new entry must not be set");
     }
 
     this.personRepository.persist(Person);
 
-    URI createdUri = uriInfo.getAbsolutePathBuilder().path(ID_TEMPLATE).resolveTemplate(ID_NAME, Person.getId()).build();
+    URI createdUri = this.uriInfo.getAbsolutePathBuilder().path(ID_TEMPLATE).resolveTemplate(ID_NAME, Person.getId()).build();
     return Response.created(createdUri).build();
   }
 
