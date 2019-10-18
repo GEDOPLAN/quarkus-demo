@@ -15,12 +15,6 @@
 
   <dependencies>
     <!-- Main dependencies -->
-	<!--
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-    </dependency>
-	-->
 	
     <dependency>
       <groupId>com.h2database</groupId>
@@ -44,16 +38,12 @@
 
     <dependency>
       <groupId>io.quarkus</groupId>
-<!--       <artifactId>quarkus-resteasy-jsonb</artifactId> -->
-      <artifactId>quarkus-resteasy-jackson</artifactId>
+      <artifactId>quarkus-resteasy-jsonb</artifactId>
+<!--       <artifactId>quarkus-resteasy-jackson</artifactId> -->
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jaxb</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
