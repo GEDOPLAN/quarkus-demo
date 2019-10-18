@@ -18,7 +18,7 @@
   <properties>
     <java.code.version>11</java.code.version>
 
-<!--     <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
+    <!-- <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
     <quarkus.version>0.20.0</quarkus.version>
   </properties>
 
@@ -35,15 +35,16 @@
     <module>quarkus-getting-started</module>
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-rest-cdi-jpa</module>
+    <module>quarkus-rest-client</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
       <!-- JEE-Standard -->
       <dependency>
-        <groupId>javax</groupId>
-        <artifactId>javaee-api</artifactId>
-        <version>8.0</version>
+        <groupId>jakarta.platform</groupId>
+        <artifactId>jakarta.jakartaee-api</artifactId>
+        <version>8.0.0</version>
       </dependency>
 
       <!-- GEDOPLAN-baselibs -->
@@ -110,6 +111,14 @@
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <finalName>${project.artifactId}</finalName>
 
@@ -130,7 +139,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-<!--         <version>${surefire-plugin.version}</version> -->
+        <!-- <version>${surefire-plugin.version}</version> -->
         <configuration>
           <systemProperties>
             <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
