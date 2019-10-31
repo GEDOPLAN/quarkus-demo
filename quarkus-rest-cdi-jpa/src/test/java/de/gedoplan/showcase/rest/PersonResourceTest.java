@@ -17,7 +17,7 @@ import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.mapper.TypeRef;
+import io.restassured.common.mapper.TypeRef;
 
 @QuarkusTest
 public class PersonResourceTest {
