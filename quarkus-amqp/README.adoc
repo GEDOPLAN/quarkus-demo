@@ -1,0 +1,29 @@
+= quarkus-amqp
+
+*Demo for reactive streams with Quarkus and AMQP*
+
+== Environment preconditions
+
+The application depends on a running AMQP broker on `localhost:5672`.
+
+`src/main/artemis` contains a Docker compose file for starting an Artemis broker by running `docker-compose up`.
+
+Please use `Ctrl-C` for stopping Artemis after usage followed by `docker-compose down` for removing the stopped container.
+
+== Demo application
+
+This project builds a Quarkus application containing two parts connected by a AMQP address:
+
+* `de.gedoplan.showcase.api.PersonResource` forms a rest endpoint `/person` for posting `Person` objects as JSON, e.g.:
++
+`curl -d '{"name": "Duck", "firstname": "Donald"}' -H "Content-Type: application/json" -X POST http://localhost:8080/person`
++
+The service simply send the posted `Person` object as JSON string into the stream `posted-person`, which is connected to the AMQP address `person` in `application.properties`.
+
+* `de.gedoplan.showcase.service.PersonReceiver` reads from the Stream `received-person` and simply logs received `Person` objects to standard out. The stream is connected to the AMQP address `person` in `application.properties`.
+
+Run the application with `mvn compile quarkus:dev`.
+
+Every time a `Person` object is posted to the rest endpoint the object is passed to Artemis, received again from there and logged to the console.
+
+For sake of easiness the sending and receiving services are part of a single application. For a better understanding you could imagine them to be placed into different applications.
