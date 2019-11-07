@@ -35,6 +35,7 @@
     <module>quarkus-config</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-health</module>
+    <module>quarkus-kafka</module>
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-metrics</module>
     <module>quarkus-rest-cdi-jpa</module>
