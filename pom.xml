@@ -34,6 +34,7 @@
     <module>quarkus-amqp</module>
     <module>quarkus-cdi</module>
     <module>quarkus-config</module>
+    <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-health</module>
     <module>quarkus-kafka</module>

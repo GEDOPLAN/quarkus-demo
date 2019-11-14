@@ -1,0 +1,39 @@
+= quarkus-fault-tolerance
+
+*Demo for MicroProfile Fault Tolerance*
+
+== Demo application
+
+This project builds a Quarkus application containig the following classes:
+
+* `de.gedoplan.showcase.service.UnreliableService`
++
+simulates an unreliable service comuting some number. Its method `doSomething` can be called with two parameters specifying the percentage of slow executing service calls (sleeping for 3 seconds) and failing service calls (throwing an exception).
+
+* `de.gedoplan.showcase.service.FaultTolerantService`
++
+encapsulates calls of `UnreliableService.doSomething` by various methods annotated with MP Fault Tolerance annotations.
+
+* `de.gedoplan.showcase.rest.FaultTolerantResource`
++
+supplies rest endpoints for the  `FaultTolerantService` methods:
+
+** `/fault` calls `doSomething` directly.
++
+25% of the calls will be slow, another 25% will fail.
+
+** `/fault/retry` calls method annotated with `@Retry(maxRetries = 4)`.
++
+Although 75% of the service calls fail, most GET requests will render a normal response thanks automatic retries.
+
+** `/fault/timeout` calls method annotated with `@Timeout(1000)`.
++
+50% of the GET request will produce an error response due to the timeout of 1000 ms.
+
+** `/fault/circuit` calls method annotated with `@CircuitBreaker(failureRatio = 0.25, requestVolumeThreshold = 10)`.
++
+If 25% of the service calls fail within the sliding window of 10 calls, the circuit will be opened, so that subsequent requests don't call the service at all. In order to watch the effect, multiple requests have to be made within short time. If the circuit is opened, no further calls are made and logged to the console. After waiting for 5 seconds (the default delay) the circuit will be half-closed. If the next call succeeds, the circuit will be closed completely, but a failing call will open it again.
+
+** `/fault/fallback` calls method annotated with `@Fallback(fallbackMethod = "return42")`.
++
+50% of the service calls fail, causing a default response (`42`) to be produced.
