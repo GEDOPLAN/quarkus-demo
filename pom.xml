@@ -19,8 +19,8 @@
     <java.code.version>11</java.code.version>
 
     <!-- <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
-    <!-- <quarkus.version>0.20.0</quarkus.version> -->
-    <quarkus.version>0.26.1</quarkus.version>
+
+    <quarkus.version>1.0.0.Final</quarkus.version>
   </properties>
 
   <repositories>
@@ -202,3 +202,4 @@
     </profile>
   </profiles>
 </project>
+
