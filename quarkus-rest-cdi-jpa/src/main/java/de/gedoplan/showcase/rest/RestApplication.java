@@ -7,5 +7,5 @@ import javax.ws.rs.core.Application;
 @Dependent
 @ApplicationPath(RestApplication.PATH)
 public class RestApplication extends Application {
-  public static final String PATH = "";
+  public static final String PATH = "/";
 }
