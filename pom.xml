@@ -16,7 +16,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <java.code.version>11</java.code.version>
+    <java.code.version>1.8</java.code.version>
 
     <!-- <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
 
