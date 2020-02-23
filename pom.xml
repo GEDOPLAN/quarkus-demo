@@ -20,7 +20,9 @@
 
     <!-- <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
 
-    <quarkus.version>1.0.0.Final</quarkus.version>
+    <quarkus.version>1.2.1.Final</quarkus.version>
+
+    <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
 
   <repositories>
@@ -164,6 +166,10 @@
           <name>native</name>
         </property>
       </activation>
+      <properties>
+        <native-image.docker-build>true</native-image.docker-build>
+        <dockerfile>${project.basedir}/src/main/docker/Dockerfile.native</dockerfile>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -195,6 +201,40 @@
                     <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                   </systemProperties>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.33.0</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>docker.gedoplan.de/showcase/${project.artifactId}</name>
+                  <build>
+                    <contextDir>${project.basedir}</contextDir>
+                    <dockerFile>${dockerfile}</dockerFile>
+                  </build>
+                </image>
+              </images>
+              <useColor>false</useColor>
+              <verbose>true</verbose>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
