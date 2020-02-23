@@ -1,0 +1,18 @@
+# Disable color log output
+quarkus:
+  log:
+    console:
+      color: false
+
+# Application config
+greeting:
+  message: Hello
+  name: world
+  
+"%dev":
+  greeting:
+    name: developer
+     
+"%test":
+  greeting:
+    name: tester
