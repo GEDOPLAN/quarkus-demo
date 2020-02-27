@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 @Path("fault")
 @Produces(MediaType.TEXT_PLAIN)
 @ApplicationScoped
-public class FaultTolerantResource {
+public class FaultTolerantEndpoint {
 
   @Inject
   FaultTolerantService faultTolerantService;

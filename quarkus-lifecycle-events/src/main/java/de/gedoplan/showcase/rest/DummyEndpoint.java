@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 
 @ApplicationScoped
 @Path("reload")
-public class DummyResource {
+public class DummyEndpoint {
 
   @GET
   public void reload() {

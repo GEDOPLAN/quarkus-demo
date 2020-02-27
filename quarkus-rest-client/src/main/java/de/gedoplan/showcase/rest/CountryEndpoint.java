@@ -13,7 +13,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("country")
 @ApplicationScoped
-public class CountryResource {
+public class CountryEndpoint {
   @Inject
   @RestClient
   CountryApi countryClient;

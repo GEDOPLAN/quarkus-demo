@@ -17,7 +17,7 @@ import io.smallrye.reactive.messaging.annotations.Emitter;
 
 @ApplicationScoped
 @Path("person")
-public class PersonResource {
+public class PersonEndpoint {
   @Inject
   Log log;
 

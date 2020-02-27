@@ -6,11 +6,8 @@ import de.gedoplan.showcase.persistence.PersonRepository;
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,13 +23,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.logging.Log;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 
 @ApplicationScoped
-@Path(PersonResource.PATH)
-public class PersonResource {
+@Path(PersonEndpoint.PATH)
+public class PersonEndpoint {
   public static final String PATH = "person";
   public static final String ID_NAME = "id";
   public static final String ID_TEMPLATE = "{" + ID_NAME + "}";
@@ -40,12 +37,9 @@ public class PersonResource {
   @Inject
   PersonRepository personRepository;
 
-  @Inject
-  Log log;
-
   @GET
   @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  @Operation(summary = "Get all persons")
+  @Timed(name = "personList", absolute = true)
   public List<Person> getAll() {
     return this.personRepository.findAll();
   }
@@ -53,9 +47,6 @@ public class PersonResource {
   @GET
   @Path(ID_TEMPLATE)
   @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  @Operation(summary = "Get a person")
-  @APIResponse(description = "Found person (JSON/XML)")
-  @APIResponse(responseCode = "404", description = "Person not found")
   public Person getById(@PathParam(ID_NAME) Integer id) {
     Person person = this.personRepository.findById(id);
     if (person != null) {
@@ -68,18 +59,9 @@ public class PersonResource {
   @PUT
   @Path(ID_TEMPLATE)
   @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  @Operation(summary = "Update a person")
-  @APIResponse(responseCode = "400", description = "Id of person must not be changed")
-  @APIResponse(responseCode = "404", description = "Person not found")
-  @Transactional(rollbackOn = Exception.class)
-  public void update(@PathParam(ID_NAME) Integer id, Person Person) {
+  public void updatePerson(@PathParam(ID_NAME) Integer id, Person Person) {
     if (!id.equals(Person.getId())) {
-      throw new BadRequestException("id of updated object must not be changed");
-    }
-
-    Person person = this.personRepository.findById(id);
-    if (person == null) {
-      throw new NotFoundException();
+      throw new BadRequestException("id of updated object must be unchanged");
     }
 
     this.personRepository.merge(Person);
@@ -87,11 +69,10 @@ public class PersonResource {
 
   @POST
   @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-  @Operation(summary = "Insert a new person")
-  @APIResponse(responseCode = "400", description = "Id of person must not be pre-set")
-  public Response create(Person Person, @Context UriInfo uriInfo) {
+  @Counted(unit = MetricUnits.NONE, name = "createPerson", absolute = true)
+  public Response createPerson(Person Person, @Context UriInfo uriInfo) {
     if (Person.getId() != null) {
-      throw new BadRequestException("id of new entry must not be pre-set");
+      throw new BadRequestException("id of new entry must not be set");
     }
 
     this.personRepository.persist(Person);
@@ -106,19 +87,8 @@ public class PersonResource {
 
   @DELETE
   @Path(ID_TEMPLATE)
-  @Operation(summary = "Delete a person")
-  public void delete(@PathParam(ID_NAME) Integer id) {
+  public void deletePerson(@PathParam(ID_NAME) Integer id) {
     this.personRepository.removeById(id);
-  }
-
-  @PostConstruct
-  void postConstruct() {
-    this.log.debug("postConstruct");
-  }
-
-  @PreDestroy
-  void preDestroy() {
-    this.log.debug("preDestroy");
   }
 
 }

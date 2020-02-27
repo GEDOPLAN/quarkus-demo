@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Path("/hello")
-public class GreetingResource {
+public class GreetingEndpoint {
 
   @Inject
   @ConfigProperty(name = "greeting.message")

@@ -18,7 +18,7 @@ import org.apache.commons.logging.Log;
 @RequestScoped
 @Path("demo")
 @TraceCall
-public class DemoResource {
+public class DemoEndpoint {
 
   @Inject
   // @Formal
