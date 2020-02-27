@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.api;
+package de.gedoplan.showcase.rest;
 
 import de.gedoplan.showcase.entity.Person;
 
