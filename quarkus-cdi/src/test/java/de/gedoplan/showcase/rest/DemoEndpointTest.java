@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class DemoResourceTest {
+public class DemoEndpointTest {
 
   @Test
   public void testGetGreeting() {

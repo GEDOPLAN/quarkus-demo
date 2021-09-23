@@ -6,11 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.net.URI;
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 public class CountryApiTest {
+
+  @Inject
+  @ConfigProperty(name = "de.gedoplan.showcase.restcountries.eu.CountryApi/mp-rest/url")
+  URI restCountriesEuUri;
 
   CountryApi client;
 
@@ -18,7 +29,7 @@ public class CountryApiTest {
   void before() {
     try {
       this.client = RestClientBuilder.newBuilder()
-          .baseUri(new URI("https://restcountries.eu/rest"))
+          .baseUri(restCountriesEuUri)
           .build(CountryApi.class);
     } catch (Exception e) {
       throw new IllegalArgumentException(e);

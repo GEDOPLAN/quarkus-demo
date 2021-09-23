@@ -20,7 +20,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 
 @QuarkusTest
-public class PersonResourceTest {
+public class PersonEndpointTest {
 
   @Test
   public void test_01_DagobertAndDonalDuckExist() {

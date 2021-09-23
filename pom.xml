@@ -43,7 +43,7 @@
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-metrics</module>
     <module>quarkus-mqtt</module>
-    <!-- <module>quarkus-myfaces</module> -->
+    <module>quarkus-myfaces</module>
     <module>quarkus-opentracing</module>
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
