@@ -2,18 +2,14 @@ package de.gedoplan.showcase.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Access(AccessType.FIELD)
+// @Entity
+// @Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter

@@ -20,7 +20,7 @@ public class ReadinessCheck implements HealthCheck {
   public HealthCheckResponse call() {
     return HealthCheckResponse
         .named("readinessSimulation")
-        .state(this.readinessSimulationService.isReady())
+        .status(this.readinessSimulationService.isReady())
         .withData("memory", Runtime.getRuntime().freeMemory())
         .build();
   }

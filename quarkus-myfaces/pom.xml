@@ -16,8 +16,8 @@
       Use corresponding versions!
       MyFaces 2.3-next-M1 does not work with Quarkus 1.2.1.Final. 
       -->
-    <myfaces.version>2.3-next-M1</myfaces.version>
-    <quarkus.version>1.1.0.Final</quarkus.version>
+    <myfaces.version>2.3-next-M3</myfaces.version>
+    <!-- <quarkus.version>1.7.0.Final</quarkus.version> -->
   </properties>
 
   <dependencies>

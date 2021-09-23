@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
-    <version>2019.5.2</version>
+    <version>2020.9.1</version>
   </parent>
 
   <groupId>de.gedoplan.showcase</groupId>
@@ -16,11 +16,11 @@
   <packaging>pom</packaging>
 
   <properties>
-    <java.code.version>1.8</java.code.version>
+    <java.code.version>11</java.code.version>
 
-    <!-- <surefire-plugin.version>2.22.0</surefire-plugin.version> -->
-
-    <quarkus.version>1.4.2.Final</quarkus.version>
+    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+    <quarkus.platform.version>2.2.2.Final</quarkus.platform.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -28,7 +28,7 @@
   <repositories>
     <repository>
       <id>gedoplanPublic</id>
-      <url>http://service.gedoplan.de/nexus/content/groups/public</url>
+      <url>https://service.gedoplan.de/nexus/content/groups/public</url>
     </repository>
   </repositories>
 
@@ -42,7 +42,8 @@
     <module>quarkus-kafka</module>
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-metrics</module>
-    <module>quarkus-myfaces</module>
+    <module>quarkus-mqtt</module>
+    <!-- <module>quarkus-myfaces</module> -->
     <module>quarkus-opentracing</module>
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
@@ -99,7 +100,7 @@
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-bom</artifactId>
-        <version>2.9.1</version>
+        <version>2.13.3</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -108,27 +109,19 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.8</version>
+        <version>1.18.16</version>
       </dependency>
 
       <!-- Quarkus -->
       <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-bom</artifactId>
-        <version>${quarkus.version}</version>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
+        <version>${quarkus.platform.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>jakarta.platform</groupId>
-      <artifactId>jakarta.jakartaee-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
 
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -137,24 +130,27 @@
 
     <plugins>
       <plugin>
-        <groupId>io.quarkus</groupId>
+        <groupId>${quarkus.platform.group-id}</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.version}</version>
+        <version>${quarkus.platform.version}</version>
+        <extensions>true</extensions>
         <executions>
           <execution>
             <goals>
               <goal>build</goal>
+              <goal>generate-code</goal>
+              <goal>generate-code-tests</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <!-- <version>${surefire-plugin.version}</version> -->
         <configuration>
-          <systemProperties>
+          <systemPropertyVariables>
             <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-          </systemProperties>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
@@ -168,30 +164,10 @@
           <name>native</name>
         </property>
       </activation>
-      <properties>
-        <native-image.docker-build>true</native-image.docker-build>
-        <dockerfile>${project.basedir}/src/main/docker/Dockerfile.native</dockerfile>
-      </properties>
       <build>
         <plugins>
           <plugin>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-maven-plugin</artifactId>
-            <version>${quarkus.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>native-image</goal>
-                </goals>
-                <configuration>
-                  <enableHttpUrlHandler>true</enableHttpUrlHandler>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <!-- <version>${surefire-plugin.version}</version> -->
             <executions>
               <execution>
                 <goals>
@@ -199,15 +175,20 @@
                   <goal>verify</goal>
                 </goals>
                 <configuration>
-                  <systemProperties>
+                  <systemPropertyVariables>
                     <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                  </systemProperties>
+                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                    <maven.home>${maven.home}</maven.home>
+                  </systemPropertyVariables>
                 </configuration>
               </execution>
             </executions>
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <quarkus.package.type>native</quarkus.package.type>
+      </properties>
     </profile>
 
     <profile>
@@ -245,4 +226,3 @@
     </profile>
   </profiles>
 </project>
-

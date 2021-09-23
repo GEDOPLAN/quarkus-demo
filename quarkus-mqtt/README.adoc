@@ -1,0 +1,29 @@
+= quarkus-mqtt
+
+*Demo for reactive streams with Quarkus and MQTT*
+
+== Environment preconditions
+
+The application depends on a running MQTT broker on `localhost:1883`.
+
+`src/main/mosquitto` contains a Docker compose file for starting an Mosquitto broker by running `docker-compose up`.
+
+Please use `Ctrl-C` for stopping Mosquitto after usage followed by `docker-compose down` for removing the stopped container.
+
+== Demo application
+
+This project builds a Quarkus application containing two parts connected by a MQTT topic:
+
+* `de.gedoplan.showcase.api.PersonResource` forms a rest endpoint `/person` for posting `Person` objects as JSON, e.g.:
++
+`curl -d '{"name": "Duck", "firstname": "Donald"}' -H "Content-Type: application/json" -X POST http://localhost:8080/person`
++
+The service simply send the posted `Person` object as JSON string into the stream `posted-person`, which is connected to the MQTT topic `person` in `application.properties`.
+
+* `de.gedoplan.showcase.service.PersonReceiver` reads from the Stream `received-person` and simply logs received `Person` objects to standard out. The stream is connected to the MQTT topic `person` in `application.properties`.
+
+Run the application with `mvn compile quarkus:dev`.
+
+Every time a `Person` object is posted to the rest endpoint the object is passed to Mosquitto, received again from there and logged to the console.
+
+For sake of easiness the sending and receiving services are part of a single application. For a better understanding you could imagine them to be placed into different applications.

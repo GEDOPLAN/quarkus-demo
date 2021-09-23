@@ -4,6 +4,7 @@ import de.gedoplan.baselibs.utils.util.ClassUtil;
 
 import java.io.Serializable;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundConstruct;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -19,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
  */
 @TraceCall
 @Interceptor
+@Priority(2500)
 public class TraceCallInterceptor implements Serializable {
 
   @AroundInvoke

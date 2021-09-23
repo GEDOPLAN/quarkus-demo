@@ -20,7 +20,7 @@ public class LivenessCheck implements HealthCheck {
   public HealthCheckResponse call() {
     return HealthCheckResponse
         .named("livenessSimulation")
-        .state(this.livenessSimulationService.isLive())
+        .status(this.livenessSimulationService.isLive())
         .build();
   }
 
