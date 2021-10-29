@@ -16,11 +16,11 @@
   <packaging>pom</packaging>
 
   <properties>
-    <java.code.version>11</java.code.version>
+    <java.code.version>17</java.code.version>
 
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>2.3.0.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.3.1.Final</quarkus.platform.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -95,14 +95,6 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>1.2</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-bom</artifactId>
-        <version>2.13.3</version>
-        <scope>import</scope>
-        <type>pom</type>
       </dependency>
 
       <!-- Lombok -->
