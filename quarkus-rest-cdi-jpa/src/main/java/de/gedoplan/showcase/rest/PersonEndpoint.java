@@ -111,14 +111,4 @@ public class PersonEndpoint {
     this.personRepository.removeById(id);
   }
 
-  @PostConstruct
-  void postConstruct() {
-    this.log.debug("postConstruct");
-  }
-
-  @PreDestroy
-  void preDestroy() {
-    this.log.debug("preDestroy");
-  }
-
 }
