@@ -1,13 +1,8 @@
 package de.gedoplan.showcase.rest;
 
-import de.gedoplan.showcase.entity.Person;
-import de.gedoplan.showcase.persistence.PersonRepository;
-
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -29,6 +24,9 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
+import de.gedoplan.showcase.entity.Person;
+import de.gedoplan.showcase.persistence.PersonRepository;
 
 @ApplicationScoped
 @Path(PersonEndpoint.PATH)
