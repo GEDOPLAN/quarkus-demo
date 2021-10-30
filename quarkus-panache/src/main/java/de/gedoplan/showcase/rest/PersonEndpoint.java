@@ -1,13 +1,8 @@
 package de.gedoplan.showcase.rest;
 
-import de.gedoplan.showcase.entity.Person;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -28,22 +23,18 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
+import de.gedoplan.showcase.entity.Person;
 
 @ApplicationScoped
-@Path(PersonEndpoint.PATH)
+@Path("v1/persons")
 public class PersonEndpoint {
-  public static final String PATH = "persons";
-  public static final String ID_NAME = "id";
-  public static final String ID_TEMPLATE = "{" + ID_NAME + "}";
 
   @Inject
   Log log;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Operation(summary = "Get all persons")
   public List<Person> getAll(@QueryParam("name") String name) {
     if (name ==null)
       return Person.listAll();
@@ -52,12 +43,9 @@ public class PersonEndpoint {
   }
 
   @GET
-  @Path(ID_TEMPLATE)
+  @Path("{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  @Operation(summary = "Get a person")
-  @APIResponse(description = "Found person (JSON/XML)")
-  @APIResponse(responseCode = "404", description = "Person not found")
-  public Person getById(@PathParam(ID_NAME) Long id) {
+  public Person getById(@PathParam("id") Long id) {
     Person person = Person.findById(id);
     if (person != null) {
       return person;
@@ -67,13 +55,10 @@ public class PersonEndpoint {
   }
 
   @PUT
-  @Path(ID_TEMPLATE)
+  @Path("{id}")
   @Consumes(MediaType.APPLICATION_JSON)
-  @Operation(summary = "Update a person")
-  @APIResponse(responseCode = "400", description = "Id of person must not be changed")
-  @APIResponse(responseCode = "404", description = "Person not found")
-  @Transactional(rollbackOn = Exception.class)
-  public void update(@PathParam(ID_NAME) Long id, Person newPerson) {
+  @Transactional
+  public void update(@PathParam("id") Long id, Person newPerson) {
     if (newPerson.id != null && !id.equals(newPerson.id)) {
       throw new BadRequestException("id of updated object must not be changed");
     }
@@ -88,9 +73,7 @@ public class PersonEndpoint {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Operation(summary = "Insert a new person")
-  @APIResponse(responseCode = "400", description = "Id of person must not be pre-set")
-  @Transactional(rollbackOn = Exception.class)
+  @Transactional
   public Response create(Person person, @Context UriInfo uriInfo) {
     if (person.id != null) {
       throw new BadRequestException("id of new entry must not be pre-set");
@@ -106,10 +89,9 @@ public class PersonEndpoint {
   }
 
   @DELETE
-  @Path(ID_TEMPLATE)
-  @Operation(summary = "Delete a person")
-  @Transactional(rollbackOn = Exception.class)
-  public void delete(@PathParam(ID_NAME) Long id) {
+  @Path("{id}")
+  @Transactional
+  public void delete(@PathParam("id") Long id) {
     Person.deleteById(id);
   }
 

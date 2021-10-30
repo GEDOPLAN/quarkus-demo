@@ -1,9 +1,13 @@
 package de.gedoplan.showcase.service;
 
+import java.util.stream.IntStream;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+
+import org.locationtech.jts.io.InStream;
 
 import de.gedoplan.showcase.entity.Person;
 import de.gedoplan.showcase.entity.Planet;
@@ -32,6 +36,8 @@ public class InitDemoDataService {
     if (this.planetRepository.count() == 0) {
       this.planetRepository.persist(new Planet("earth", 1e19));
       this.planetRepository.persist(new Planet("jupiter", 1e24));
+
+      IntStream.rangeClosed(1, 1000).forEach(i -> this.planetRepository.persist(new Planet("X-" + i, 5e3)));
     }
   }
 
