@@ -8,13 +8,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
-
-import io.smallrye.reactive.messaging.annotations.Channel;
-import io.smallrye.reactive.messaging.annotations.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 @ApplicationScoped
 @Path("message")
-public class MessageEndpoint {
+public class MessageResource {
   @Inject
   Log log;
 

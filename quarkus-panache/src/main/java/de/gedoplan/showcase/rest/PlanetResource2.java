@@ -6,6 +6,6 @@ import io.quarkus.hibernate.orm.rest.data.panache.PanacheRepositoryResource;
 import io.quarkus.rest.data.panache.ResourceProperties;
 
 @ResourceProperties(path = "v2/planets", hal = true)
-public interface PlanetEndpoint2 extends PanacheRepositoryResource<PlanetRepository, Planet, Long> {
+public interface PlanetResource2 extends PanacheRepositoryResource<PlanetRepository, Planet, Long> {
     
 }

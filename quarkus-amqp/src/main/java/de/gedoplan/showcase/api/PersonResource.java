@@ -1,5 +1,7 @@
 package de.gedoplan.showcase.api;
 
+import de.gedoplan.showcase.entity.Person;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.bind.JsonbBuilder;
@@ -12,12 +14,9 @@ import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-import de.gedoplan.showcase.entity.Person;
-
-
 @ApplicationScoped
 @Path("person")
-public class PersonEndpoint {
+public class PersonResource {
   @Inject
   Log log;
 
@@ -31,9 +30,7 @@ public class PersonEndpoint {
     this.log.debug("post(" + person + ")");
 
     /*
-     * TODO 
-     * MQTT akzeptiert keine serialisierten Objekte als Payload, daher Wandlung in JSON. 
-     * Wird dann als byte[] versendet.
+     * TODO AMQP akzeptiert keine serialisierten Objekte als Payload, daher Wandlung in JSON.
      * Besser wäre, wenn dies durch den Channel verkapselt wäre
      */
     String personJson = JsonbBuilder.create().toJson(person);

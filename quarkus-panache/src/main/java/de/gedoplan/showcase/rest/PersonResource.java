@@ -28,7 +28,7 @@ import de.gedoplan.showcase.entity.Person;
 
 @ApplicationScoped
 @Path("v1/persons")
-public class PersonEndpoint {
+public class PersonResource {
 
   @Inject
   Log log;

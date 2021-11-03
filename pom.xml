@@ -38,6 +38,7 @@
     <module>quarkus-config</module>
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
+    <module>quarkus-graphql</module>
     <module>quarkus-health</module>
     <module>quarkus-kafka</module>
     <module>quarkus-lifecycle-events</module>

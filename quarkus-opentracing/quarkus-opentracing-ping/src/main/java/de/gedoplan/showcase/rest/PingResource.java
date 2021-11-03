@@ -1,27 +1,32 @@
 package de.gedoplan.showcase.rest;
 
-import de.gedoplan.showcase.restcountries.eu.CountryApi;
+import de.gedoplan.showcase.service.PongService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-@Path("country")
+@Path("ping")
 @ApplicationScoped
-public class CountryEndpoint {
+public class PingResource {
+
+  @Inject
+  PongService pingService;
+
   @Inject
   @RestClient
-  CountryApi countryClient;
+  PongApi pongApi;
 
   @GET
-  @Path("count")
   @Produces(MediaType.APPLICATION_JSON)
-  public int getCount() {
-    return this.countryClient.getAll().size();
+  public String get(@QueryParam("prefix") @DefaultValue("") String prefix) {
+    return this.pongApi.get(prefix + this.pingService.getPing());
   }
 }

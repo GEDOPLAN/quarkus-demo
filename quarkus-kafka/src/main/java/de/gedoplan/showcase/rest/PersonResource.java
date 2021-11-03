@@ -1,7 +1,5 @@
 package de.gedoplan.showcase.rest;
 
-import de.gedoplan.showcase.entity.Person;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -10,13 +8,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-import io.smallrye.reactive.messaging.annotations.Channel;
-import io.smallrye.reactive.messaging.annotations.Emitter;
+import de.gedoplan.showcase.entity.Person;
 
 @ApplicationScoped
 @Path("person")
-public class PersonEndpoint {
+public class PersonResource {
   @Inject
   Log log;
 

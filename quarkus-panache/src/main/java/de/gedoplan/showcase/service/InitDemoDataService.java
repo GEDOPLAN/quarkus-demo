@@ -7,8 +7,6 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.locationtech.jts.io.InStream;
-
 import de.gedoplan.showcase.entity.Person;
 import de.gedoplan.showcase.entity.Planet;
 import de.gedoplan.showcase.persistence.PlanetRepository;

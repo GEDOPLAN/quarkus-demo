@@ -28,7 +28,7 @@ import de.gedoplan.showcase.persistence.PlanetRepository;
 
 @ApplicationScoped
 @Path("v1/planets")
-public class PlanetEndpoint {
+public class PlanetResource {
 
   @Inject
   PlanetRepository planetRepository;

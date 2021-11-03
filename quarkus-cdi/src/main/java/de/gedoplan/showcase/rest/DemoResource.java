@@ -1,14 +1,8 @@
 package de.gedoplan.showcase.rest;
 
-import de.gedoplan.showcase.interceptor.TraceCall;
-import de.gedoplan.showcase.service.CreditCardService;
-import de.gedoplan.showcase.service.EventFirer;
-import de.gedoplan.showcase.service.GreetingService;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -19,10 +13,15 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.commons.logging.Log;
 
+import de.gedoplan.showcase.interceptor.TraceCall;
+import de.gedoplan.showcase.service.CreditCardService;
+import de.gedoplan.showcase.service.EventFirer;
+import de.gedoplan.showcase.service.GreetingService;
+
 @ApplicationScoped
 @Path("demo")
 @TraceCall
-public class DemoEndpoint {
+public class DemoResource {
 
   @Inject
   // @Formal

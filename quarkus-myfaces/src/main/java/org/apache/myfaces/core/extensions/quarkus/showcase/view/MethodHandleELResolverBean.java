@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.core.extensions.quarkus.showcase.view;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +30,7 @@ import javax.inject.Named;
 
 @Named
 @ApplicationScoped
-public class MethodHandleELResolverBean implements Serializable, PhaseListener {
+public class MethodHandleELResolverBean implements PhaseListener {
 
   @Inject
   CarService service;

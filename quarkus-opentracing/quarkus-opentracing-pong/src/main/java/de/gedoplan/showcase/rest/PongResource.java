@@ -13,7 +13,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("pong")
 @ApplicationScoped
-public class PongEndpoint {
+public class PongResource {
 
   @Inject
   @RestClient

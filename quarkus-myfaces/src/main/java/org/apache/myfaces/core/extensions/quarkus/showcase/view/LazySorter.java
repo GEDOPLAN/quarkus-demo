@@ -37,6 +37,7 @@ public class LazySorter implements Comparator<Car> {
             Object value1 = Car.class.getField(this.sortField).get(car1);
             Object value2 = Car.class.getField(this.sortField).get(car2);
  
+            @SuppressWarnings({"unchecked", "rawtypes"})
             int value = ((Comparable) value1).compareTo(value2);
              
             return SortOrder.ASCENDING.equals(sortOrder) ? value : -1 * value;

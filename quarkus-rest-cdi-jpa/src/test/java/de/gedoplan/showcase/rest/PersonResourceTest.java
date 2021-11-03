@@ -20,13 +20,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 
 @QuarkusTest
-public class PersonEndpointTest {
+public class PersonResourceTest {
 
   @Test
   public void test_01_DagobertAndDonalDuckExist() {
     List<Person> persons = given()
         .when()
-        .get("/persons")
+        .get("/person")
         .then()
         .statusCode(HttpStatus.SC_OK)
         .extract()
@@ -36,11 +36,11 @@ public class PersonEndpointTest {
     boolean foundDonald = false;
 
     for (Person person : persons) {
-      if ("Duck".equals(person.name)) {
-        if ("Dagobert".equals(person.firstname)) {
+      if ("Duck".equals(person.getName())) {
+        if ("Dagobert".equals(person.getFirstname())) {
           foundDagobert = true;
         }
-        if ("Donald".equals(person.firstname)) {
+        if ("Donald".equals(person.getFirstname())) {
           foundDonald = true;
         }
       }
@@ -57,7 +57,7 @@ public class PersonEndpointTest {
     String newPersonUrl = given()
         .contentType(MediaType.APPLICATION_JSON)
         .body(person)
-        .post("/persons")
+        .post("/person")
         .then()
         .statusCode(HttpStatus.SC_CREATED)
         .extract()
@@ -70,8 +70,8 @@ public class PersonEndpointTest {
         .get(newPersonUrl)
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body("name", is(person.name))
-        .body("firstname", is(person.firstname));
+        .body("name", is(person.getName()))
+        .body("firstname", is(person.getFirstname()));
 
     given()
         .when()

@@ -5,7 +5,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.gedoplan.showcase.entity.Planet;
+import de.gedoplan.showcase.entity.Person;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,65 +20,68 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
 
 @QuarkusTest
-public class PlanetEndpointTest {
+public class PersonResourceTest {
 
   @Test
   public void test_01_DagobertAndDonalDuckExist() {
-    List<Planet> planets = given()
+    List<Person> persons = given()
         .when()
-        .get("/planets")
+        .get("/persons")
         .then()
         .statusCode(HttpStatus.SC_OK)
         .extract()
-        .as(new TypeRef<List<Planet>>() {});
+        .as(new TypeRef<List<Person>>() {});
 
-    boolean foundEarth = false;
-    boolean foundJupiter = false;
+    boolean foundDagobert = false;
+    boolean foundDonald = false;
 
-    for (Planet planet : planets) {
-      if ("earth".equals(planet.getName())) {
-        foundEarth = true;
-      }
-      if ("jupiter".equals(planet.getName())) {
-      foundJupiter = true;
+    for (Person person : persons) {
+      if ("Duck".equals(person.name)) {
+        if ("Dagobert".equals(person.firstname)) {
+          foundDagobert = true;
+        }
+        if ("Donald".equals(person.firstname)) {
+          foundDonald = true;
+        }
       }
     }
 
-    assertTrue(foundEarth, "Earth not found");
-    assertTrue(foundJupiter, "Jupiter not found");
+    assertTrue(foundDagobert, "Dagobert not found");
+    assertTrue(foundDonald, "Donald not found");
   }
 
   @Test
   public void test_02_PostGetDelete() throws Exception {
-    Planet planet = new Planet("X-" + UUID.randomUUID().toString(), 0);
+    Person person = new Person("Duck", "Tick-" + UUID.randomUUID().toString());
 
-    String newPlanetUrl = given()
+    String newPersonUrl = given()
         .contentType(MediaType.APPLICATION_JSON)
-        .body(planet)
-        .post("/planets")
+        .body(person)
+        .post("/persons")
         .then()
         .statusCode(HttpStatus.SC_CREATED)
         .extract()
         .header(HttpHeaders.LOCATION);
 
-    assertNotNull(newPlanetUrl, "New planet URL must not be null");
+    assertNotNull(newPersonUrl, "New person URL must not be null");
 
     given()
         .when()
-        .get(newPlanetUrl)
+        .get(newPersonUrl)
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body("name", is(planet.getName()));
+        .body("name", is(person.name))
+        .body("firstname", is(person.firstname));
 
     given()
         .when()
-        .delete(newPlanetUrl)
+        .delete(newPersonUrl)
         .then()
         .statusCode(HttpStatus.SC_NO_CONTENT);
 
     given()
         .when()
-        .get(newPlanetUrl)
+        .get(newPersonUrl)
         .then()
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }

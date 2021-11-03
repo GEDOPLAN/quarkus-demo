@@ -1,11 +1,12 @@
 package de.gedoplan.showcase.service;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Gauge;
+
+import io.quarkus.runtime.StartupEvent;
 
 @ApplicationScoped
 public class CustomMetricsService {
@@ -20,7 +21,7 @@ public class CustomMetricsService {
    * if bean instances have been created. This demo 'service' isn't used anywhere else, leaving it uninstantiated.
    * Therefore we cheat a little bit by observing the application scope initialization event, forcing bean instantiation then.
    */
-  void startUp(@Observes @Initialized(ApplicationScoped.class) Object object) {
+  void startUp(@Observes StartupEvent event) {
   }
 
 }

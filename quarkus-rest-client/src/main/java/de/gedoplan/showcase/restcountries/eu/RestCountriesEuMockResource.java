@@ -1,7 +1,6 @@
 package de.gedoplan.showcase.restcountries.eu;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,7 +12,7 @@ import javax.ws.rs.Produces;
 
 @ApplicationScoped
 @Path("restcountriesEuMock/v2")
-public class RestCountriesEuMockEndpoint {
+public class RestCountriesEuMockResource {
 
     private Map<String, Country> countries = Map.of(
         "de", new Country("de", "Germany", "Berlin"),
