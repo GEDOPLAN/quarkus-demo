@@ -22,11 +22,13 @@ import io.restassured.common.mapper.TypeRef;
 @QuarkusTest
 public class PersonResourceTest {
 
+  public static final String PATH = "/v1/persons";
+
   @Test
   public void test_01_DagobertAndDonalDuckExist() {
     List<Person> persons = given()
         .when()
-        .get("/persons")
+        .get(PATH)
         .then()
         .statusCode(HttpStatus.SC_OK)
         .extract()
@@ -57,7 +59,7 @@ public class PersonResourceTest {
     String newPersonUrl = given()
         .contentType(MediaType.APPLICATION_JSON)
         .body(person)
-        .post("/persons")
+        .post(PATH)
         .then()
         .statusCode(HttpStatus.SC_CREATED)
         .extract()

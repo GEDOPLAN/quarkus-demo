@@ -1,28 +1,25 @@
 package de.gedoplan.showcase.rest;
 
+import de.gedoplan.showcase.entity.Planet;
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.common.mapper.TypeRef;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Test;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.UUID;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.gedoplan.showcase.entity.Planet;
-
-import java.util.List;
-import java.util.UUID;
-
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Test;
-
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.common.mapper.TypeRef;
-
 @QuarkusTest
-public class PlanetResourceTest {
+public class PlanetResource2Test {
 
-  public static final String PATH = "/v1/planets";
+  public static final String PATH = "/v2/planets";
 
   @Test
   public void test_01_DagobertAndDonalDuckExist() {
