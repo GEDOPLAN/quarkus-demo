@@ -1,11 +1,11 @@
 package de.gedoplan.showcase.command;
 
-import de.gedoplan.showcase.repository.CurrencyRepository;
-import de.gedoplan.showcase.service.CurrencyService;
-import picocli.CommandLine;
+import java.math.BigDecimal;
 
 import javax.inject.Inject;
-import java.math.BigDecimal;
+
+import de.gedoplan.showcase.service.CurrencyService;
+import picocli.CommandLine;
 
 @CommandLine.Command
 public class PicocliMain implements Runnable {
