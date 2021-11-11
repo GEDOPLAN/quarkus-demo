@@ -1,21 +1,21 @@
 package de.gedoplan.showcase.service;
 
-import de.gedoplan.showcase.entity.Person;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.jboss.logging.Logger;
+
+import de.gedoplan.showcase.entity.Person;
 
 @ApplicationScoped
 public class PersonReceiver {
 
   @Inject
-  Log log;
+  Logger logger;
 
-  @Incoming("received-person")
+  @Incoming("person")
   public void onReceive(Person person) {
-    this.log.debug("onReceive(" + person + ")");
+    this.logger.debugf("Received %s", person);
   }
 }
