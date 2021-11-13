@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  redpanda:
+    image: vectorized/redpanda:v21.10.1
+    ports:
+      - "9092:9092"
+    volumes:
+      - "quarkus-kafka-redpanda:/var/lib/redpanda/data"
+
+volumes:
+  quarkus-kafka-redpanda:

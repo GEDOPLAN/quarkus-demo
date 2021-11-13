@@ -32,4 +32,28 @@ The service simply sends the `Person` object into the stream `person`, which is 
 
 * `de.gedoplan.showcase.service.PersonReceiver` reads from the Stream `person` and simply logs received `Person` objects to standard out. The stream is connected to the Kafka topic `person` in `application.properties`.
 
-Run the applications with `mvn compile quarkus:dev` in their corresponding project directories.
+== Usage
+
+=== Dev mode
+
+Run the applications with `mvn compile quarkus:dev` in their corresponding project directories. A Redpanda testcontainer will be used as broker.
+
+=== Prod mode
+
+Start a Kafka broker by using one of the following Docker Compose files in `src/main/docker-compose`:
+
+* `docker-compose -f kafka.yaml up -d` for a single node Zookeeper & Kafka cluster.
+
+* `docker-compose -f redpanda.yaml up -d` for a single node Redpanda cluster.
+
+Stop the broker afterward with `docker-compose -f ... down`
+
+=== Message routing
+
+You may run multiple instances of `quarkus-kafka-recv` in parallel. To achieve a normal publish/subscribe message handling, you must specify a unique value for `kafka.group.id`:
+
+`mvn compile quarkus:dev -Dkafka.group.id=recv-1`
+
+For point-to-point instead of publish/subscribe set `quarkus.kafka.devservices.topic-partitions.person` to a value greater or equal the number of receivers for every application start (dev mode only):
+
+`mvn compile quarkus:dev -Dquarkus.kafka.devservices.topic-partitions.person=2`
