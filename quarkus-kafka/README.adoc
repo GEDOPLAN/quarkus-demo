@@ -50,10 +50,21 @@ Stop the broker afterward with `docker-compose -f ... down`
 
 === Message routing
 
-You may run multiple instances of `quarkus-kafka-recv` in parallel. To achieve a normal publish/subscribe message handling, you must specify a unique value for `kafka.group.id`:
+You may run multiple instances of `quarkus-kafka-recv` in parallel. Please use separate HTTP ports by specifying unique values for `quarkus.http.port` (defaults to `8180`). To achieve a normal publish/subscribe message handling, you must specify a unique value for `kafka.group.id` (defaults to application name). So a sample start command is: 
 
-`mvn compile quarkus:dev -Dkafka.group.id=recv-1`
+`mvn compile quarkus:dev -Dquarkus.http.port=8181 -Dkafka.group.id=recv-1`
 
 For point-to-point instead of publish/subscribe set `quarkus.kafka.devservices.topic-partitions.person` to a value greater or equal the number of receivers for every application start (dev mode only):
 
 `mvn compile quarkus:dev -Dquarkus.kafka.devservices.topic-partitions.person=2`
+
+=== Failure simulation
+
+`quarkus-kafka-recv` can simulate reception failures after a `PUT` call to `localhost:8180/failure`:
+
+* `curl -X PUT localhost:8180/failure?n=2`: Simulate reception errors for the next 2 messages.
+* `curl -X PUT localhost:8180/failure?n=-1`: Simulate reception errors for ever.
+* `curl -X PUT localhost:8180/failure?n=0`: Resume normal operation.
+
+`de.gedoplan.showcase.service.PersonReceiver` retries incoming message processing via `@Retry` 3 times with a delay of 1s. So if the simulated failure number is 1 to 3, messages will be received after the retries. Otherwise erreanous messages will by transferred to the dead letter queue `DLQ`, processed by `de.gedoplan.showcase.service.DLQReceiver`. 
+
