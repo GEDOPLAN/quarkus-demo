@@ -51,6 +51,7 @@
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
     <module>quarkus-scheduler</module>
+    <module>quarkus-testing</module>
   </modules>
 
   <dependencyManagement>
