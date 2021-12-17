@@ -21,6 +21,6 @@ public class PicocliMainTest {
   @Launch(value = {"--from=GBP", "--to=CHF", "--amount=1"})
   public void testLaunchGBP2CHF(LaunchResult launchResult) {
     assertEquals(0, launchResult.exitCode());
-    assertEquals("1,0000 GBP = 1,2090 CHF", launchResult.getOutput());
+    assertEquals("1.0000 GBP = 1.2090 CHF", launchResult.getOutput());
   }
 }
