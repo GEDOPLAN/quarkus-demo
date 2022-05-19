@@ -20,7 +20,7 @@
 
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>2.8.2.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.9.1.Final</quarkus.platform.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -53,6 +53,7 @@
     <module>quarkus-rest-client</module>
     <module>quarkus-scheduler</module>
     <module>quarkus-testing</module>
+    <module>quarkus-websocket</module>
   </modules>
 
   <dependencyManagement>
