@@ -40,15 +40,6 @@ public class SocketView implements Serializable {
     
     String message;
     
-    public void sendMessage() {
-        LOG.log(Level.INFO, "send push message");
-        this.sendPushMessage("hello");
-    }
-    
-    private void sendPushMessage(Object message) {
-        helloChannel.send("" + message + " at " + LocalDateTime.now());
-    }
-    
     public String getMessage() {
         return message;
     }
@@ -57,9 +48,18 @@ public class SocketView implements Serializable {
         this.message = message;
     }
     
+    public void sendMessage() {
+        this.sendPushMessage("hello");
+    }
+    
     public void sendMessage2() {
-        LOG.log(Level.INFO, "send push message from input box::" + this.message);
         this.sendPushMessage(this.message);
+    }
+    
+    private void sendPushMessage(Object message) {
+        String messageText = "" + message + " at " + LocalDateTime.now();
+        LOG.log(Level.FINE, "send push message: " + messageText);
+        helloChannel.send(messageText);
     }
     
 }
