@@ -10,8 +10,8 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.Set;
 
 @ApplicationScoped
-@ServerEndpoint("/push1")
-public class PushService1 {
+@ServerEndpoint("/javax.faces.push/push2")
+public class PushService2 {
   Set<Session> sessions = new ConcurrentHashSet<>();
 
   @Inject
@@ -42,7 +42,8 @@ public class PushService1 {
     send(message + " (from webSocket)");
   }
 
-  public void send(String message) {
+  public void send(String text) {
+    String message = "{\"data\":\"" + text + "\"}";
     logger.debugf("Sending \"%s\" to %d browsers", message, sessions.size());
     sessions.forEach(s -> {
       s.getAsyncRemote().sendObject(message, result ->  {
