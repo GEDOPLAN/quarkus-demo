@@ -11,14 +11,6 @@
 
   <artifactId>quarkus-myfaces</artifactId>
 
-  <properties>
-    <!-- 
-      Use corresponding versions!
-      -->
-    <myfaces.version>2.3-next-M6</myfaces.version>
-    <!-- <quarkus.platform.version>1.7.0.Final</quarkus.platform.version> -->
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
