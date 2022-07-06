@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  
-  <artifactId>quarkus-extension-showcase</artifactId>
+
+  <artifactId>quarkus-extension-demo</artifactId>
+  <name>Quarkus Extension - Demo</name>
 
   <dependencies>
     <dependency>
