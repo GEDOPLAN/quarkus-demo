@@ -18,9 +18,10 @@
   <properties>
     <java.code.version>17</java.code.version>
 
+    <quarkus.version>2.10.1.Final</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>2.10.1.Final</quarkus.platform.version>
+    <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 
     <myfaces.version>2.3-next-M7</myfaces.version>
 
