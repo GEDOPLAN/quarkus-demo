@@ -17,7 +17,7 @@ class QuarkusExtensionProcessor {
 
     @BuildStep
     ServletBuildItem createServlet() {
-      return ServletBuildItem.builder("quarkus-extension", GreetingExtensionServlet.class.getName())
+      return ServletBuildItem.builder("greeting-servlet", GreetingExtensionServlet.class.getName())
         .addMapping("/greeting")
         .build();
     }
