@@ -9,26 +9,18 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quarkus-extension-parent</artifactId>
+  <artifactId>quarkus-extension</artifactId>
   <packaging>pom</packaging>
-  <name>Quarkus Extension - Parent</name>
 
   <modules>
-    <module>deployment</module>
-    <module>runtime</module>
-    <module>demo</module>
-  </modules>
+    <module>quarkus-extension-greeting</module>
+    <module>quarkus-extension-smartrepo</module>
 
-  <build>
-    <plugins>
-      <!-- The parent configures goals for normal quarkus applications, which are not needed for extensions -->
-      <plugin>
-        <groupId>${quarkus.platform.group-id}</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.platform.version}</version>
-        <inherited>false</inherited>
-      </plugin>
-    </plugins>
-  </build>
+    <!--
+      Keep demo project after extension projects or else the maven reactor order may be wrong:
+      Extension deployment modules would possibly be built after demo, because they are no dependency of demo.
+      -->
+    <module>quarkus-extension-demo</module>
+  </modules>
 
 </project>

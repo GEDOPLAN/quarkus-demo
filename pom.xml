@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
-    <version>2022.7.1-SNAPSHOT</version>
+    <version>2022.7.1</version>
   </parent>
 
   <groupId>de.gedoplan.showcase</groupId>
@@ -36,10 +36,6 @@
   </repositories>
 
   <modules>
-    <module>quarkus-cdi</module>
-    <module>quarkus-extension</module>
-
-    <!--
     <module>quarkus-amqp</module>
     <module>quarkus-camel</module>
     <module>quarkus-cdi</module>
@@ -62,7 +58,6 @@
     <module>quarkus-scheduler</module>
     <module>quarkus-testing</module>
     <module>quarkus-websocket</module>
-    -->
   </modules>
 
   <dependencyManagement>
