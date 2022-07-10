@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsString;
 
-@QuarkusTest
+//@QuarkusTest
 public class SmartRepoExtensionTest {
 
-  @Test
+//  @Test
   public void testGreeting() {
     RestAssured
       .when()
