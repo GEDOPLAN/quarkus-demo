@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.extension.smartrepo.deployment;
+package io.quarkus.spring.data.deployment;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -17,7 +17,7 @@ public class QueryReturningCustomTypeBadAliasTest {
             .withConfigurationResource("application.properties")
             .setExpectedException(IllegalArgumentException.class);
 
-    @Test
+    //@Test
     public void testBadAliases() {
         // an exception should be thrown
     }

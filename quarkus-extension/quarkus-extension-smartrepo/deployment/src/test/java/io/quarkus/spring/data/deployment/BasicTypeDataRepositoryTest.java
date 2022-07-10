@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.extension.smartrepo.deployment;
+package io.quarkus.spring.data.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +49,7 @@ public class BasicTypeDataRepositoryTest {
     @Inject
     BasicTypeDataRepository repo;
 
-    @Test
+    // @Test
     @Order(1)
     @Transactional
     public void testInsert() throws Exception {
@@ -57,7 +57,7 @@ public class BasicTypeDataRepositoryTest {
         repo.save(item);
     }
 
-    @Test
+    // @Test
     @Order(2)
     @Transactional
     public void testDoubleByURL() throws Exception {
@@ -65,7 +65,7 @@ public class BasicTypeDataRepositoryTest {
         assertThat(price).isCloseTo(Math.PI, Percentage.withPercentage(1));
     }
 
-    @Test
+    // @Test
     @Order(3)
     @Transactional
     public void testDurationByUUID() {
@@ -73,7 +73,7 @@ public class BasicTypeDataRepositoryTest {
         assertThat(duration).isEqualTo(Duration.parse(DURATION));
     }
 
-    @Test
+    // @Test
     @Order(4)
     @Transactional
     public void testTimeZonesByLocale() {
@@ -81,7 +81,7 @@ public class BasicTypeDataRepositoryTest {
         assertThat(timeZones).isNotEmpty().contains(TimeZone.getTimeZone("CST"));
     }
 
-    @Test
+    // @Test
     @Order(5)
     @Transactional
     public void testMapInterfacesUsingList() {
@@ -90,7 +90,7 @@ public class BasicTypeDataRepositoryTest {
         assertThat(actual).isNotEmpty().contains(Math.PI);
     }
 
-    @Test
+    // @Test
     @Order(6)
     @Transactional
     public void testMapInterfacesUsingPage() {
@@ -109,7 +109,7 @@ public class BasicTypeDataRepositoryTest {
         assertEquals(1, nextPage.getTotalPages());
     }
 
-    @Test
+    // @Test
     @Order(7)
     @Transactional
     public void testMapInterfacesUsingSlice() {

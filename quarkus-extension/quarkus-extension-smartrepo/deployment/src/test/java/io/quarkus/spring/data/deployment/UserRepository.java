@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.extension.smartrepo.deployment;
+package io.quarkus.spring.data.deployment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

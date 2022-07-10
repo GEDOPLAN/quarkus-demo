@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.extension.smartrepo.deployment;
+package io.quarkus.spring.data.deployment;
 
 import java.math.BigDecimal;
 import java.net.URL;

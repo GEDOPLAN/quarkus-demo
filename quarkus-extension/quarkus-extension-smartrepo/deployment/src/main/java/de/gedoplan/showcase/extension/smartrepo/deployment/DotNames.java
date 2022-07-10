@@ -32,6 +32,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import de.gedoplan.showcase.extension.smartrepo.SmartRepo;
 import org.jboss.jandex.DotName;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,9 +61,12 @@ public final class DotNames {
     public static final DotName SPRING_DATA_JPA_REPOSITORY = DotName
             .createSimple(JpaRepository.class.getName());
     public static final DotName SPRING_DATA_REPOSITORY_DEFINITION = DotName
-            .createSimple(RepositoryDefinition.class.getName());
+      .createSimple(RepositoryDefinition.class.getName());
 
-    public static final Set<DotName> SUPPORTED_REPOSITORIES = new HashSet<>(Arrays.asList(
+    public static final DotName SMART_REPO = DotName
+      .createSimple(SmartRepo.class.getName());
+
+    public static final Set<DotName> SUPPORTED_REPOSITORIES = new HashSet<>(Arrays.asList(SMART_REPO,
             SPRING_DATA_JPA_REPOSITORY, SPRING_DATA_PAGING_REPOSITORY, SPRING_DATA_CRUD_REPOSITORY, SPRING_DATA_REPOSITORY));
 
     public static final DotName SPRING_DATA_NO_REPOSITORY_BEAN = DotName

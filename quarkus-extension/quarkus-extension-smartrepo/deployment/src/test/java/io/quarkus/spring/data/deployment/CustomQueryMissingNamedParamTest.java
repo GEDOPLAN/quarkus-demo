@@ -1,4 +1,4 @@
-package de.gedoplan.showcase.extension.smartrepo.deployment;
+package io.quarkus.spring.data.deployment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +26,7 @@ public class CustomQueryMissingNamedParamTest {
                     .hasMessageContaining("BookRepositoryNamedParameterWrongName is missing the named parameters [name], "
                             + "provided are [wrong]"));
 
-    @Test
+    //@Test
     public void testNamedParameters() {
         // an exception should be thrown
     }
