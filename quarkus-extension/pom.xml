@@ -14,7 +14,7 @@
 
   <modules>
     <module>quarkus-extension-greeting</module>
-    <module>quarkus-extension-smartrepo</module>
+    <module>spring-data-jpa</module>
 
     <!--
       Keep demo project after extension projects or else the maven reactor order may be wrong:
