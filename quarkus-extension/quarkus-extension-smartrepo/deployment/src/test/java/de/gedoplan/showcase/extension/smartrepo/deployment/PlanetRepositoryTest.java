@@ -30,18 +30,18 @@ public class PlanetRepositoryTest {
   @Inject
   PlanetRepository repo;
 
-  private Planet earth;
-  private Planet jupiter;
+  private static final Planet EARTH = new Planet("Earth", 5.9722e24);
+  private static final Planet JUPITER = new Planet("Jupiter", 1.899e27);
 
   @Test
   @Order(1)
   @Transactional
   public void testInsert() throws Exception {
-    earth = repo.save(new Planet("Earth", 5.9722e24));
-    assertNotNull(earth.getId());
+    repo.persist(EARTH);
+    assertNotNull(EARTH.getId());
 
-    jupiter = repo.save(new Planet("Jupiter", 1.899e27));
-    assertNotNull(jupiter.getId());
+    repo.persist(JUPITER);
+    assertNotNull(JUPITER.getId());
   }
 
   @Test
@@ -56,9 +56,9 @@ public class PlanetRepositoryTest {
   @Order(3)
   @Transactional
   public void testFindById() throws Exception {
-    Optional<Planet> planet = repo.findById(earth.getId());
+    Optional<Planet> planet = repo.findById(EARTH.getId());
     assertTrue(planet.isPresent());
-    assertThat(planet.get().getId()).isEqualTo(earth.getId());
+    assertThat(planet.get().getId()).isEqualTo(EARTH.getId());
   }
 
   @Test
@@ -73,9 +73,9 @@ public class PlanetRepositoryTest {
   @Order(4)
   @Transactional
   public void testFindByName() throws Exception {
-    Optional<Planet> planet = repo.findByName(earth.getName());
+    Optional<Planet> planet = repo.findByName(EARTH.getName());
     assertTrue(planet.isPresent());
-    assertThat(planet.get().getId()).isEqualTo(earth.getId());
+    assertThat(planet.get().getId()).isEqualTo(EARTH.getId());
   }
 
   @Test

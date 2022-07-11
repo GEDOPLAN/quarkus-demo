@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface SmartRepo<E,I> {
 
-  E save(E item);
+  void persist(E item);
   List<E> findAll();
 
   Optional<E> findById(I id);

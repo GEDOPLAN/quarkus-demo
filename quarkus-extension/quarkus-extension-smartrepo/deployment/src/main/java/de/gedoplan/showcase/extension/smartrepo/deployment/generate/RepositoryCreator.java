@@ -94,7 +94,7 @@ public class RepositoryCreator {
     // we need to pull the entity and ID types for the Spring Data generic types
     // we also need to make sure that the user didn't try to specify multiple different types
     // in the same interface (which is possible if only Repository is used)
-    for (DotName extendedSpringDataRepo : GenerationUtil.extendedSpringDataRepos(repositoryToImplement, indexView)) {
+    for (DotName extendedSpringDataRepo : GenerationUtil.extendedSmartRepos(repositoryToImplement, indexView)) {
       List<Type> types = JandexUtil.resolveTypeParameters(repositoryToImplement.name(), extendedSpringDataRepo, index);
       if (!(types.get(0) instanceof ClassType)) {
         throw new IllegalArgumentException(

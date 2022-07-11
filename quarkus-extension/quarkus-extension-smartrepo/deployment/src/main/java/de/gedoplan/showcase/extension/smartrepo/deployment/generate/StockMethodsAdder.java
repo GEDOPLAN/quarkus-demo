@@ -1,17 +1,14 @@
 package de.gedoplan.showcase.extension.smartrepo.deployment.generate;
 
+import de.gedoplan.showcase.extension.smartrepo.FunctionalityNotImplemented;
 import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
-import io.quarkus.deployment.bean.JavaBeanUtil;
 import io.quarkus.gizmo.*;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.common.runtime.AbstractJpaOperations;
 import io.quarkus.panache.common.deployment.TypeBundle;
-import de.gedoplan.showcase.extension.smartrepo.FunctionalityNotImplemented;
 import org.jboss.jandex.*;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,8 +17,6 @@ import static io.quarkus.gizmo.FieldDescriptor.of;
 import static io.quarkus.gizmo.MethodDescriptor.ofMethod;
 
 public class StockMethodsAdder {
-
-  private static Set<MethodInfo> ALL_SPRING_DATA_REPOSITORY_METHODS = null;
 
   private final IndexView index;
   private final FieldDescriptor operationsField;
@@ -35,8 +30,7 @@ public class StockMethodsAdder {
   public void add(ClassCreator classCreator, FieldDescriptor entityClassFieldDescriptor,
     String generatedClassName, ClassInfo repositoryToImplement, DotName entityDotName, String idTypeStr) {
 
-    Set<MethodInfo> methodsOfExtendedSpringDataRepositories = methodsOfExtendedSpringDataRepositories(
-      repositoryToImplement);
+    Set<MethodInfo> methodsOfExtendedSpringDataRepositories = methodsOfExtendedSpringDataRepositories(repositoryToImplement);
     Set<MethodInfo> stockMethodsAddedToInterface = stockMethodsAddedToInterface(repositoryToImplement);
     Set<MethodInfo> allMethodsToBeImplemented = new HashSet<>(methodsOfExtendedSpringDataRepositories);
     allMethodsToBeImplemented.addAll(stockMethodsAddedToInterface);
@@ -48,172 +42,45 @@ public class StockMethodsAdder {
 
     String entityTypeStr = entityDotName.toString();
 
-    // for all Spring Data repository methods we know how to implement, check if the generated class actually needs the method
-    // and if so generate the implementation while also keeping the proper records
-
-    generateSave(classCreator, generatedClassName, entityDotName, entityTypeStr,
-      allMethodsToBeImplementedToResult);
-    generateFindById(classCreator, entityClassFieldDescriptor, generatedClassName, entityTypeStr, idTypeStr,
-      allMethodsToBeImplementedToResult);
-    generateFindAll(classCreator, entityClassFieldDescriptor, generatedClassName, entityTypeStr,
-      allMethodsToBeImplementedToResult);
+    generatePersist(classCreator, generatedClassName, entityDotName, entityTypeStr, allMethodsToBeImplementedToResult);
+    generateFindById(classCreator, entityClassFieldDescriptor, generatedClassName, entityTypeStr, idTypeStr, allMethodsToBeImplementedToResult);
+    generateFindAll(classCreator, entityClassFieldDescriptor, generatedClassName, entityTypeStr, allMethodsToBeImplementedToResult);
 
     handleUnimplementedMethods(classCreator, allMethodsToBeImplementedToResult);
   }
 
-  private void generateSave(ClassCreator classCreator, String generatedClassName,
-    DotName entityDotName, String entityTypeStr,
-    Map<MethodDescriptor, Boolean> allMethodsToBeImplementedToResult) {
+  private void generatePersist(ClassCreator classCreator, String generatedClassName, DotName entityDotName, String entityTypeStr, Map<MethodDescriptor, Boolean> allMethodsToBeImplementedToResult) {
 
-    MethodDescriptor saveDescriptor = MethodDescriptor.ofMethod(generatedClassName, "save", entityTypeStr,
-      entityTypeStr);
-    MethodDescriptor bridgeSaveDescriptor = MethodDescriptor.ofMethod(generatedClassName, "save", Object.class,
-      Object.class);
+    MethodDescriptor persistDescriptor = MethodDescriptor.ofMethod(generatedClassName, "persist", void.class, entityTypeStr);
+    MethodDescriptor bridgePersistDescriptor = MethodDescriptor.ofMethod(generatedClassName, "persist", void.class, Object.class);
 
-    if (allMethodsToBeImplementedToResult.containsKey(saveDescriptor)
-      || allMethodsToBeImplementedToResult.containsKey(bridgeSaveDescriptor)) {
+    if (allMethodsToBeImplementedToResult.containsKey(persistDescriptor)
+      || allMethodsToBeImplementedToResult.containsKey(bridgePersistDescriptor)) {
 
-      if (!classCreator.getExistingMethods().contains(saveDescriptor)) {
-        try (MethodCreator save = classCreator.getMethodCreator(saveDescriptor)) {
-          save.addAnnotation(Transactional.class);
+      if (!classCreator.getExistingMethods().contains(persistDescriptor)) {
+        try (MethodCreator persist = classCreator.getMethodCreator(persistDescriptor)) {
+          persist.addAnnotation(Transactional.class);
 
-          ResultHandle entity = save.getMethodParam(0);
+          ResultHandle entity = persist.getMethodParam(0);
 
-          // if an entity is Persistable, then all we need to do is call isNew to determine if it's new or not
-          if (isPersistable(entityDotName)) {
-            ResultHandle isNew = save.invokeVirtualMethod(
-              ofMethod(entityDotName.toString(), "isNew", boolean.class.toString()),
-              entity);
-            BranchResult isNewBranch = save.ifTrue(isNew);
-            generatePersistAndReturn(entity, isNewBranch.trueBranch());
-            generateMergeAndReturn(entity, isNewBranch.falseBranch());
-          } else {
-            AnnotationTarget idAnnotationTarget = getIdAnnotationTarget(entityDotName, index);
-            ResultHandle idValue = generateObtainValue(save, entityDotName, entity, idAnnotationTarget);
-            Type idType = getTypeOfTarget(idAnnotationTarget);
-            Optional<AnnotationTarget> versionValueTarget = getVersionAnnotationTarget(entityDotName, index);
-
-            // the following code generated bytecode that:
-            // if there is a field annotated with @Version, calls 'persist' if the field is null, 'merge' otherwise
-            // if there is no field annotated with @Version, then if the value of the field annotated with '@Id'
-            // is "falsy", 'persist' is called, otherwise 'merge' is called
-
-            if (versionValueTarget.isPresent()) {
-              Type versionType = getTypeOfTarget(versionValueTarget.get());
-              if (versionType instanceof PrimitiveType) {
-                throw new IllegalArgumentException(
-                  "The '@Version' annotation cannot be used on primitive types. Offending entity is '"
-                    + entityDotName + "'.");
-              }
-              ResultHandle versionValue = generateObtainValue(save, entityDotName, entity,
-                versionValueTarget.get());
-              BranchResult versionValueIsNullBranch = save.ifNull(versionValue);
-              generatePersistAndReturn(entity, versionValueIsNullBranch.trueBranch());
-              generateMergeAndReturn(entity, versionValueIsNullBranch.falseBranch());
-            }
-
-            BytecodeCreator idValueUnset;
-            BytecodeCreator idValueSet;
-            if (idType instanceof PrimitiveType) {
-              if (!idType.name().equals(DotNames.PRIMITIVE_LONG)
-                && !idType.name().equals(DotNames.PRIMITIVE_INTEGER)) {
-                throw new IllegalArgumentException("Id type of '" + entityDotName + "' is invalid.");
-              }
-              if (idType.name().equals(DotNames.PRIMITIVE_LONG)) {
-                ResultHandle longObject = save.invokeStaticMethod(
-                  MethodDescriptor.ofMethod(Long.class, "valueOf", Long.class, long.class), idValue);
-                idValue = save.invokeVirtualMethod(MethodDescriptor.ofMethod(Long.class, "intValue", int.class),
-                  longObject);
-              }
-              BranchResult idValueNonZeroBranch = save.ifNonZero(idValue);
-              idValueSet = idValueNonZeroBranch.trueBranch();
-              idValueUnset = idValueNonZeroBranch.falseBranch();
-            } else {
-              BranchResult idValueNullBranch = save.ifNull(idValue);
-              idValueSet = idValueNullBranch.falseBranch();
-              idValueUnset = idValueNullBranch.trueBranch();
-            }
-            generatePersistAndReturn(entity, idValueUnset);
-            generateMergeAndReturn(entity, idValueSet);
-          }
+          persist.invokeVirtualMethod(
+            MethodDescriptor.ofMethod(AbstractJpaOperations.class, "persist", void.class, Object.class),
+            persist.readStaticField(operationsField),
+            entity);
+          persist.returnValue(null);
         }
-        try (MethodCreator bridgeSave = classCreator.getMethodCreator(bridgeSaveDescriptor)) {
-          MethodDescriptor save = MethodDescriptor.ofMethod(generatedClassName, "save", entityTypeStr,
-            entityTypeStr);
-          ResultHandle methodParam = bridgeSave.getMethodParam(0);
-          ResultHandle castedMethodParam = bridgeSave.checkCast(methodParam, entityTypeStr);
-          ResultHandle result = bridgeSave.invokeVirtualMethod(save, bridgeSave.getThis(), castedMethodParam);
-          bridgeSave.returnValue(result);
+        try (MethodCreator bridgePersist = classCreator.getMethodCreator(bridgePersistDescriptor)) {
+          MethodDescriptor persist = MethodDescriptor.ofMethod(generatedClassName, "persist", void.class, entityTypeStr);
+          ResultHandle methodParam = bridgePersist.getMethodParam(0);
+          ResultHandle castedMethodParam = bridgePersist.checkCast(methodParam, entityTypeStr);
+          ResultHandle result = bridgePersist.invokeVirtualMethod(persist, bridgePersist.getThis(), castedMethodParam);
+          bridgePersist.returnValue(result);
         }
       }
 
-      allMethodsToBeImplementedToResult.put(saveDescriptor, true);
-      allMethodsToBeImplementedToResult.put(bridgeSaveDescriptor, true);
+      allMethodsToBeImplementedToResult.put(persistDescriptor, true);
+      allMethodsToBeImplementedToResult.put(bridgePersistDescriptor, true);
     }
-  }
-
-  private boolean isPersistable(DotName entityDotName) {
-    ClassInfo classInfo = index.getClassByName(entityDotName);
-    if (classInfo == null) {
-      throw new IllegalStateException("Entity " + entityDotName + " was not part of the Quarkus index");
-    }
-
-    DotName superDotName = classInfo.superName();
-    if (superDotName.equals(DotNames.OBJECT)) {
-      return false;
-    }
-
-    return isPersistable(superDotName);
-  }
-
-  private void generatePersistAndReturn(ResultHandle entity, BytecodeCreator bytecodeCreator) {
-    bytecodeCreator.invokeVirtualMethod(
-      MethodDescriptor.ofMethod(AbstractJpaOperations.class, "persist", void.class, Object.class),
-      bytecodeCreator.readStaticField(operationsField),
-      entity);
-    bytecodeCreator.returnValue(entity);
-  }
-
-  private void generateMergeAndReturn(ResultHandle entity, BytecodeCreator bytecodeCreator) {
-    ResultHandle entityManager = bytecodeCreator.invokeVirtualMethod(
-      ofMethod(AbstractJpaOperations.class, "getEntityManager", EntityManager.class),
-      bytecodeCreator.readStaticField(operationsField));
-    entity = bytecodeCreator.invokeInterfaceMethod(
-      MethodDescriptor.ofMethod(EntityManager.class, "merge", Object.class, Object.class),
-      entityManager, entity);
-    bytecodeCreator.returnValue(entity);
-  }
-
-  /**
-   * Given an annotation target, generate the bytecode that is needed to obtain its value
-   * either by reading the field or by calling the method.
-   * Meant to be called for annotations alike {@code @Id} or {@code @Version}
-   */
-  private ResultHandle generateObtainValue(MethodCreator methodCreator, DotName entityDotName, ResultHandle entity,
-    AnnotationTarget annotationTarget) {
-    if (annotationTarget instanceof FieldInfo) {
-      FieldInfo fieldInfo = annotationTarget.asField();
-      if (Modifier.isPublic(fieldInfo.flags())) {
-        return methodCreator.readInstanceField(of(fieldInfo), entity);
-      }
-
-      String getterMethodName = JavaBeanUtil.getGetterName(fieldInfo.name(), fieldInfo.type().name());
-      return methodCreator.invokeVirtualMethod(
-        MethodDescriptor.ofMethod(entityDotName.toString(), getterMethodName, fieldInfo.type().name().toString()),
-        entity);
-    }
-    MethodInfo methodInfo = annotationTarget.asMethod();
-    return methodCreator.invokeVirtualMethod(
-      MethodDescriptor.ofMethod(entityDotName.toString(), methodInfo.name(),
-        methodInfo.returnType().name().toString()),
-      entity);
-  }
-
-  private Type getTypeOfTarget(AnnotationTarget idAnnotationTarget) {
-    if (idAnnotationTarget instanceof FieldInfo) {
-      return idAnnotationTarget.asField().type();
-    }
-    return idAnnotationTarget.asMethod().returnType();
   }
 
   private void generateFindById(ClassCreator classCreator, FieldDescriptor entityClassFieldDescriptor,
@@ -312,7 +179,7 @@ public class StockMethodsAdder {
   }
 
   private Set<MethodInfo> methodsOfExtendedSpringDataRepositories(ClassInfo repositoryToImplement) {
-    return GenerationUtil.interfaceMethods(GenerationUtil.extendedSpringDataRepos(repositoryToImplement, index), index);
+    return GenerationUtil.interfaceMethods(GenerationUtil.extendedSmartRepos(repositoryToImplement, index), index);
   }
 
   // Spring Data allows users to add any of the methods of CrudRepository, PagingAndSortingRepository, JpaRepository
@@ -334,14 +201,7 @@ public class StockMethodsAdder {
   }
 
   private Set<MethodInfo> allSpringDataRepositoryMethods() {
-    if (ALL_SPRING_DATA_REPOSITORY_METHODS != null) {
-      return ALL_SPRING_DATA_REPOSITORY_METHODS;
-    }
-
-    ALL_SPRING_DATA_REPOSITORY_METHODS = GenerationUtil.interfaceMethods(new HashSet<>(DotNames.SUPPORTED_REPOSITORIES),
-      index);
-
-    return ALL_SPRING_DATA_REPOSITORY_METHODS;
+    return GenerationUtil.interfaceMethods(new HashSet<>(DotNames.SUPPORTED_REPOSITORIES), index);
   }
 
   // Used to determine if a method with captured generic types can be considered the same as a target method
@@ -380,10 +240,6 @@ public class StockMethodsAdder {
     return (candidate instanceof ClassType) && (target instanceof TypeVariable);
   }
 
-  private AnnotationTarget getIdAnnotationTarget(DotName entityDotName, IndexView index) {
-    return getIdAnnotationTargetRec(entityDotName, index, entityDotName);
-  }
-
   private AnnotationTarget getIdAnnotationTargetRec(DotName currentDotName, IndexView index, DotName originalEntityDotName) {
     ClassInfo classInfo = index.getClassByName(currentDotName);
     if (classInfo == null) {
@@ -413,31 +269,4 @@ public class StockMethodsAdder {
     return annotationInstances.get(0).target();
   }
 
-  private Optional<AnnotationTarget> getVersionAnnotationTarget(DotName entityDotName, IndexView index) {
-    return getVersionAnnotationTargetRec(entityDotName, index, entityDotName);
-  }
-
-  private Optional<AnnotationTarget> getVersionAnnotationTargetRec(DotName currentDotName, IndexView index,
-    DotName originalEntityDotName) {
-    ClassInfo classInfo = index.getClassByName(currentDotName);
-    if (classInfo == null) {
-      throw new IllegalStateException("Entity " + originalEntityDotName + " was not part of the Quarkus index");
-    }
-
-    if (!classInfo.annotations().containsKey(DotNames.VERSION)) {
-      if (DotNames.OBJECT.equals(classInfo.superName())) {
-        return Optional.empty();
-      }
-      return getVersionAnnotationTargetRec(classInfo.superName(), index, originalEntityDotName);
-    }
-
-    List<AnnotationInstance> annotationInstances = classInfo.annotations().get(DotNames.VERSION);
-    if (annotationInstances.size() > 1) {
-      throw new IllegalArgumentException(
-        "Currently the @Version annotation can only be placed on a single field or method. " +
-          "Offending class is " + originalEntityDotName);
-    }
-
-    return Optional.of(annotationInstances.get(0).target());
-  }
 }

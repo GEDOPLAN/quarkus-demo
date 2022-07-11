@@ -14,7 +14,7 @@ public final class GenerationUtil {
   private GenerationUtil() {
   }
 
-  static List<DotName> extendedSpringDataRepos(ClassInfo repositoryToImplement, IndexView index) {
+  static List<DotName> extendedSmartRepos(ClassInfo repositoryToImplement, IndexView index) {
     List<DotName> result = new ArrayList<>();
     for (DotName interfaceName : repositoryToImplement.interfaceNames()) {
       if (DotNames.SUPPORTED_REPOSITORIES.contains(interfaceName)) {
@@ -23,7 +23,7 @@ public final class GenerationUtil {
         ClassInfo intermediateInterfaces = index.getClassByName(interfaceName);
         List<DotName> dns = intermediateInterfaces.interfaceNames();
         for (DotName in : dns) {
-          result.addAll(extendedSpringDataRepos(intermediateInterfaces, index));
+          result.addAll(extendedSmartRepos(intermediateInterfaces, index));
         }
       }
     }
@@ -33,8 +33,8 @@ public final class GenerationUtil {
   static boolean isIntermediateRepository(DotName interfaceName, IndexView indexView) {
     if (!DotNames.SUPPORTED_REPOSITORIES.contains(interfaceName)) {
       ClassInfo intermediateInterface = indexView.getClassByName(interfaceName);
-      List<DotName> extendedSpringDataRepos = extendedSpringDataRepos(intermediateInterface, indexView);
-      return DotNames.SUPPORTED_REPOSITORIES.stream().anyMatch(item -> extendedSpringDataRepos.contains(item));
+      List<DotName> extendedSmartRepos = extendedSmartRepos(intermediateInterface, indexView);
+      return DotNames.SUPPORTED_REPOSITORIES.stream().anyMatch(item -> extendedSmartRepos.contains(item));
     }
     return false;
   }
