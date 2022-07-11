@@ -143,8 +143,7 @@ public abstract class AbstractMethodsAdder {
                     MethodDescriptor.ofMethod(Optional.class, "empty", Optional.class));
             catchBlock.returnValue(emptyOptional);
         } else if (DotNames.LIST.equals(returnType) || DotNames.COLLECTION.equals(returnType)
-                || DotNames.SET.equals(returnType) || DotNames.ITERATOR.equals(returnType)
-                || DotNames.SPRING_DATA_PAGE.equals(returnType) || DotNames.SPRING_DATA_SLICE.equals(returnType)) {
+                || DotNames.SET.equals(returnType) || DotNames.ITERATOR.equals(returnType)) {
             ResultHandle list;
 
             if (customResultType == null) {
@@ -189,34 +188,6 @@ public abstract class AbstractMethodsAdder {
                 ResultHandle set = methodCreator.newInstance(
                         MethodDescriptor.ofConstructor(LinkedHashSet.class, Collection.class), list);
                 methodCreator.returnValue(set);
-            } else if (DotNames.SPRING_DATA_PAGE.equals(returnType)) {
-                ResultHandle pageResult;
-                if (pageableParameterIndex != null) {
-                    ResultHandle count = methodCreator.invokeInterfaceMethod(
-                            MethodDescriptor.ofMethod(PanacheQuery.class, "count", long.class),
-                            panacheQuery);
-                    pageResult = methodCreator.newInstance(
-                            MethodDescriptor.ofConstructor(PageImpl.class, List.class, Pageable.class, long.class),
-                            list, methodCreator.getMethodParam(pageableParameterIndex), count);
-                } else {
-                    pageResult = methodCreator.newInstance(MethodDescriptor.ofConstructor(PageImpl.class, List.class), list);
-                }
-
-                methodCreator.returnValue(pageResult);
-            } else if (DotNames.SPRING_DATA_SLICE.equals(returnType)) {
-                ResultHandle sliceResult;
-                if (pageableParameterIndex != null) {
-                    ResultHandle hasNextPage = methodCreator.invokeInterfaceMethod(
-                            MethodDescriptor.ofMethod(PanacheQuery.class, "hasNextPage", boolean.class),
-                            panacheQuery);
-                    sliceResult = methodCreator.newInstance(
-                            MethodDescriptor.ofConstructor(SliceImpl.class, List.class, Pageable.class, boolean.class),
-                            list, methodCreator.getMethodParam(pageableParameterIndex), hasNextPage);
-                } else {
-                    sliceResult = methodCreator.newInstance(MethodDescriptor.ofConstructor(SliceImpl.class, List.class), list);
-                }
-
-                methodCreator.returnValue(sliceResult);
             }
             methodCreator.returnValue(list);
 

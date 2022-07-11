@@ -193,10 +193,6 @@ public class StockMethodsAdder {
             throw new IllegalStateException("Entity " + entityDotName + " was not part of the Quarkus index");
         }
 
-        if (classInfo.interfaceNames().contains(DotNames.SPRING_DATA_PERSISTABLE)) {
-            return true;
-        }
-
         DotName superDotName = classInfo.superName();
         if (superDotName.equals(DotNames.OBJECT)) {
             return false;
