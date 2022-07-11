@@ -130,19 +130,11 @@ public class SmartRepoProcessor {
 
     List<ClassInfo> interfacesExtendingRepository = getAllInterfacesExtending(DotNames.SUPPORTED_REPOSITORIES, indexView);
 
-    interfacesExtendingRepository.forEach(x -> LOGGER.info("A: " + x));
-
     addRepositoryDefinitionInstances(indexView, interfacesExtendingRepository);
-
-    interfacesExtendingRepository.forEach(x -> LOGGER.info("B: " + x));
 
     addInterfacesExtendingIntermediateRepositories(indexView, interfacesExtendingRepository);
 
-    interfacesExtendingRepository.forEach(x -> LOGGER.info("C: " + x));
-
     removeNoRepositoryBeanClasses(interfacesExtendingRepository);
-
-    interfacesExtendingRepository.forEach(x -> LOGGER.info("D: " + x));
 
     implementCrudRepositories(generatedBeans, generatedClasses, additionalBeans, reflectiveClasses, interfacesExtendingRepository, indexView);
   }
@@ -245,6 +237,7 @@ public class SmartRepoProcessor {
       }), JavaJpaTypeBundle.BUNDLE);
 
     for (ClassInfo crudRepositoryToImplement : crudRepositoriesToImplement) {
+      LOGGER.debugf("Implementing %s", crudRepositoryToImplement);
       repositoryCreator.implementCrudRepository(crudRepositoryToImplement, index);
     }
   }
