@@ -1,44 +1,25 @@
 package de.gedoplan.showcase.extension.smartrepo.deployment.generate;
 
-import java.lang.reflect.Modifier;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.ClassType;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.IndexView;
-import org.jboss.jandex.Type;
-
+import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
 import io.quarkus.deployment.util.JandexUtil;
-import io.quarkus.gizmo.ClassCreator;
-import io.quarkus.gizmo.ClassOutput;
-import io.quarkus.gizmo.FieldCreator;
-import io.quarkus.gizmo.FieldDescriptor;
-import io.quarkus.gizmo.MethodCreator;
-import io.quarkus.gizmo.MethodDescriptor;
+import io.quarkus.gizmo.*;
 import io.quarkus.panache.common.deployment.TypeBundle;
 import io.quarkus.runtime.util.HashUtil;
-import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
+import org.jboss.jandex.*;
 
-public class SpringDataRepositoryCreator {
+import javax.enterprise.context.ApplicationScoped;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.function.Consumer;
+
+public class RepositoryCreator {
 
     private final ClassOutput classOutput;
     private final IndexView index;
     private final StockMethodsAdder stockMethodsAdder;
     private final DerivedMethodsAdder derivedMethodsAdder;
 
-    public SpringDataRepositoryCreator(ClassOutput classOutput, ClassOutput otherClassOutput, IndexView index,
+    public RepositoryCreator(ClassOutput classOutput, ClassOutput otherClassOutput, IndexView index,
             Consumer<String> fragmentImplClassResolvedCallback,
             Consumer<String> customClassCreatedCallback, TypeBundle typeBundle) {
         this.classOutput = classOutput;

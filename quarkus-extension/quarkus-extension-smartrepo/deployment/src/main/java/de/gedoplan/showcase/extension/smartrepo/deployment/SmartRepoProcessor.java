@@ -1,7 +1,5 @@
 package de.gedoplan.showcase.extension.smartrepo.deployment;
 
-import static java.util.stream.Collectors.toList;
-
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +11,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import de.gedoplan.showcase.extension.smartrepo.SmartRepo;
-import de.gedoplan.showcase.extension.smartrepo.deployment.generate.SpringDataRepositoryCreator;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
+import de.gedoplan.showcase.extension.smartrepo.deployment.generate.RepositoryCreator;
 import org.jboss.jandex.AnnotationInstance;
 import org.jboss.jandex.AnnotationTarget;
 import org.jboss.jandex.AnnotationTarget.Kind;
@@ -34,7 +30,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanGizmoAdaptor;
-import io.quarkus.deployment.Feature;
 import io.quarkus.deployment.GeneratedClassGizmoAdaptor;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -225,7 +220,7 @@ public class SmartRepoProcessor {
     ClassOutput beansClassOutput = new GeneratedBeanGizmoAdaptor(generatedBeans);
     ClassOutput otherClassOutput = new GeneratedClassGizmoAdaptor(generatedClasses, true);
 
-    SpringDataRepositoryCreator repositoryCreator = new SpringDataRepositoryCreator(beansClassOutput, otherClassOutput,
+    RepositoryCreator repositoryCreator = new RepositoryCreator(beansClassOutput, otherClassOutput,
       index, (n) -> {
       // the implementation of fragments don't need to be beans themselves
       additionalBeans.produce(AdditionalBeanBuildItem.unremovableOf(n));
