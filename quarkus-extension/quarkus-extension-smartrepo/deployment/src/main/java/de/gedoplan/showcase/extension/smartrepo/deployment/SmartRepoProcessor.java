@@ -1,32 +1,7 @@
 package de.gedoplan.showcase.extension.smartrepo.deployment;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import de.gedoplan.showcase.extension.smartrepo.SmartRepo;
 import de.gedoplan.showcase.extension.smartrepo.deployment.generate.RepositoryCreator;
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationTarget;
-import org.jboss.jandex.AnnotationTarget.Kind;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.IndexView;
-import org.jboss.logging.Logger;
-import org.springframework.data.domain.Auditable;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
-
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanBuildItem;
 import io.quarkus.arc.deployment.GeneratedBeanGizmoAdaptor;
@@ -39,8 +14,16 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.GeneratedClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.gizmo.ClassOutput;
-import io.quarkus.hibernate.orm.deployment.IgnorableNonIndexedClasses;
 import io.quarkus.hibernate.orm.panache.deployment.JavaJpaTypeBundle;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.logging.Logger;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SmartRepoProcessor {
 

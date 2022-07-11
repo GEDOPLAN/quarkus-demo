@@ -22,10 +22,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm-panache-deployment</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-spring-di-deployment</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
