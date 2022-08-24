@@ -20,7 +20,6 @@
   </modules>
 
   <build>
-    <defaultGoal>clean install</defaultGoal>
     <plugins>
       <!-- The parent configures goals for normal quarkus applications, which are not needed for extensions -->
       <plugin>
