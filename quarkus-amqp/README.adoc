@@ -4,19 +4,21 @@
 
 == Environment preconditions
 
-The application depends on a running AMQP broker on `localhost:5672`.
+The application depends on a running AMQP broker on `localhost:5672` in production mode.
 
 `src/main/artemis` contains a Docker compose file for starting an Artemis broker by running `docker-compose up`.
 
 Please use `Ctrl-C` for stopping Artemis after usage followed by `docker-compose down` for removing the stopped container.
 
+For dev mode and test an Artemis broker is started as test container.
+
 == Demo application
 
 This project builds a Quarkus application containing two parts connected by a AMQP address:
 
-* `de.gedoplan.showcase.api.PersonResource` forms a rest endpoint `/person` for posting `Person` objects as JSON, e.g.:
+* `de.gedoplan.showcase.api.PersonResource` forms a rest endpoint `/persons` for posting `Person` objects as JSON, e.g.:
 +
-`curl -d '{"name": "Duck", "firstname": "Donald"}' -H "Content-Type: application/json" -X POST http://localhost:8080/person`
+`curl -d '{"name": "Duck", "firstname": "Donald"}' -H "Content-Type: application/json" -X POST http://localhost:8080/persons`
 +
 The service simply send the posted `Person` object as JSON string into the stream `posted-person`, which is connected to the AMQP address `person` in `application.properties`.
 

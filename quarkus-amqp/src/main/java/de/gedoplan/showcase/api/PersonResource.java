@@ -9,13 +9,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 @ApplicationScoped
-@Path("person")
+@Path("persons")
 public class PersonResource {
   @Inject
   Log log;
@@ -26,7 +27,7 @@ public class PersonResource {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public void post(Person person) {
+  public Response post(Person person) {
     this.log.debug("post(" + person + ")");
 
     /*
@@ -35,6 +36,8 @@ public class PersonResource {
      */
     String personJson = JsonbBuilder.create().toJson(person);
     this.emitter.send(personJson);
+
+    return Response.status(201).build();
   }
 
 }

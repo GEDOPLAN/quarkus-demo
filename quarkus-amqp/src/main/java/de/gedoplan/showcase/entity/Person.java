@@ -2,11 +2,7 @@ package de.gedoplan.showcase.entity;
 
 import java.io.Serializable;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 // @Entity
 // @Access(AccessType.FIELD)
@@ -14,6 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class Person implements Serializable {
 
   private String name;
