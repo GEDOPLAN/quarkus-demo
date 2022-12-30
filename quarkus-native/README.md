@@ -14,7 +14,7 @@ Die Anwendung lässt sich wie gehabt im Qarkus-Dev-Mode inklusive Live Coding au
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+> **_NOTE:_** Quarkus Dev UI ist standardmäßig über http://localhost:8080/q/dev/ erreichbar.
 
 ### Packen und Ausführen der Anwendung
 
@@ -26,7 +26,6 @@ Dies produziert die `quarkus-run.jar` Datei im `target/quarkus-app/` Verzeichnis
 
 ## Erstellen einer nativ ausführbaren Anwendung (native executable)
 
-You can create a native executable using: 
 Wenn alle notwendigen Pakete und GraalVM installiert (siehe 
 https://github.com/quarkusio/quarkus-quickstarts/tree/main/getting-started) sind kann eine Native Executable erstellt
 werden
@@ -41,11 +40,11 @@ nur Docker nötig?):
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-> Mit GraalVM kann nur für das Betriebssystem kompiliert werden, auf dem es selbst installiert ist. D.h., dass mit diesem
+> **_NOTE:_** Mit GraalVM kann nur für das Betriebssystem kompiliert werden, auf dem es selbst installiert ist. D.h., dass mit diesem
 Befehl immer eine Linuxanwendung kreiert wird, weil ein Linuximage benutzt wird. Mit `./mvnw package -Pnative` wird eine
-dem verwendeten Betriebssytem entsprechende ausführbare Datei erzeugt wird.
+dem verwendeten Betriebssytem entsprechende ausführbare Datei erzeugt.
 
-Die entstandende Linux-Datei kanna ausgeführt werden mit `./target/getting-started-1.0.0-SNAPSHOT-runner`.
+Die entstandende Linux-Datei kanna ausgeführt werden mit `./target/quarkus-native-runner`.
 
-Die Windows-Datei hat eine `.exe`-Endung `./target/getting-started-1.0.0-SNAPSHOT-runner.exe`.
+Die Windows-Datei hat eine `.exe`-Endung `./target/quarkus-native-runner.exe`.
 
