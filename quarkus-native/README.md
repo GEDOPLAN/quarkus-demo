@@ -26,9 +26,8 @@ Dies produziert die `quarkus-run.jar` Datei im `target/quarkus-app/` Verzeichnis
 
 ## Erstellen einer nativ ausführbaren Anwendung (native executable)
 
-Wenn alle notwendigen Pakete und GraalVM installiert (siehe 
-https://github.com/quarkusio/quarkus-quickstarts/tree/main/getting-started) sind kann eine Native Executable erstellt
-werden
+Wenn alle notwendigen Pakete und GraalVM installiert sind (siehe 
+https://github.com/quarkusio/quarkus-quickstarts/tree/main/getting-started), kann eine Native Executable erstellt werden.
 
 ```shell script
 ./mvnw package -Pnative
