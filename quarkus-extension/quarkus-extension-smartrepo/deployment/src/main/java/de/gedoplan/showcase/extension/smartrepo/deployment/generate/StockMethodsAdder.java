@@ -2,14 +2,33 @@ package de.gedoplan.showcase.extension.smartrepo.deployment.generate;
 
 import de.gedoplan.showcase.extension.smartrepo.FunctionalityNotImplemented;
 import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
-import io.quarkus.gizmo.*;
+import io.quarkus.gizmo.ClassCreator;
+import io.quarkus.gizmo.FieldDescriptor;
+import io.quarkus.gizmo.MethodCreator;
+import io.quarkus.gizmo.MethodDescriptor;
+import io.quarkus.gizmo.ResultHandle;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.common.runtime.AbstractJpaOperations;
 import io.quarkus.panache.common.deployment.TypeBundle;
-import org.jboss.jandex.*;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationTarget;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.ClassType;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.MethodInfo;
+import org.jboss.jandex.ParameterizedType;
+import org.jboss.jandex.Type;
+import org.jboss.jandex.TypeVariable;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -219,8 +238,8 @@ public class StockMethodsAdder {
       return false;
     }
 
-    for (int i = 0; i < candidate.parameters().size(); i++) {
-      if (!canTypesBeConsideredSame(candidate.parameters().get(i), target.parameters().get(i))) {
+    for (int i = 0; i < candidate.parameterTypes().size(); i++) {
+      if (!canTypesBeConsideredSame(candidate.parameterTypes().get(i), target.parameterTypes().get(i))) {
         return false;
       }
     }
@@ -247,7 +266,7 @@ public class StockMethodsAdder {
     }
 
     List<AnnotationInstance> annotationInstances = Stream.of(DotNames.JPA_ID, DotNames.JPA_EMBEDDED_ID)
-      .map(classInfo.annotations()::get)
+      .map(classInfo.annotationsMap()::get)
       .filter(Objects::nonNull)
       .flatMap(List::stream)
       .collect(Collectors.toList());

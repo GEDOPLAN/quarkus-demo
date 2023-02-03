@@ -3,7 +3,6 @@ package de.gedoplan.showcase.extension.greeting.extension.greeting.deployment;
 import de.gedoplan.showcase.extension.greeting.extension.greeting.GreetingExtensionServlet;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
-
 import io.quarkus.undertow.deployment.ServletBuildItem;
 
 class QuarkusExtensionProcessor {

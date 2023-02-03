@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 public class PlanetResource2Test {
-
   public static final String PATH = "/v2/planets";
 
   @Test
@@ -81,5 +80,4 @@ public class PlanetResource2Test {
         .then()
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }
-
 }

@@ -18,7 +18,7 @@
   <properties>
     <java.code.version>17</java.code.version>
 
-    <quarkus.version>2.13.3.Final</quarkus.version>
+    <quarkus.version>2.16.1.Final</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
@@ -94,7 +94,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.24</version>
+        <version>1.18.26</version>
       </dependency>
 
       <!-- Quarkus -->
@@ -146,6 +146,29 @@
             <maven.repo>${settings.localRepository}</maven.repo>
           </systemPropertyVariables>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-resteasy-reactive</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>io.quarkus:quarkus-resteasy</exclude>
+                  </excludes>
+                  <message>Use RESTEasy reactive instead of classic dependencies (quarkus-resteasy-reactive-*)</message>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

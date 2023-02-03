@@ -3,12 +3,21 @@ package de.gedoplan.showcase.extension.smartrepo.deployment.generate;
 import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
 import de.gedoplan.showcase.extension.smartrepo.deployment.MethodNameParser;
 import io.quarkus.deployment.bean.JavaBeanUtil;
-import io.quarkus.gizmo.*;
+import io.quarkus.gizmo.ClassCreator;
+import io.quarkus.gizmo.ClassOutput;
+import io.quarkus.gizmo.FieldDescriptor;
+import io.quarkus.gizmo.MethodCreator;
+import io.quarkus.gizmo.MethodDescriptor;
+import io.quarkus.gizmo.ResultHandle;
 import io.quarkus.hibernate.orm.panache.common.runtime.AbstractJpaOperations;
 import io.quarkus.hibernate.orm.panache.runtime.AdditionalJpaOperations;
 import io.quarkus.panache.common.deployment.TypeBundle;
 import io.quarkus.panache.hibernate.common.runtime.PanacheJpaUtil;
-import org.jboss.jandex.*;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.MethodInfo;
+import org.jboss.jandex.Type;
 
 import javax.transaction.Transactional;
 import java.lang.reflect.Modifier;
@@ -70,7 +79,7 @@ public class DerivedMethodsAdder extends AbstractMethodsAdder {
 
       Type returnType = method.returnType();
 
-      List<Type> parameters = method.parameters();
+      List<Type> parameters = method.parameterTypes();
       String[] parameterTypesStr = new String[parameters.size()];
       List<Integer> queryParameterIndexes = new ArrayList<>(parameters.size());
       Integer pageableParameterIndex = null;

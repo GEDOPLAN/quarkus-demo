@@ -2,9 +2,19 @@ package de.gedoplan.showcase.extension.smartrepo.deployment.generate;
 
 import de.gedoplan.showcase.extension.smartrepo.deployment.DotNames;
 import io.quarkus.gizmo.MethodDescriptor;
-import org.jboss.jandex.*;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.AnnotationValue;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.MethodInfo;
+import org.jboss.jandex.Type;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static de.gedoplan.showcase.extension.smartrepo.deployment.DotNames.JPA_NAMED_QUERIES;
 import static de.gedoplan.showcase.extension.smartrepo.deployment.DotNames.JPA_NAMED_QUERY;
@@ -56,7 +66,7 @@ public final class GenerationUtil {
   // because that used the class of the method
   static MethodDescriptor toMethodDescriptor(String generatedClassName, MethodInfo methodInfo) {
     final List<String> parameterTypesStr = new ArrayList<>();
-    for (Type parameter : methodInfo.parameters()) {
+    for (Type parameter : methodInfo.parameterTypes()) {
       parameterTypesStr.add(parameter.name().toString());
     }
     return MethodDescriptor.ofMethod(generatedClassName, methodInfo.name(), methodInfo.returnType().name().toString(),
