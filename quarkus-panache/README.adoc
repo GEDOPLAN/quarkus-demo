@@ -1,0 +1,44 @@
+= quarkus-panache
+
+*Demo for Hibernate Panache with Quarkus*
+
+Persistence Layer::
+Hibernate Panache offers two patterns for developing entities and repositories:
++
+. Active Record Pattern
++
+The entity class contains methods for reading and writing data from/to the database. No additional repository class is necessary.
++
+Hibernate Panache generates all standard access methods like `findById`, `persist`, ...
++
+Demo: `de.gedoplan.showcase.entity.Person`.
++
+. Repository Pattern
++
+The entity class is just any JPA entity with a single id. An additional repository class contains methods for reading and writing data from/to the database.
++
+The repository is programmed as interface and Hibernate Panache generates all standard access methods like `findById`, `persist`, ...
++
+Demo entity: `de.gedoplan.showcase.entity.Planet`. +
+Demo repository: `de.gedoplan.showcase.persistence.PlanetRepository`.
+
+REST API::
++
+Hibernate Panache can generate CRUD REST Resources on top of Active Record Entities or Panache Repositories. The are programmed as interfaces and can be configured by `@ResourceProperties` and `@MethodProperties` annotations.
++
+`de.gedoplan.showcase.rest.PersonResource2` and `de.gedoplan.showcase.rest.PlanetResource2` demonstrate the features.
+
+Demo execution::
++
+Run the application with `mvn compile quarkus:dev`.
++
+The REST URLs are
++
+|====
+|http://localhost:8080/v1/persons|Classic REST API for `Person` objects
+|http://localhost:8080/v2/persons|Panache REST API for `Person` objects
+|http://localhost:8080/v1/planets|Classic REST API for `Planet` objects
+|http://localhost:8080/v2/planets|Panache REST API for `Planet` objects
+|====
++
+The `v2` resources can return `application/hal+json` responses if requested via an appropriate `Accept` header.

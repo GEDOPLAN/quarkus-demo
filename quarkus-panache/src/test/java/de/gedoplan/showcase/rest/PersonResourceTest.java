@@ -9,6 +9,7 @@ import de.gedoplan.showcase.entity.Person;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -18,17 +19,19 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 @QuarkusTest
 public class PersonResourceTest {
 
-  public static final String PATH = "/v1/persons";
-
-  @Test
-  public void test_01_DagobertAndDonalDuckExist() {
+  @ParameterizedTest
+  @MethodSource("provideApiContexts")
+  public void test_01_DagobertAndDonalDuckExist(String path) {
     List<Person> persons = given()
         .when()
-        .get(PATH)
+        .get(path)
         .then()
         .statusCode(HttpStatus.SC_OK)
         .extract()
@@ -52,14 +55,15 @@ public class PersonResourceTest {
     assertTrue(foundDonald, "Donald not found");
   }
 
-  @Test
-  public void test_02_PostGetDelete() throws Exception {
+  @ParameterizedTest
+  @MethodSource("provideApiContexts")
+  public void test_02_PostGetDelete(String path) throws Exception {
     Person person = new Person("Duck", "Tick-" + UUID.randomUUID().toString());
 
     String newPersonUrl = given()
         .contentType(MediaType.APPLICATION_JSON)
         .body(person)
-        .post(PATH)
+        .post(path)
         .then()
         .statusCode(HttpStatus.SC_CREATED)
         .extract()
@@ -88,4 +92,10 @@ public class PersonResourceTest {
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 
+  private static Stream<Arguments> provideApiContexts() {
+    return Stream.of(
+      Arguments.of("/v1/persons"),
+      Arguments.of("/v2/persons")
+    );
+  }
 }
