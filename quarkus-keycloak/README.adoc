@@ -1,0 +1,41 @@
+= quarkus-keycloak
+
+*Demo project for using Keycloak with Quarkus*
+
+. Start Keycloak
++
+[source,shell]
+----
+docker run -d --rm --name keycloak \
+  -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin_123 \
+  -p 8180:8080 \
+  quay.io/keycloak/keycloak:20.0.3 \
+  start-dev
+----
+
+. Setup Keycloak realm
+
+.. Log in at http://localhost:8180 with `admin`/`admin_123`.
+.. Create a new realm `GEDOPLAN`.
+.. In `GEDOPLAN`, create a new client `quarkus-demo`: +
+*** enable `Client authentication`, `Standard flow`, `Direct access grants`, `Implicit flow`, `Service accounts roles`).
+*** disable `Front channel logout` (why?).
+.. Create realm roles `demoRole` and `otherRole`.
+.. Add users `hugo` and `otto`:
++
+[cols="1,2,2"]
+|===
+|User|Password (`Credentials` tab)|Roles (`Role mapping` tab)
+
+|`hugo`
+|`hugo_123`
+|`demoRole`, `otherRole`
+
+|`otto`
+|`otto_123`
+|`demoRole`
+|===
+
+. Add Keycloak client password to Quarkus configuration
++
+Copy the Client secret of the realm GEDOPLAN from Keycloak (`Credentials` tab) and use it as value for `quarkus.oidc.credentials.secret` in `application.properties`.
