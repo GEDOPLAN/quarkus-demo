@@ -22,6 +22,11 @@
       <artifactId>quarkus-oidc</artifactId>
     </dependency>
 
+<!--    <dependency>-->
+<!--      <groupId>io.quarkus</groupId>-->
+<!--      <artifactId>quarkus-undertow</artifactId>-->
+<!--    </dependency>-->
+
     <!-- Validator supplies EL implementation needed by MyFaces -->
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -44,6 +49,12 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>de.gedoplan</groupId>
+      <artifactId>baselibs-utils</artifactId>
+      <version>1.11</version>
     </dependency>
   </dependencies>
 </project>

@@ -14,21 +14,21 @@
 
   <hr/>
 
-    <h:panelGrid columns="2">
-      <h:outputLabel value="User:" for="user"/>
-      <h:outputText id="user" value="${userInfoPresenter.remoteUser}"/>
+  <h:panelGrid columns="2">
+    <h:outputLabel value="User:" for="user"/>
+    <h:outputText id="user" value="${userInfoPresenter.remoteUser}"/>
 
-      <h:outputLabel value="Roles:" for="roles"/>
-      <h:selectManyCheckbox id="roles" value="${userInfoPresenter.userRoles}" readonly="true">
-        <f:selectItems value="${userInfoPresenter.allRoles}"/>
-      </h:selectManyCheckbox>
-    </h:panelGrid>
+    <h:outputLabel value="Roles:" for="roles"/>
+    <h:selectManyCheckbox id="roles" value="${userInfoPresenter.userRoles}" disabled="true">
+      <f:selectItems value="${userInfoPresenter.allRoles}"/>
+    </h:selectManyCheckbox>
+  </h:panelGrid>
 
   <hr/>
 
-  <h:form>
-      <h:commandButton value="home" action="/index.xhtml?faces-redirect=true"/>
-      <h:commandButton value="logout" actionListener="${userInfoPresenter.logout()}" action="/index.xhtml?faces-redirect=true" rendered="${!empty userInfoPresenter.remoteUser}"/>
-  </h:form>
+  <h:panelGrid columns="2">
+    <h:outputLink value="/index.xhtml">home</h:outputLink>
+    <h:outputLink value="/logout" rendered="${!empty userInfoPresenter.remoteUser}">logout</h:outputLink>
+  </h:panelGrid>
 </h:body>
 </html>
