@@ -2,7 +2,15 @@
 
 *Demo project for using Keycloak with Quarkus*
 
-. Start Keycloak
+. Setup
+
+.. Dev mode and tests
++
+Keycloak is run as dev service with users and roles configured in `application.properties` (see below).
+
+.. Prod mode
+
+*** Start Keycloak
 +
 [source,shell]
 ----
@@ -13,15 +21,20 @@ docker run -d --rm --name keycloak \
   start-dev
 ----
 
-. Setup Keycloak realm
+*** Setup Keycloak realm
 
-.. Log in at http://localhost:8180 with `admin`/`admin_123`.
-.. Create a new realm `GEDOPLAN`.
-.. In `GEDOPLAN`, create a new client `quarkus-demo`: +
-*** enable `Client authentication`, `Standard flow`, `Direct access grants`, `Implicit flow`, `Service accounts roles`).
-*** disable `Front channel logout` (why?).
-.. Create realm roles `demoRole` and `otherRole`.
-.. Add users `hugo` and `otto`:
+**** Log in at http://localhost:8180 with `admin`/`admin_123`.
+**** Create a new realm `GEDOPLAN`.
+**** In `GEDOPLAN`, create a new client `quarkus-demo`: +
+***** enable `Client authentication`, `Standard flow`, `Direct access grants`, `Implicit flow`, `Service accounts roles`.
+***** disable `Front channel logout` (why?).
+**** Create realm roles `demoRole` and `otherRole`.
+**** Add users as shown below
+*** Add Keycloak client password to Quarkus configuration
++
+Copy the Client secret of the realm GEDOPLAN from Keycloak (`Credentials` tab) and use it as value for `quarkus.oidc.credentials.secret` in `application.properties` or specify it as system property or environment variable at application start.
+
+. Demo/test users and roles
 +
 [cols="1,2,2"]
 |===
@@ -34,8 +47,43 @@ docker run -d --rm --name keycloak \
 |`otto`
 |`otto_123`
 |`demoRole`
+
+|`willi`
+|`willi_123`
+|
 |===
 
-. Add Keycloak client password to Quarkus configuration
+. Web application
 +
-Copy the Client secret of the realm GEDOPLAN from Keycloak (`Credentials` tab) and use it as value for `quarkus.oidc.credentials.secret` in `application.properties`.
+The JSF based web application offers public pages (`index.xhtml`, `public/user-info.xhtml`) accessible for everyone without authentication and a private page (`private/user-info.xhtml`) for users with role `demoRole` only. If the latter is requested, the application redirects to Keycloak for authentication (Open ID Connect Authorization Code Flow).
++
+In case of a login with unsufficient roles (user `willi`) the application just responds with code `403` resulting in a standard browser error page being displayed. Unfortunately none of the attempts to configure a custom error page (Quarkus properties, `web.xml`) succeeded. This is probably caused by the OIDC security layer beeing on top of Undertow, preventing servlet filters from intercepting the `403` response.
+
+. REST api
++
+`UserInfoResource` publishes these endpoints:
++
+[cols="3,2,2"]
+|===
+|Path|Description|Accessible for
+
+|`/api/user-info`
+|return current JWT
+|everyone
+
+|`/api/user-info/name`
+|return current username or `null`, if unauthenticated
+|everyone
+
+|`/api/user-info/restricted`
+|return `"OK"`
+|users with role `demoRole`
+
+|`/api/user-info/restricted2`
+|return `"OK"`
+|users with role `otherRole`
+|===
++
+There are test in `UserInfoResourceTest` for the last 3 endpoints.
++
+The application uses a dedicated OIDC tenant `"api"` for the REST api enabling the specification of different `quarkus.oidc` settings for web application an REST api. The tenant is resolved by `CustomTenentResolver` based on the request path prefix.

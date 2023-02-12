@@ -22,11 +22,6 @@
       <artifactId>quarkus-oidc</artifactId>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>io.quarkus</groupId>-->
-<!--      <artifactId>quarkus-undertow</artifactId>-->
-<!--    </dependency>-->
-
     <!-- Validator supplies EL implementation needed by MyFaces -->
     <dependency>
       <groupId>io.quarkus</groupId>

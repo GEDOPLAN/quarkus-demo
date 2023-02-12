@@ -45,6 +45,8 @@
     <welcome-file>index.xhtml</welcome-file>
   </welcome-file-list>
 
+  <!-- Page shown if permissions are insufficient -->
+  <!-- TODO: Quarkus seems to ignore this in Open ID Connect mode -->
   <error-page>
     <error-code>403</error-code>
     <location>/forbidden.xhtml</location>

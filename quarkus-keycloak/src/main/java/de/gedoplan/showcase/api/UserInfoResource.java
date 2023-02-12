@@ -14,10 +14,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Path("user-info")
 @RequestScoped
@@ -26,7 +28,7 @@ public class UserInfoResource {
   JsonWebToken jwt;
 
   @GET
-  @Path("info")
+  @Produces(MediaType.APPLICATION_JSON)
   public JsonObject info() {
     JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
     Set<String> claimNames = this.jwt.getClaimNames();
@@ -38,6 +40,18 @@ public class UserInfoResource {
       addJsonProperty(jsonObjectBuilder, Claims.upn.toString(), "anonymous");
     }
     return jsonObjectBuilder.build();
+  }
+
+  @GET
+  @Path("name")
+  @Produces(MediaType.TEXT_PLAIN)
+  public Response getUserName() {
+    return Stream.of(Claims.upn, Claims.preferred_username, Claims.sub)
+      .map(jwt::getClaim)
+      .filter(username -> username != null)
+      .findFirst()
+      .map(username -> Response.ok(username).build())
+      .orElse(Response.noContent().build());
   }
 
   @GET
