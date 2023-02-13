@@ -57,7 +57,9 @@ Copy the Client secret of the realm GEDOPLAN from Keycloak (`Credentials` tab) a
 +
 The JSF based web application offers public pages (`index.xhtml`, `public/user-info.xhtml`) accessible for everyone without authentication and a private page (`private/user-info.xhtml`) for users with role `demoRole` only. If the latter is requested, the application redirects to Keycloak for authentication (Open ID Connect Authorization Code Flow).
 +
-In case of a login with unsufficient roles (user `willi`) the application just responds with code `403` resulting in a standard browser error page being displayed. Unfortunately none of the attempts to configure a custom error page (Quarkus properties, `web.xml`) succeeded. This is probably caused by the OIDC security layer beeing on top of Undertow, preventing servlet filters from intercepting the `403` response.
+In case of a login with unsufficient roles (user `willi`) the application just responded with code `403` resulting in a standard browser error page being displayed. Unfortunately none of the attempts to configure a custom error page (Quarkus properties, `web.xml`) succeeded.
++
+As workaround `ForbiddenExceptionMapper` is included as REST provider, mapping `403` to a redirect response to `/forbidden.xhtml` in case of a non-REST request.
 
 . REST api
 +
@@ -68,7 +70,7 @@ In case of a login with unsufficient roles (user `willi`) the application just r
 |Path|Description|Accessible for
 
 |`/api/user-info`
-|return current JWT
+|return current JWT as JSON object
 |everyone
 
 |`/api/user-info/name`
@@ -84,6 +86,6 @@ In case of a login with unsufficient roles (user `willi`) the application just r
 |users with role `otherRole`
 |===
 +
-There are test in `UserInfoResourceTest` for the last 3 endpoints.
+There are tests in `UserInfoResourceTest` for the last 3 endpoints.
 +
-The application uses a dedicated OIDC tenant `"api"` for the REST api enabling the specification of different `quarkus.oidc` settings for web application an REST api. The tenant is resolved by `CustomTenentResolver` based on the request path prefix.
+The application uses a dedicated OIDC tenant `"api"` for the REST api enabling the specification of different `quarkus.oidc` settings for web application and REST api. The tenant is resolved by `CustomTenantResolver` based on the request path prefix.
