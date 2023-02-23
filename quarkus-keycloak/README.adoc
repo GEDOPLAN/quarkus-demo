@@ -27,7 +27,10 @@ docker run -d --rm --name keycloak \
 **** Create a new realm `GEDOPLAN`.
 **** In `GEDOPLAN`, create a new client `quarkus-demo`: +
 ***** enable `Client authentication`, `Standard flow`, `Direct access grants`, `Implicit flow`, `Service accounts roles`.
-***** disable `Front channel logout` (why?).
+***** disable `Front channel logout`.
+***** set `Valid redirect URIs` to `*`
++
+and `Valid post logout redirect URIs` to `+`
 **** Create realm roles `demoRole` and `otherRole`.
 **** Add users as shown below
 *** Add Keycloak client password to Quarkus configuration
