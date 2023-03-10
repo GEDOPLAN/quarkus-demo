@@ -36,18 +36,25 @@ public class ForbiddenExceptionMapper implements ExceptionMapper<ForbiddenExcept
 
   @Override
   public Response toResponse(ForbiddenException e) {
-    URI absoluteUri = uriInfo.getAbsolutePath();
-    URI baseUri = uriInfo.getBaseUri();
-    logger.debugf("absolutePath: %s", absoluteUri);
-    logger.debugf("baseUri: %s", baseUri);
+    URI absoluteUri = this.uriInfo.getAbsolutePath();
+    URI baseUri = this.uriInfo.getBaseUri();
+    this.logger.debugf("absolutePath: %s", absoluteUri);
+    this.logger.debugf("baseUri: %s", baseUri);
 
     // If the absolute path starts with the REST base path, it is a REST request
     boolean restRequest = absoluteUri.toString().startsWith(baseUri.toString());
-    logger.debugf("restRequest: %s", restRequest);
+    this.logger.debugf("restRequest: %s", restRequest);
 
     if (restRequest) {
       return Response.status(403).build();
     }
+
+    //    String queryParameters = this.uriInfo
+    //      .getQueryParameters()
+    //      .entrySet()
+    //      .stream()
+    //      .map(entry -> entry.getValue().stream().collect(Collectors.joining("&", entry.getKey() + "=", "")))
+    //      .collect(Collectors.joining("&", "?", ""));
 
     URI redirectUri = URI.create(String.format("%s://%s:%d/forbidden.xhtml", absoluteUri.getScheme(), absoluteUri.getHost(), absoluteUri.getPort()));
     return Response.temporaryRedirect(redirectUri).build();

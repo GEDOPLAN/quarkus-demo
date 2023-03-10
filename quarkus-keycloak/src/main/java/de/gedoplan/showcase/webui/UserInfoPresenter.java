@@ -1,6 +1,6 @@
 package de.gedoplan.showcase.webui;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
+import de.gedoplan.showcase.service.UserInfoService;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -8,8 +8,9 @@ import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
-import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequestScoped
@@ -20,33 +21,37 @@ public class UserInfoPresenter {
   ExternalContext externalContext;
 
   @Inject
-  JsonWebToken jwt;
+  UserInfoService userInfoService;
 
   @Inject
   Logger logger;
 
-  public String getRemoteUser() {
-    String remoteUserFromExternalContext = externalContext.getRemoteUser();
-    logger.debugf("remoteUserFromExternalContext: %s", remoteUserFromExternalContext);
-    if (jwt!=null && jwt.getClaimNames()!=null) {
-      jwt.getClaimNames().forEach(n -> logger.debugf("JWT %S: %s", n, jwt.getClaim(n)));
-    }
-    return remoteUserFromExternalContext;
+  public boolean isLoggedIn() {
+    return this.userInfoService.isLoggedIn();
+  }
+
+  public String getUserName() {
+    return this.userInfoService.getUserName();
+  }
+
+  public String getRoles() {
+    Collection<String> roles = this.userInfoService.getRoles();
+    return roles != null ? roles.stream().sorted().collect(Collectors.joining(", ")) : null;
   }
 
   public List<String> getAllRoles() {
-    return Stream.of("demoRole", "otherRole")
+    return Stream.of("demoRole", "otherRole", "specialRole")
       .toList();
   }
 
   public List<String> getUserRoles() {
     return getAllRoles()
       .stream()
-      .filter(n -> externalContext.isUserInRole(n))
+      .filter(n -> this.externalContext.isUserInRole(n))
       .toList();
   }
 
   public void logout() throws IOException {
-    externalContext.redirect("/logout");
+    this.externalContext.redirect("/logout");
   }
 }
