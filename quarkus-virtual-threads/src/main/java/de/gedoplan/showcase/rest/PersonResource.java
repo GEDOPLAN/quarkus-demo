@@ -4,9 +4,6 @@ import de.gedoplan.showcase.domain.Person;
 import de.gedoplan.showcase.persistence.PersonRepository;
 import de.gedoplan.showcase.service.PersonService;
 
-import java.net.URI;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
@@ -19,6 +16,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
+import java.util.List;
 
 @Path("persons")
 public class PersonResource {
@@ -29,7 +28,7 @@ public class PersonResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<Person> get() {
-    return this.personRepository.findAll();
+    return this.personRepository.listAll();
   }
 
   @POST
@@ -43,12 +42,12 @@ public class PersonResource {
     this.personRepository.persist(person);
 
     URI uri = uriInfo
-        .getAbsolutePathBuilder()
-        .path(person.getId().toString())
-        .build();
+      .getAbsolutePathBuilder()
+      .path(person.getId().toString())
+      .build();
     return Response
-        .created(uri)
-        .build();
+      .created(uri)
+      .build();
   }
 
   @Inject
