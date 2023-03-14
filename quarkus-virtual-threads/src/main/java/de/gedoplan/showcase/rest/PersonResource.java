@@ -1,8 +1,10 @@
 package de.gedoplan.showcase.rest;
 
 import de.gedoplan.showcase.domain.Person;
+import de.gedoplan.showcase.persistence.PersonReactiveRepository;
 import de.gedoplan.showcase.persistence.PersonRepository;
 import de.gedoplan.showcase.service.PersonService;
+import io.smallrye.mutiny.Uni;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -25,10 +27,20 @@ public class PersonResource {
   @Inject
   PersonRepository personRepository;
 
+  @Inject
+  PersonReactiveRepository personReactiveRepository;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<Person> get() {
-    return this.personRepository.listAll();
+    return this.personRepository.findAll();
+  }
+
+  @GET
+  @Path("reactive")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Uni<List<Person>> getReactive() {
+    return this.personReactiveRepository.listAll();
   }
 
   @POST
@@ -40,6 +52,7 @@ public class PersonResource {
     }
 
     this.personRepository.persist(person);
+    this.personRepository.flush();
 
     URI uri = uriInfo
       .getAbsolutePathBuilder()

@@ -15,7 +15,7 @@ public class PersonService {
   public double getAverageAge() {
     double totalAge = 0;
     int count = 0;
-    for (Person person : this.personRepository.listAll()) {
+    for (Person person : this.personRepository.findAll()) {
       ++count;
       totalAge += person.getAge();
     }
