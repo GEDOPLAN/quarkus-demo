@@ -55,8 +55,7 @@ public class BurgerResourceVT {
 
     Future<String> pattieFuture = executor.submit(() -> prepareAndFryPattie(veggie));
 
-    this.logger.debugf("----- Assemble and deliver burger -----");
-    return List.of(
+    List<String> parts = List.of(
       bunFuture.get().getUpperHalf(),
       this.miseEnPlaceService.getSauce(),
       this.miseEnPlaceService.getTomato(),
@@ -64,6 +63,9 @@ public class BurgerResourceVT {
       pattieFuture.get(),
       this.miseEnPlaceService.getSalad(),
       bunFuture.get().getLowerHalf());
+
+    this.logger.debugf("----- Deliver burger ------------------");
+    return parts;
   }
 
   private Bun cutAndToastBun(String bunType) {

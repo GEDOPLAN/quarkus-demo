@@ -45,8 +45,7 @@ public class BurgerResource {
 
     String pattie = prepareAndFryPattie(veggie);
 
-    this.logger.debugf("----- Assemble and deliver burger -----");
-    return List.of(
+    List<String> parts = List.of(
       bun.getUpperHalf(),
       this.miseEnPlaceService.getSauce(),
       this.miseEnPlaceService.getTomato(),
@@ -54,6 +53,9 @@ public class BurgerResource {
       pattie,
       this.miseEnPlaceService.getSalad(),
       bun.getLowerHalf());
+
+    this.logger.debugf("----- Deliver burger ------------------");
+    return parts;
   }
 
   private Bun cutAndToastBun(String bunType) {
