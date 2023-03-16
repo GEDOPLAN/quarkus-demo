@@ -16,8 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
 @Path("burger")
@@ -60,38 +58,4 @@ public class BurgerResource {
       bun.getLowerHalf());
   }
 
-  @GET
-  @Path("async")
-  @Produces(MediaType.APPLICATION_JSON)
-  public List<String> getBurgerAsync(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie)
-    throws ExecutionException, InterruptedException {
-
-    this.logger.debugf("----- Start burger production ---------");
-
-    return cutAndToastBunAsync(bunType)
-      .thenCombineAsync(prepareAndFryPattieAsync(veggie), (bun, pattie) -> {
-        this.logger.debugf("Assemble burger");
-        return List.of(
-          bun.getUpperHalf(),
-          this.miseEnPlaceService.getSauce(),
-          this.miseEnPlaceService.getTomato(),
-          this.miseEnPlaceService.getCheese(),
-          pattie,
-          this.miseEnPlaceService.getSalad(),
-          bun.getLowerHalf()
-        );
-      })
-      .toCompletableFuture()
-      .get();
-  }
-
-  private CompletionStage<Bun> cutAndToastBunAsync(String bunType) {
-    this.logger.debugf("Request bun");
-    return this.toasterService.cutAndToastBunAsync(bunType);
-  }
-
-  private CompletionStage<String> prepareAndFryPattieAsync(boolean veggie) {
-    this.logger.debugf("Request pattie");
-    return this.stoveService.prepareAndFryPattieAsync(veggie);
-  }
 }
