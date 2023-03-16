@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
@@ -68,23 +68,30 @@ public class BurgerResource {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    return CompletableFuture
-      .runAsync(() -> this.logger.debugf("Request bun"))
-      .thenCompose((x) -> this.toasterService.cutAndToastBunAsync(bunType))
-      .thenCombine(
-        CompletableFuture.runAsync(() -> this.logger.debugf("Request pattie"))
-          .thenCompose((x1) -> this.stoveService.prepareAndFryPattieAsync(veggie)), (bun, pattie) -> {
-          this.logger.debugf("----- Assemble and deliver burger -----");
-          return List.of(
-            bun.getUpperHalf(),
-            this.miseEnPlaceService.getSauce(),
-            this.miseEnPlaceService.getTomato(),
-            this.miseEnPlaceService.getCheese(),
-            pattie,
-            this.miseEnPlaceService.getSalad(),
-            bun.getLowerHalf()
-          );
-        })
+    return cutAndToastBunAsync(bunType)
+      .thenCombineAsync(prepareAndFryPattieAsync(veggie), (bun, pattie) -> {
+        this.logger.debugf("Assemble burger");
+        return List.of(
+          bun.getUpperHalf(),
+          this.miseEnPlaceService.getSauce(),
+          this.miseEnPlaceService.getTomato(),
+          this.miseEnPlaceService.getCheese(),
+          pattie,
+          this.miseEnPlaceService.getSalad(),
+          bun.getLowerHalf()
+        );
+      })
+      .toCompletableFuture()
       .get();
+  }
+
+  private CompletionStage<Bun> cutAndToastBunAsync(String bunType) {
+    this.logger.debugf("Request bun");
+    return this.toasterService.cutAndToastBunAsync(bunType);
+  }
+
+  private CompletionStage<String> prepareAndFryPattieAsync(boolean veggie) {
+    this.logger.debugf("Request pattie");
+    return this.stoveService.prepareAndFryPattieAsync(veggie);
   }
 }
