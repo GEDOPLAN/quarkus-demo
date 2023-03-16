@@ -22,14 +22,14 @@ public class StoveResourceMock {
   @Path("pattie/{veggie}")
   @Produces(MediaType.APPLICATION_JSON)
   public String prepareAndFryPattie(@PathParam("veggie") boolean veggie) {
-    this.logger.debug("Fetch pattie");
+    this.logger.trace("Fetch pattie");
     String pattie = veggie ? "Pattie (beans and corn)" : "Pattie (beef)";
     delay(500);
 
-    this.logger.debug("Fry pattie");
+    this.logger.trace("Fry pattie");
     delay(4500);
 
-    this.logger.debug("Deliver pattie");
+    this.logger.trace("Deliver pattie");
     return pattie;
   }
 

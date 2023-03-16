@@ -23,14 +23,14 @@ public class ToasterResourceMock {
   @Path("bun/{bunType}")
   @Produces(MediaType.APPLICATION_JSON)
   public Bun cutAndToastBun(@PathParam("bunType") String bunType) {
-    this.logger.debug("Fetch bun");
+    this.logger.trace("Fetch bun");
     Bun bun = new Bun(bunType);
     delay(500);
 
-    this.logger.debug("Toast bun");
+    this.logger.trace("Toast bun");
     delay(1500);
 
-    this.logger.debug("Deliver bun");
+    this.logger.trace("Deliver bun");
     return bun;
   }
 

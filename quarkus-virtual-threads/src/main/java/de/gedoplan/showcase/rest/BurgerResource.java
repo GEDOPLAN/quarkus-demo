@@ -5,6 +5,7 @@ import de.gedoplan.showcase.service.MiseEnPlaceService;
 import de.gedoplan.showcase.service.StoveService;
 import de.gedoplan.showcase.service.ToasterService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,8 +15,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
 @Path("burger")
@@ -32,27 +34,57 @@ public class BurgerResource {
   @Inject
   MiseEnPlaceService miseEnPlaceService;
 
+  @Inject
+  Logger logger;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getBurger(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie) {
 
-    List<String> parts = new ArrayList<>();
+    this.logger.debugf("----- Start burger production ---------");
 
+    this.logger.debugf("Request bun");
     Bun bun = this.toasterService.cutAndToastBun(bunType);
-    String sauce = this.miseEnPlaceService.getSauce();
-    String tomato = this.miseEnPlaceService.getTomato();
-    String cheese = this.miseEnPlaceService.getCheese();
+
+    this.logger.debugf("Request pattie");
     String pattie = this.stoveService.prepareAndFryPattie(veggie);
-    String salad = this.miseEnPlaceService.getSalad();
 
-    parts.add(bun.getUpperHalf());
-    parts.add(sauce);
-    parts.add(tomato);
-    parts.add(cheese);
-    parts.add(pattie);
-    parts.add(salad);
-    parts.add(bun.getLowerHalf());
+    this.logger.debugf("----- Assemble and deliver burger -----");
+    return List.of(
+      bun.getUpperHalf(),
+      this.miseEnPlaceService.getSauce(),
+      this.miseEnPlaceService.getTomato(),
+      this.miseEnPlaceService.getCheese(),
+      pattie,
+      this.miseEnPlaceService.getSalad(),
+      bun.getLowerHalf());
+  }
 
-    return parts;
+  @GET
+  @Path("async")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<String> getBurgerAsync(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie)
+    throws ExecutionException, InterruptedException {
+
+    this.logger.debugf("----- Start burger production ---------");
+
+    return CompletableFuture
+      .runAsync(() -> this.logger.debugf("Request bun"))
+      .thenCompose((x) -> this.toasterService.cutAndToastBunAsync(bunType))
+      .thenCombine(
+        CompletableFuture.runAsync(() -> this.logger.debugf("Request pattie"))
+          .thenCompose((x1) -> this.stoveService.prepareAndFryPattieAsync(veggie)), (bun, pattie) -> {
+          this.logger.debugf("----- Assemble and deliver burger -----");
+          return List.of(
+            bun.getUpperHalf(),
+            this.miseEnPlaceService.getSauce(),
+            this.miseEnPlaceService.getTomato(),
+            this.miseEnPlaceService.getCheese(),
+            pattie,
+            this.miseEnPlaceService.getSalad(),
+            bun.getLowerHalf()
+          );
+        })
+      .get();
   }
 }
