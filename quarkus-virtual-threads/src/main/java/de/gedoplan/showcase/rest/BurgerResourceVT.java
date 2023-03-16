@@ -16,10 +16,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
 @ApplicationScoped
-@Path("burger")
-public class BurgerResource {
+@Path("burger/vt")
+public class BurgerResourceVT {
 
   @Inject
   @RestClient
@@ -37,23 +42,28 @@ public class BurgerResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<String> getBurger(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie) {
+  //  @RunOnVirtualThread
+  public List<String> getBurger(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie)
+    throws ExecutionException, InterruptedException {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    Bun bun = cutAndToastBun(bunType);
+    final ThreadFactory factory = Thread.ofVirtual().name("virtual-", 1).factory();
+    ExecutorService executor = Executors.newThreadPerTaskExecutor(factory);
 
-    String pattie = prepareAndFryPattie(veggie);
+    Future<Bun> bunFuture = executor.submit(() -> cutAndToastBun(bunType));
+
+    Future<String> pattieFuture = executor.submit(() -> prepareAndFryPattie(veggie));
 
     this.logger.debugf("----- Assemble and deliver burger -----");
     return List.of(
-      bun.getUpperHalf(),
+      bunFuture.get().getUpperHalf(),
       this.miseEnPlaceService.getSauce(),
       this.miseEnPlaceService.getTomato(),
       this.miseEnPlaceService.getCheese(),
-      pattie,
+      pattieFuture.get(),
       this.miseEnPlaceService.getSalad(),
-      bun.getLowerHalf());
+      bunFuture.get().getLowerHalf());
   }
 
   private Bun cutAndToastBun(String bunType) {
@@ -65,4 +75,5 @@ public class BurgerResource {
     this.logger.debugf("Request pattie");
     return this.stoveService.prepareAndFryPattie(veggie);
   }
+
 }
