@@ -62,7 +62,7 @@ public class BurgerResourceVT {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    final ThreadFactory factory = Thread.ofVirtual().name("virtual-", 1).factory();
+    ThreadFactory factory = Thread.ofVirtual().name("virtual-", 1).factory();
     ExecutorService executor = Executors.newThreadPerTaskExecutor(factory);
 
     Future<Bun> bunFuture = executor.submit(() -> bakeBun(supplyBunDough(bunType)));

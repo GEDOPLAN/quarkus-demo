@@ -64,7 +64,7 @@ public class BurgerResourceCS {
 
     List<String> parts =
       supplyDough(bunType).thenCompose(this::bakeBun)
-        .thenCombineAsync(
+        .thenCombine(
           pattyType.isVeggie()
             ? fryPattie(this.miseEnPlaceService.getVegetarianPatty(pattyType))
             : supplyPattyMeat(pattyType.toString()).thenCompose(this::fryPattie),
@@ -78,8 +78,7 @@ public class BurgerResourceCS {
               this.miseEnPlaceService.getSalad(),
               bun.getLowerHalf()
             );
-          },
-          this.executor)
+          })
         .toCompletableFuture()
         .get();
 
