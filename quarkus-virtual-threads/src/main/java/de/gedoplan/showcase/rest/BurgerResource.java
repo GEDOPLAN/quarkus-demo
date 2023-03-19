@@ -1,9 +1,11 @@
 package de.gedoplan.showcase.rest;
 
 import de.gedoplan.showcase.domain.Bun;
+import de.gedoplan.showcase.domain.Dough;
+import de.gedoplan.showcase.service.DoughService;
 import de.gedoplan.showcase.service.MiseEnPlaceService;
+import de.gedoplan.showcase.service.OvenService;
 import de.gedoplan.showcase.service.StoveService;
-import de.gedoplan.showcase.service.ToasterService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -23,7 +25,11 @@ public class BurgerResource {
 
   @Inject
   @RestClient
-  ToasterService toasterService;
+  DoughService doughService;
+
+  @Inject
+  @RestClient
+  OvenService ovenService;
 
   @Inject
   @RestClient
@@ -41,7 +47,7 @@ public class BurgerResource {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    Bun bun = cutAndToastBun(bunType);
+    Bun bun = bakeBun(supplyDough(bunType));
 
     String pattie = prepareAndFryPattie(veggie);
 
@@ -58,9 +64,14 @@ public class BurgerResource {
     return parts;
   }
 
-  private Bun cutAndToastBun(String bunType) {
-    this.logger.debugf("Request bun");
-    return this.toasterService.cutAndToastBun(bunType);
+  private Dough supplyDough(String bunType) {
+    this.logger.debugf("Get dough");
+    return this.doughService.supplyDough(bunType, 50);
+  }
+
+  private Bun bakeBun(Dough dough) {
+    this.logger.debugf("Bake bun");
+    return this.ovenService.bakeBun(dough);
   }
 
   private String prepareAndFryPattie(boolean veggie) {

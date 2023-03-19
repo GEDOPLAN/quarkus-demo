@@ -1,9 +1,12 @@
 package de.gedoplan.showcase.rest;
 
 import de.gedoplan.showcase.domain.Bun;
+import de.gedoplan.showcase.domain.Dough;
+import de.gedoplan.showcase.service.DoughService;
 import de.gedoplan.showcase.service.MiseEnPlaceService;
+import de.gedoplan.showcase.service.OvenService;
 import de.gedoplan.showcase.service.StoveService;
-import de.gedoplan.showcase.service.ToasterService;
+import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -25,7 +28,11 @@ public class BurgerResourceCS {
 
   @Inject
   @RestClient
-  ToasterService toasterService;
+  DoughService doughService;
+
+  @Inject
+  @RestClient
+  OvenService ovenService;
 
   @Inject
   @RestClient
@@ -37,6 +44,9 @@ public class BurgerResourceCS {
   @Inject
   Logger logger;
 
+  @Inject
+  ManagedExecutor executor;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getBurger(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie)
@@ -44,7 +54,10 @@ public class BurgerResourceCS {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    List<String> parts = cutAndToastBunAsync(bunType)
+    CompletionStage<Bun> bunCS = supplyDoughAsync(bunType)
+      .thenCompose(this::bakeBunAsync);
+
+    List<String> parts = bunCS
       .thenCombineAsync(prepareAndFryPattieAsync(veggie), (bun, pattie) -> {
         return List.of(
           bun.getUpperHalf(),
@@ -63,9 +76,14 @@ public class BurgerResourceCS {
     return parts;
   }
 
-  private CompletionStage<Bun> cutAndToastBunAsync(String bunType) {
-    this.logger.debugf("Request bun");
-    return this.toasterService.cutAndToastBunAsync(bunType);
+  private CompletionStage<Dough> supplyDoughAsync(String bunType) {
+    this.logger.debugf("Get dough");
+    return this.doughService.supplyDoughAsync(bunType, 50);
+  }
+
+  private CompletionStage<Bun> bakeBunAsync(Dough dough) {
+    this.logger.debugf("Bake bun");
+    return this.ovenService.bakeBunAsync(dough);
   }
 
   private CompletionStage<String> prepareAndFryPattieAsync(boolean veggie) {

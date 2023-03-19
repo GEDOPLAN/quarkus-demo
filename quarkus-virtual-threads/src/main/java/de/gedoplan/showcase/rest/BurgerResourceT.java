@@ -1,9 +1,12 @@
 package de.gedoplan.showcase.rest;
 
 import de.gedoplan.showcase.domain.Bun;
+import de.gedoplan.showcase.domain.Dough;
+import de.gedoplan.showcase.service.DoughService;
 import de.gedoplan.showcase.service.MiseEnPlaceService;
+import de.gedoplan.showcase.service.OvenService;
 import de.gedoplan.showcase.service.StoveService;
-import de.gedoplan.showcase.service.ToasterService;
+import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -17,8 +20,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 @ApplicationScoped
@@ -27,7 +28,11 @@ public class BurgerResourceT {
 
   @Inject
   @RestClient
-  ToasterService toasterService;
+  DoughService doughService;
+
+  @Inject
+  @RestClient
+  OvenService ovenService;
 
   @Inject
   @RestClient
@@ -39,6 +44,9 @@ public class BurgerResourceT {
   @Inject
   Logger logger;
 
+  @Inject
+  ManagedExecutor executor;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getBurger(@QueryParam("bun") @DefaultValue("wheat") String bunType, @QueryParam("veggie") @DefaultValue("false") boolean veggie)
@@ -46,11 +54,9 @@ public class BurgerResourceT {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    ExecutorService executor = Executors.newCachedThreadPool();
+    Future<Bun> bunFuture = this.executor.submit(() -> bakeBun(supplyDough(bunType)));
 
-    Future<Bun> bunFuture = executor.submit(() -> cutAndToastBun(bunType));
-
-    Future<String> pattieFuture = executor.submit(() -> prepareAndFryPattie(veggie));
+    Future<String> pattieFuture = this.executor.submit(() -> prepareAndFryPattie(veggie));
 
     List<String> parts = List.of(
       bunFuture.get().getUpperHalf(),
@@ -65,9 +71,14 @@ public class BurgerResourceT {
     return parts;
   }
 
-  private Bun cutAndToastBun(String bunType) {
-    this.logger.debugf("Request bun");
-    return this.toasterService.cutAndToastBun(bunType);
+  private Dough supplyDough(String bunType) {
+    this.logger.debugf("Get dough");
+    return this.doughService.supplyDough(bunType, 50);
+  }
+
+  private Bun bakeBun(Dough dough) {
+    this.logger.debugf("Bake bun");
+    return this.ovenService.bakeBun(dough);
   }
 
   private String prepareAndFryPattie(boolean veggie) {
