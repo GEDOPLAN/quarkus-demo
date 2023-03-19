@@ -1,5 +1,8 @@
 package de.gedoplan.showcase.service;
 
+import de.gedoplan.showcase.domain.Patty;
+import de.gedoplan.showcase.domain.PattyType;
+
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -19,5 +22,9 @@ public class MiseEnPlaceService {
 
   public String getSalad() {
     return "Salad leaf";
+  }
+
+  public Patty getVegetarianPatty(PattyType type) {
+    return new Patty(type);
   }
 }

@@ -1,6 +1,7 @@
 package de.gedoplan.showcase.service.mock;
 
 import de.gedoplan.showcase.domain.Dough;
+import de.gedoplan.showcase.domain.DoughType;
 import lombok.SneakyThrows;
 import org.jboss.logging.Logger;
 
@@ -21,7 +22,7 @@ public class DoughResourceMock {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Dough supplyDough(@QueryParam("type") String type, @QueryParam("weight") int weight) {
+  public Dough supplyDough(@QueryParam("type") DoughType type, @QueryParam("weight") int weight) {
     this.logger.trace("[Mock] Fetch dough from fridge");
     delay(250);
 

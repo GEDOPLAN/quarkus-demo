@@ -32,7 +32,7 @@ public class OvenResourceMock {
     delay(500);
 
     this.logger.trace("[Mock] Deliver bun halves");
-    return new Bun(dough.getDoughType());
+    return new Bun(dough.getType());
   }
 
   @SneakyThrows

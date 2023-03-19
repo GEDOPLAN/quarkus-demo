@@ -1,35 +1,37 @@
 package de.gedoplan.showcase.service.mock;
 
 import de.gedoplan.showcase.domain.Patty;
+import de.gedoplan.showcase.domain.PattyType;
 import lombok.SneakyThrows;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @ApplicationScoped
-@Path("mock/stove")
-public class StoveResourceMock {
+@Path("mock/meat")
+public class MeatResourceMock {
 
   @Inject
   Logger logger;
 
-  @POST
+  @GET
   @Path("patty")
-  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Patty fryPattie(Patty patty) {
-    this.logger.trace("[Mock] Fry pattie");
-    delay(5000);
-    patty.setFried(true);
+  public Patty supplyPatty(@QueryParam("type") String type, @QueryParam("weight") int weight) {
+    this.logger.trace("[Mock] Fetch meat from fridge");
+    delay(250);
 
-    this.logger.trace("[Mock] Deliver pattie");
-    return patty;
+    this.logger.trace("[Mock] Mince meat");
+    delay(1000);
+
+    this.logger.trace("[Mock] Deliver minced meat");
+    return new Patty(PattyType.valueOf(type), true);
   }
 
   @SneakyThrows

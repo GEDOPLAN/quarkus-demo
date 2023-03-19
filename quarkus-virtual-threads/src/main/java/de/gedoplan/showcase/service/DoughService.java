@@ -1,6 +1,7 @@
 package de.gedoplan.showcase.service;
 
 import de.gedoplan.showcase.domain.Dough;
+import de.gedoplan.showcase.domain.DoughType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.GET;
@@ -13,10 +14,10 @@ import java.util.concurrent.CompletionStage;
 public interface DoughService {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Dough supplyDough(@QueryParam("type") String type, @QueryParam("weight") int weight);
+  public Dough supplyBunDough(@QueryParam("type") DoughType type, @QueryParam("weight") int weight);
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public CompletionStage<Dough> supplyDoughAsync(@QueryParam("type") String type, @QueryParam("weight") int weight);
+  public CompletionStage<Dough> supplyDoughAsync(@QueryParam("type") DoughType type, @QueryParam("weight") int weight);
 
 }

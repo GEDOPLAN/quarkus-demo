@@ -11,7 +11,7 @@ public class Bun {
   private String upperHalf;
   private String lowerHalf;
 
-  public Bun(String bunType) {
+  public Bun(DoughType bunType) {
     this("Bun (" + bunType + ", upper half)", "Bun (" + bunType + ", lower half)");
   }
 

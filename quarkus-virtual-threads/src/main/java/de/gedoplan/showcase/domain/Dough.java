@@ -8,12 +8,12 @@ import javax.json.bind.annotation.JsonbCreator;
 @Getter
 @ToString
 public class Dough {
-  private String doughType;
+  private DoughType type;
   private int weight;
 
   @JsonbCreator
-  public Dough(String doughType, int weight) {
-    this.doughType = doughType;
+  public Dough(DoughType type, int weight) {
+    this.type = type;
     this.weight = weight;
   }
 }

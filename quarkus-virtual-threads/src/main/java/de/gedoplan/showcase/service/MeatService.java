@@ -3,25 +3,23 @@ package de.gedoplan.showcase.service;
 import de.gedoplan.showcase.domain.Patty;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.concurrent.CompletionStage;
 
-@RegisterRestClient(configKey = "StoveService")
-public interface StoveService {
-  @POST
+@RegisterRestClient(configKey = "MeatService")
+public interface MeatService {
+  @GET
   @Path("patty")
-  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Patty fryPattie(Patty patty);
+  public Patty supplyPattyMeat(@QueryParam("type") String type, @QueryParam("weight") int weight);
 
-  @POST
+  @GET
   @Path("patty")
-  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public CompletionStage<Patty> fryPattieAsync(Patty patty);
+  public CompletionStage<Patty> supplyPattyMeatAsync(@QueryParam("type") String type, @QueryParam("weight") int weight);
 
 }
