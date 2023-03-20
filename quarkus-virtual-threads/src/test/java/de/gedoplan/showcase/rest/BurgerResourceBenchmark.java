@@ -22,10 +22,18 @@ import javax.ws.rs.client.WebTarget;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Benchmark for rough comparison of thread and completion stage approaches.
+ *
+ * Notes:
+ * - The api url called is coded into the benchmark
+ * - The called application must be running before starting the benchmark
+ * - All logging and delays must be switched off (see application.properties)
+ */
 @State(Scope.Benchmark)
 public class BurgerResourceBenchmark {
 
-  @Param({ "seq", "pt", "cs", "vt" })
+  @Param({ "cs", "vt" })
   public String path;
 
   @Benchmark
