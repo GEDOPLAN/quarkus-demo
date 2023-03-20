@@ -2,7 +2,6 @@ package de.gedoplan.showcase.service.mock;
 
 import de.gedoplan.showcase.domain.Dough;
 import de.gedoplan.showcase.domain.DoughType;
-import lombok.SneakyThrows;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,21 +19,19 @@ public class DoughResourceMock {
   @Inject
   Logger logger;
 
+  @Inject
+  SlowDownService slowDownService;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Dough supplyDough(@QueryParam("type") DoughType type, @QueryParam("weight") int weight) {
     this.logger.trace("[Mock] Fetch dough from fridge");
-    delay(250);
+    this.slowDownService.delay(250);
 
     this.logger.trace("[Mock] Knead dough");
-    delay(500);
+    this.slowDownService.delay(500);
 
     this.logger.trace("[Mock] Deliver dough");
     return new Dough(type, weight);
-  }
-
-  @SneakyThrows
-  private static void delay(long millis) {
-    Thread.sleep(millis);
   }
 }

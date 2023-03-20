@@ -29,8 +29,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 @ApplicationScoped
-@Path("burger/vt")
-public class BurgerResourceVT {
+@Path("vt/burger")
+public class BurgerResourceVirtualThread {
 
   @Inject
   @RestClient

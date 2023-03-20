@@ -27,8 +27,8 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
-@Path("burger/cs")
-public class BurgerResourceCS {
+@Path("cs/burger")
+public class BurgerResourceCompletionStage {
 
   @Inject
   @RestClient

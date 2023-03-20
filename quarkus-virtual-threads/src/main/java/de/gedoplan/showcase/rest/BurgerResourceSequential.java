@@ -10,7 +10,6 @@ import de.gedoplan.showcase.service.MeatService;
 import de.gedoplan.showcase.service.MiseEnPlaceService;
 import de.gedoplan.showcase.service.OvenService;
 import de.gedoplan.showcase.service.StoveService;
-import org.eclipse.microprofile.context.ManagedExecutor;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -23,12 +22,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @ApplicationScoped
-@Path("burger/t")
-public class BurgerResourceT {
+@Path("seq/burger")
+public class BurgerResourceSequential {
 
   @Inject
   @RestClient
@@ -52,31 +49,25 @@ public class BurgerResourceT {
   @Inject
   Logger logger;
 
-  @Inject
-  ManagedExecutor executor;
-
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<String> getBurger(@QueryParam("bun") @DefaultValue("WHEAT") DoughType bunType, @QueryParam("patty") @DefaultValue("BEEF") PattyType pattyType)
-    throws ExecutionException, InterruptedException {
+  public List<String> getBurger(@QueryParam("bun") @DefaultValue("WHEAT") DoughType bunType, @QueryParam("patty") @DefaultValue("BEEF") PattyType pattyType) {
 
     this.logger.debugf("----- Start burger production ---------");
 
-    Future<Bun> bunFuture = this.executor.submit(() -> bakeBun(supplyBunDough(bunType)));
+    Bun bun = bakeBun(supplyBunDough(bunType));
 
-    Future<Patty> pattieFuture = this.executor.submit(() -> {
-      Patty patty = pattyType.isVeggie() ? this.miseEnPlaceService.getVegetarianPatty(pattyType) : supplyPattyMeat(pattyType.toString());
-      return fryPattie(patty);
-    });
+    Patty patty = pattyType.isVeggie() ? this.miseEnPlaceService.getVegetarianPatty(pattyType) : supplyPattyMeat(pattyType.toString());
+    patty = fryPattie(patty);
 
     List<String> parts = List.of(
-      bunFuture.get().getUpperHalf(),
+      bun.getUpperHalf(),
       this.miseEnPlaceService.getSauce(),
       this.miseEnPlaceService.getTomato(),
       this.miseEnPlaceService.getCheese(),
-      pattieFuture.get().toString(),
+      patty.toString(),
       this.miseEnPlaceService.getSalad(),
-      bunFuture.get().getLowerHalf());
+      bun.getLowerHalf());
 
     this.logger.debugf("----- Deliver burger ------------------");
     return parts;
@@ -101,5 +92,4 @@ public class BurgerResourceT {
     this.logger.debugf("Fry pattie (%s)", patty.getType());
     return this.stoveService.fryPattie(patty);
   }
-
 }

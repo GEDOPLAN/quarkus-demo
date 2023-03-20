@@ -1,7 +1,6 @@
 package de.gedoplan.showcase.service.mock;
 
 import de.gedoplan.showcase.domain.Patty;
-import lombok.SneakyThrows;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,21 +18,19 @@ public class StoveResourceMock {
   @Inject
   Logger logger;
 
+  @Inject
+  SlowDownService slowDownService;
+
   @POST
   @Path("patty")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Patty fryPattie(Patty patty) {
     this.logger.trace("[Mock] Fry pattie");
-    delay(5000);
+    this.slowDownService.delay(5000);
     patty.setFried(true);
 
     this.logger.trace("[Mock] Deliver pattie");
     return patty;
-  }
-
-  @SneakyThrows
-  private static void delay(long millis) {
-    Thread.sleep(millis);
   }
 }
