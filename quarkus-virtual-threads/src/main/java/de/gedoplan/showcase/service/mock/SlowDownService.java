@@ -10,7 +10,7 @@ import javax.inject.Inject;
 public class SlowDownService {
 
   @Inject
-  @ConfigProperty(name = "slowdown")
+  @ConfigProperty(name = "slowdown", defaultValue = "false")
   boolean slowdown;
 
   @SneakyThrows
