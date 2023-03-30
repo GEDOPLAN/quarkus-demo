@@ -57,7 +57,9 @@ public class BurgerResourceSequential {
 
     Bun bun = bakeBun(supplyBunDough(bunType));
 
-    Patty patty = pattyType.isVeggie() ? this.miseEnPlaceService.getVegetarianPatty(pattyType) : supplyPattyMeat(pattyType.toString());
+    Patty patty = pattyType.isVeggie()
+      ? this.miseEnPlaceService.getVegetarianPatty(pattyType)
+      : supplyPattyMeat(pattyType.toString());
     patty = fryPattie(patty);
 
     List<String> parts = List.of(
