@@ -49,6 +49,7 @@
     <module>quarkus-kafka</module>
     <module>quarkus-keycloak</module>
     <module>quarkus-lifecycle-events</module>
+    <module>quarkus-mail</module>
     <module>quarkus-metrics</module>
     <module>quarkus-mqtt</module>
     <module>quarkus-myfaces</module>
