@@ -16,7 +16,7 @@ import org.jboss.jandex.DotName;
 import org.jboss.jandex.IndexView;
 import org.jboss.jandex.Type;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;

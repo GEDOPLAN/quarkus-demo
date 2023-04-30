@@ -6,8 +6,8 @@ import de.gedoplan.showcase.service.GreetingType;
 
 import java.time.LocalTime;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 
 @ApplicationScoped
 @Default

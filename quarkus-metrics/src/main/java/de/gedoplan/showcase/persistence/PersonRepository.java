@@ -4,9 +4,10 @@ import de.gedoplan.baselibs.persistence.repository.SingleIdEntityRepository;
 import de.gedoplan.showcase.entity.Person;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 @Transactional(rollbackOn = Exception.class)
@@ -23,7 +24,7 @@ public class PersonRepository extends SingleIdEntityRepository<Integer, Person> 
   }
 
   @Override
-  public Person findById(Integer id) {
+  public Optional<Person> findById(Integer id) {
     return super.findById(id);
   }
 

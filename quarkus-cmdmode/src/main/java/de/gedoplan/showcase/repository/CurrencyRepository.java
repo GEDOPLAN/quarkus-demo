@@ -2,7 +2,7 @@ package de.gedoplan.showcase.repository;
 
 import de.gedoplan.showcase.entity.Currency;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Map;

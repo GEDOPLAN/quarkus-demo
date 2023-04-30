@@ -1,9 +1,9 @@
 package de.gedoplan.seminar.cdi.demo.basics.service;
 
+import jakarta.annotation.PostConstruct;
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
+import jakarta.faces.view.ViewScoped;
 
 @ViewScoped
 public class ViewScopedService implements Serializable {

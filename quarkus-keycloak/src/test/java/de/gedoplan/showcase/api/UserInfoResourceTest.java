@@ -1,28 +1,27 @@
 package de.gedoplan.showcase.api;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.StringReader;
+import java.util.stream.Stream;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
-import org.jose4j.json.internal.json_simple.JSONObject;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
-import java.util.stream.Stream;
-
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonReader;
+import jakarta.ws.rs.core.MediaType;
 
 @QuarkusTest
 public class UserInfoResourceTest {
-
-  @Inject
-  Logger logger;
 
   @Inject
   @ConfigProperty(name = "quarkus.oidc.auth-server-url")
@@ -101,7 +100,7 @@ public class UserInfoResourceTest {
 
   private String retrieveAccessToken(String user, String password) {
 
-    return given()
+    String responseAsString = given()
       .with()
       .auth().preemptive().basic(keycloakClientId, keycloakClientPassword)
       .contentType("application/x-www-form-urlencoded; charset=utf-8")
@@ -113,8 +112,15 @@ public class UserInfoResourceTest {
       .then()
       .statusCode(200)
       .extract()
-      .as(JSONObject.class)
-      .get("access_token")
-      .toString();
+      .asString();
+
+    /*
+     * REST Assured does not use jakarta.json.bind for deserializing JSON objects (yet).
+     * Therefore decode the response string with jakarta.json
+     * and retrieve the access token from it.
+     */ 
+    try (JsonReader jsonReader = Json.createReader(new StringReader(responseAsString))) {
+      return jsonReader.readObject().getString("access_token");
+    }
   }
 }

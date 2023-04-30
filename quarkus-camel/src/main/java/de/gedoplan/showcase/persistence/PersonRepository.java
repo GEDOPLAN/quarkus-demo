@@ -2,10 +2,10 @@ package de.gedoplan.showcase.persistence;
 
 import de.gedoplan.showcase.entity.Person;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import javax.ws.rs.POST;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+import jakarta.ws.rs.POST;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 

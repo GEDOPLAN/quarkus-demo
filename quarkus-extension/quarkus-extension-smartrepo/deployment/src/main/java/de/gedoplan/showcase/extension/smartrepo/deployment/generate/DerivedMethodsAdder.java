@@ -19,7 +19,7 @@ import org.jboss.jandex.IndexView;
 import org.jboss.jandex.MethodInfo;
 import org.jboss.jandex.Type;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,7 +2,7 @@ package de.gedoplan.showcase.service.impl;
 
 import de.gedoplan.showcase.service.CreditCardService;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class OnlineCreditCardService implements CreditCardService {

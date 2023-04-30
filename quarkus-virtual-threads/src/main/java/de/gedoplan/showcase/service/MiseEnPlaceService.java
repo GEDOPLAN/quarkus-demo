@@ -3,7 +3,7 @@ package de.gedoplan.showcase.service;
 import de.gedoplan.showcase.domain.Patty;
 import de.gedoplan.showcase.domain.PattyType;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class MiseEnPlaceService {

@@ -1,8 +1,8 @@
 package de.gedoplan.showcase.entity;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.AccessLevel;

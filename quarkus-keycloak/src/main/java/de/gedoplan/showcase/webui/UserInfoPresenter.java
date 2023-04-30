@@ -3,10 +3,10 @@ package de.gedoplan.showcase.webui;
 import de.gedoplan.showcase.service.UserInfoService;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.ExternalContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;

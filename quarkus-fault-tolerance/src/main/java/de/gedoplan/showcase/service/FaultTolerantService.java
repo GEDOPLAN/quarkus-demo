@@ -1,7 +1,7 @@
 package de.gedoplan.showcase.service;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;

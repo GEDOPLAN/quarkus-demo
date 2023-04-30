@@ -12,7 +12,7 @@
 
   <properties>
     <!-- quarkus-hibernate-orm-rest-data-panache seems to be broken in 2.15+ -->
-    <quarkus.version>2.14.3.Final</quarkus.version>
+    <quarkus.version>3.0.1.Final</quarkus.version>
   </properties>
 
   <dependencies>

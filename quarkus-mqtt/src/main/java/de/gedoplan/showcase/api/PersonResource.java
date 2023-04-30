@@ -1,12 +1,12 @@
 package de.gedoplan.showcase.api;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.bind.JsonbBuilder;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.reactive.messaging.Channel;

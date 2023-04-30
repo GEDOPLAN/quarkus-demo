@@ -1,9 +1,9 @@
 package de.gedoplan.seminar.cdi.demo.basics.service;
 
+import jakarta.annotation.PostConstruct;
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.SessionScoped;
 
 @SessionScoped
 public class SessionScopedService implements Serializable {

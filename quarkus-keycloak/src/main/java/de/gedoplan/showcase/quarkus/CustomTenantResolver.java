@@ -1,6 +1,6 @@
 package de.gedoplan.showcase.quarkus;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import io.quarkus.oidc.TenantResolver;
 import io.vertx.ext.web.RoutingContext;

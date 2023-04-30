@@ -2,7 +2,7 @@ package de.gedoplan.showcase.command;
 
 import java.math.BigDecimal;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import de.gedoplan.showcase.service.CurrencyService;
 import picocli.CommandLine;

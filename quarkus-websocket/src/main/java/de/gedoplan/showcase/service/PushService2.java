@@ -3,10 +3,10 @@ package de.gedoplan.showcase.service;
 import io.vertx.core.impl.ConcurrentHashSet;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.websocket.*;
+import jakarta.websocket.server.ServerEndpoint;
 import java.util.Set;
 
 @ApplicationScoped

@@ -1,9 +1,9 @@
 package de.gedoplan.seminar.cdi.demo.basics.service;
 
+import jakarta.annotation.PostConstruct;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ApplicationScopedService {

@@ -1,8 +1,8 @@
-# Disable color log output
+# Make log color white background friendly
 quarkus:
   log:
     console:
-      color: false
+      darken: 1
 
 # Application config
 greeting:

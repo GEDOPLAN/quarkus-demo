@@ -9,10 +9,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.inject.Qualifier;
+import jakarta.enterprise.util.Nonbinding;
+import jakarta.inject.Qualifier;
 
 @Qualifier
 @Retention(RUNTIME)
 @Target({ METHOD, FIELD, PARAMETER, TYPE })
-public @interface Formal {
+public @interface Greeting {
+  GreetingType type();
+
+  @Nonbinding
+  String additionalInfo() default "";
 }

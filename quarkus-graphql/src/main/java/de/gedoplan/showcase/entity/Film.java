@@ -2,9 +2,9 @@ package de.gedoplan.showcase.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Entity;
 
 import de.gedoplan.baselibs.persistence.entity.GeneratedIntegerIdEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;

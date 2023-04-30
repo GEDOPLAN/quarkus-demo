@@ -1,6 +1,6 @@
 package de.gedoplan.showcase.service;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.opentracing.Traced;
 

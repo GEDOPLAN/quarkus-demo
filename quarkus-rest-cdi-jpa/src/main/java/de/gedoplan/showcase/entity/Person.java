@@ -2,10 +2,10 @@ package de.gedoplan.showcase.entity;
 
 import de.gedoplan.baselibs.persistence.entity.GeneratedIntegerIdEntity;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Entity;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import lombok.AccessLevel;
 import lombok.Getter;

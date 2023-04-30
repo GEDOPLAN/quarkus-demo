@@ -18,12 +18,12 @@
   <properties>
     <java.code.version>17</java.code.version>
 
-    <quarkus.version>2.16.4.Final</quarkus.version>
+    <quarkus.version>3.0.1.Final</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 
-    <myfaces.version>2.3-next-M7</myfaces.version>
+    <myfaces.version>4.0.0</myfaces.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -41,7 +41,7 @@
     <module>quarkus-cdi</module>
     <module>quarkus-cmdmode</module>
     <module>quarkus-config</module>
-    <module>quarkus-extension</module>
+    <!-- <module>quarkus-extension</module> -->
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-graphql</module>
@@ -60,6 +60,7 @@
     <module>quarkus-rest-client</module>
     <module>quarkus-scheduler</module>
     <module>quarkus-testing</module>
+    <!-- <module>quarkus-virtual-threads</module> is added in Java 19 profile below -->
     <module>quarkus-websocket</module>
   </modules>
 
@@ -76,13 +77,13 @@
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-persistence</artifactId>
-        <version>2.0</version>
+        <version>10.0</version>
       </dependency>
 
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-utils</artifactId>
-        <version>1.10</version>
+        <version>10.2</version>
       </dependency>
 
       <!-- Logging -->

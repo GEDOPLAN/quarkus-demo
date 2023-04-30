@@ -1,12 +1,11 @@
 package de.gedoplan.showcase.service.impl;
 
 import de.gedoplan.showcase.service.CreditCardService;
-
+import jakarta.annotation.Priority;
 import java.util.Calendar;
 
-import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
 
 @ApplicationScoped
 @Alternative

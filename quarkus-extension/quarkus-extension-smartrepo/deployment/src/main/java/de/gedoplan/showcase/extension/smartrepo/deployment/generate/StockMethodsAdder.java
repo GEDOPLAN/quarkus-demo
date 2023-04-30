@@ -21,7 +21,7 @@ import org.jboss.jandex.ParameterizedType;
 import org.jboss.jandex.Type;
 import org.jboss.jandex.TypeVariable;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

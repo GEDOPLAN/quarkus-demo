@@ -2,11 +2,11 @@ package de.gedoplan.showcase.service;
 
 import de.gedoplan.showcase.entity.Person;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -5,7 +5,7 @@ import de.gedoplan.showcase.service.Greeting;
 import de.gedoplan.showcase.service.GreetingService;
 import de.gedoplan.showcase.service.GreetingType;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @Formal

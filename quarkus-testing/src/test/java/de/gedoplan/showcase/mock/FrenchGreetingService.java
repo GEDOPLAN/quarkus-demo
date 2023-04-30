@@ -2,8 +2,8 @@ package de.gedoplan.showcase.mock;
 
 import de.gedoplan.showcase.service.GreetingService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
 
 @ApplicationScoped
 @Alternative

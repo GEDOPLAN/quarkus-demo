@@ -3,9 +3,9 @@ package de.gedoplan.showcase.service;
 import de.gedoplan.showcase.entity.Currency;
 import de.gedoplan.showcase.repository.CurrencyRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 

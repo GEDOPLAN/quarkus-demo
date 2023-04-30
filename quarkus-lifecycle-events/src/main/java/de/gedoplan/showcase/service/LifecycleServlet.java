@@ -1,9 +1,9 @@
 package de.gedoplan.showcase.service;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 

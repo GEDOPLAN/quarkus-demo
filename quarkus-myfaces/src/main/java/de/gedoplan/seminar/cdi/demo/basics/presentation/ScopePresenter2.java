@@ -6,9 +6,9 @@ import de.gedoplan.seminar.cdi.demo.basics.service.RequestScopedService;
 import de.gedoplan.seminar.cdi.demo.basics.service.SessionScopedService;
 import de.gedoplan.seminar.cdi.demo.basics.service.ViewScopedService;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @RequestScoped

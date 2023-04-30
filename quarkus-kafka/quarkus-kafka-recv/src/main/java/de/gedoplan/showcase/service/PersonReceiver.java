@@ -2,8 +2,8 @@ package de.gedoplan.showcase.service;
 
 import java.time.temporal.ChronoUnit;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.eclipse.microprofile.faulttolerance.Retry;

@@ -3,7 +3,7 @@ package de.gedoplan.showcase.domain;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbCreator;
 
 @Getter
 @ToString

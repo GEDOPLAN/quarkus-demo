@@ -1,7 +1,8 @@
 package de.gedoplan.seminar.cdi.demo.basics.service;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.Dependent;
+import jakarta.annotation.PostConstruct;
+
+import jakarta.enterprise.context.Dependent;
 
 @Dependent
 public class DependentScopedService {

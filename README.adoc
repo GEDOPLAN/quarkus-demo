@@ -1,0 +1,18 @@
+= quarkus-demo
+Demo project for Quarkus
+
+Modules::
+
+This is a multi-module project. 
+Every module shows some aspect/feature/extension of Quarkus.
++
+Details can be found in `README.adoc` in the module subdirectories - sorry, only some modules have one ...
+
+Issues::
+
+The project has been upgraded to Quarkus 3. There are some (minor?) malfunctions:
++
+* After a hot reload in dev mode, the MyFaces extension throws a NPE for each refresh: +
+`java.lang.NullPointerException: Cannot invoke "jakarta.faces.render.RenderKit.getResponseStateManager()" because the return value of "jakarta.faces.render.RenderKitFactory.getRenderKit(jakarta.faces.context.FacesContext, String)" is null` +
+Most probably this is not a Quarkus problem but a bug in MyFaces.
+

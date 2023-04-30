@@ -7,7 +7,7 @@ import io.quarkus.test.junit.main.LaunchResult;
 import io.quarkus.test.junit.main.QuarkusMainTest;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

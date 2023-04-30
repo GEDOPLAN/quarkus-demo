@@ -3,23 +3,23 @@ package de.gedoplan.showcase.rest;
 import java.net.URI;
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -55,12 +55,9 @@ public class PersonResource {
   @APIResponse(description = "Found person (JSON/XML)")
   @APIResponse(responseCode = "404", description = "Person not found")
   public Person getById(@PathParam(ID_NAME) Integer id) {
-    Person person = this.personRepository.findById(id);
-    if (person != null) {
-      return person;
-    }
-
-    throw new NotFoundException();
+    return this.personRepository
+      .findById(id)
+      .orElseThrow(NotFoundException::new);
   }
 
   @PUT
@@ -70,34 +67,32 @@ public class PersonResource {
   @APIResponse(responseCode = "400", description = "Id of person must not be changed")
   @APIResponse(responseCode = "404", description = "Person not found")
   @Transactional(rollbackOn = Exception.class)
-  public void update(@PathParam(ID_NAME) Integer id, Person Person) {
-    if (!id.equals(Person.getId())) {
+  public void update(@PathParam(ID_NAME) Integer id, Person person) {
+    if (!id.equals(person.getId())) {
       throw new BadRequestException("id of updated object must not be changed");
     }
 
-    Person person = this.personRepository.findById(id);
-    if (person == null) {
-      throw new NotFoundException();
-    }
+    // Assure person exists
+    getById(id);
 
-    this.personRepository.merge(Person);
+    this.personRepository.merge(person);
   }
 
   @POST
   @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
   @Operation(summary = "Insert a new person")
   @APIResponse(responseCode = "400", description = "Id of person must not be pre-set")
-  public Response create(Person Person, @Context UriInfo uriInfo) {
-    if (Person.getId() != null) {
+  public Response create(Person person, @Context UriInfo uriInfo) {
+    if (person.getId() != null) {
       throw new BadRequestException("id of new entry must not be pre-set");
     }
 
-    this.personRepository.persist(Person);
+    this.personRepository.persist(person);
 
     URI createdUri = uriInfo
         .getAbsolutePathBuilder()
         .path(ID_TEMPLATE)
-        .resolveTemplate(ID_NAME, Person.getId())
+        .resolveTemplate(ID_NAME, person.getId())
         .build();
     return Response.created(createdUri).build();
   }

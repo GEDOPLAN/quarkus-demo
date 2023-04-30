@@ -16,7 +16,7 @@ import org.jboss.jandex.DotName;
 import org.jboss.jandex.IndexView;
 import org.jboss.jandex.Type;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap;
 import java.util.ArrayList;

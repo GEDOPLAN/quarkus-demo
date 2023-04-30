@@ -18,15 +18,15 @@
  */
 package org.apache.myfaces.core.extensions.quarkus.showcase.view;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.faces.event.PhaseEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PhaseListener;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 @Named
 @ApplicationScoped

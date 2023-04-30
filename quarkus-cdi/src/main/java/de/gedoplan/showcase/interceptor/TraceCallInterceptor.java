@@ -1,14 +1,14 @@
 package de.gedoplan.showcase.interceptor;
 
 import de.gedoplan.baselibs.utils.util.ClassUtil;
+import jakarta.annotation.Priority;
 
 import java.io.Serializable;
 
-import javax.annotation.Priority;
-import javax.interceptor.AroundConstruct;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.AroundConstruct;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

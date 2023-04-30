@@ -10,8 +10,8 @@ import de.gedoplan.showcase.entity.Person;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;

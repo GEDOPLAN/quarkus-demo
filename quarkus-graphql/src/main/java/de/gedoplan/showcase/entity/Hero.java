@@ -2,10 +2,10 @@ package de.gedoplan.showcase.entity;
 
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 
 import de.gedoplan.baselibs.persistence.entity.GeneratedIntegerIdEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;

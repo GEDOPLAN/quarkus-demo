@@ -2,9 +2,9 @@ package de.gedoplan.showcase.service;
 
 import de.gedoplan.showcase.entity.Person;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.bind.JsonbBuilder;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.bind.JsonbBuilder;
 
 import org.apache.commons.logging.Log;
 import org.eclipse.microprofile.reactive.messaging.Incoming;

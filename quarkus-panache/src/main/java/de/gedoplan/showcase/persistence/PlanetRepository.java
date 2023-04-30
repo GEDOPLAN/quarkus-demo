@@ -1,6 +1,6 @@
 package de.gedoplan.showcase.persistence;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import de.gedoplan.showcase.entity.Planet;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
