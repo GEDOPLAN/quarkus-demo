@@ -41,7 +41,7 @@
     <module>quarkus-cdi</module>
     <module>quarkus-cmdmode</module>
     <module>quarkus-config</module>
-    <!-- <module>quarkus-extension</module> -->
+    <module>quarkus-extension</module>
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-graphql</module>
