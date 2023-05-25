@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
-    <version>2022.10.1</version>
+    <version>2023.5.1</version>
   </parent>
 
   <groupId>de.gedoplan.showcase</groupId>
@@ -53,6 +53,7 @@
     <module>quarkus-metrics</module>
     <module>quarkus-mqtt</module>
     <module>quarkus-myfaces</module>
+    <module>quarkus-my-omni-prime-faces</module>
     <module>quarkus-native</module>
     <module>quarkus-opentracing</module>
     <module>quarkus-panache</module>
