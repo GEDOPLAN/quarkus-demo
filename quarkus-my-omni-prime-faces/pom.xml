@@ -15,7 +15,7 @@
   <properties>
     <omnifaces-quarkus.version>3.14.2</omnifaces-quarkus.version>
     <primefaces-quarkus.version>2.12.2</primefaces-quarkus.version>
-    <myfaces.version>2.3-next-SNAPSHOT</myfaces.version>
+    <myfaces.version>2.3-next-M7</myfaces.version>
   </properties>
 
   <dependencies>
