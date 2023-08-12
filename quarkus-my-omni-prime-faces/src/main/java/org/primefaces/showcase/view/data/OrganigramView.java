@@ -1,0 +1,215 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2021 PrimeTek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package org.primefaces.showcase.view.data;
+
+import java.io.Serializable;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+
+import org.primefaces.component.organigram.OrganigramHelper;
+import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
+import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
+import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
+import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
+import org.primefaces.model.DefaultOrganigramNode;
+import org.primefaces.model.OrganigramNode;
+
+@Named
+@ViewScoped
+public class OrganigramView implements Serializable {
+
+  private OrganigramNode rootNode;
+  private OrganigramNode selection;
+
+  private boolean zoom = false;
+  private String style = "width: 800px";
+  private int leafNodeConnectorHeight = 0;
+  private boolean autoScrollToSelection = false;
+
+  private String employeeName;
+
+  @PostConstruct
+  public void init() {
+    this.selection = new DefaultOrganigramNode(null, "Ridvan Agar", null);
+
+    this.rootNode = new DefaultOrganigramNode("root", "CommerceBay GmbH", null);
+    this.rootNode.setCollapsible(false);
+    this.rootNode.setDroppable(true);
+
+    OrganigramNode softwareDevelopment = addDivision(this.rootNode, "Software Development", "Ridvan Agar");
+
+    OrganigramNode teamJavaEE = addDivision(softwareDevelopment, "Team JavaEE");
+    addDivision(teamJavaEE, "JSF", "Thomas Andraschko");
+    addDivision(teamJavaEE, "Backend", "Marie Louise");
+
+    OrganigramNode teamMobile = addDivision(softwareDevelopment, "Team Mobile");
+    addDivision(teamMobile, "Android", "Andy Ruby");
+    addDivision(teamMobile, "iOS", "Stevan Jobs");
+
+    addDivision(this.rootNode, "Managed Services", "Thorsten Schultze", "Sandra Becker");
+
+    OrganigramNode marketing = addDivision(this.rootNode, "Marketing");
+    addDivision(marketing, "Social Media", "Ali Mente", "Lisa Boehm");
+    addDivision(marketing, "Press", "Michael Gmeiner", "Hans Peter");
+
+    addDivision(this.rootNode, "Management", "Hassan El Manfalouty");
+  }
+
+  protected OrganigramNode addDivision(OrganigramNode parent, String name, String... employees) {
+    OrganigramNode divisionNode = new DefaultOrganigramNode("division", name, parent);
+    divisionNode.setDroppable(true);
+    divisionNode.setDraggable(true);
+    divisionNode.setSelectable(true);
+
+    if (employees != null) {
+      for (String employee : employees) {
+        OrganigramNode employeeNode = new DefaultOrganigramNode("employee", employee, divisionNode);
+        employeeNode.setDraggable(true);
+        employeeNode.setSelectable(true);
+      }
+    }
+
+    return divisionNode;
+  }
+
+  public void nodeDragDropListener(OrganigramNodeDragDropEvent event) {
+    FacesMessage message = new FacesMessage();
+    message.setSummary("Node '" + event.getOrganigramNode().getData() + "' moved from " + event.getSourceOrganigramNode().getData() + " to '" + event.getTargetOrganigramNode().getData() + "'");
+    message.setSeverity(FacesMessage.SEVERITY_INFO);
+
+    FacesContext.getCurrentInstance().addMessage(null, message);
+  }
+
+  public void nodeSelectListener(OrganigramNodeSelectEvent event) {
+    FacesMessage message = new FacesMessage();
+    message.setSummary("Node '" + event.getOrganigramNode().getData() + "' selected.");
+    message.setSeverity(FacesMessage.SEVERITY_INFO);
+
+    FacesContext.getCurrentInstance().addMessage(null, message);
+  }
+
+  public void nodeCollapseListener(OrganigramNodeCollapseEvent event) {
+    FacesMessage message = new FacesMessage();
+    message.setSummary("Node '" + event.getOrganigramNode().getData() + "' collapsed.");
+    message.setSeverity(FacesMessage.SEVERITY_INFO);
+
+    FacesContext.getCurrentInstance().addMessage(null, message);
+  }
+
+  public void nodeExpandListener(OrganigramNodeExpandEvent event) {
+    FacesMessage message = new FacesMessage();
+    message.setSummary("Node '" + event.getOrganigramNode().getData() + "' expanded.");
+    message.setSeverity(FacesMessage.SEVERITY_INFO);
+
+    FacesContext.getCurrentInstance().addMessage(null, message);
+  }
+
+  public void removeDivision() {
+    // re-evaluate selection - might be a differenct object instance if viewstate serialization is enabled
+    OrganigramNode currentSelection = OrganigramHelper.findTreeNode(this.rootNode, this.selection);
+    setMessage(currentSelection.getData() + " will entfernt werden.", FacesMessage.SEVERITY_INFO);
+  }
+
+  public void removeEmployee() {
+    // re-evaluate selection - might be a differenct object instance if viewstate serialization is enabled
+    OrganigramNode currentSelection = OrganigramHelper.findTreeNode(this.rootNode, this.selection);
+    currentSelection.getParent().getChildren().remove(currentSelection);
+  }
+
+  public void addEmployee() {
+    // re-evaluate selection - might be a differenct object instance if viewstate serialization is enabled
+    OrganigramNode currentSelection = OrganigramHelper.findTreeNode(this.rootNode, this.selection);
+
+    OrganigramNode employee = new DefaultOrganigramNode("employee", this.employeeName, currentSelection);
+    employee.setDraggable(true);
+    employee.setSelectable(true);
+  }
+
+  private void setMessage(String msg, FacesMessage.Severity severity) {
+    FacesMessage message = new FacesMessage();
+    message.setSummary(msg);
+    message.setSeverity(severity);
+    FacesContext.getCurrentInstance().addMessage(null, message);
+  }
+
+  public OrganigramNode getRootNode() {
+    return this.rootNode;
+  }
+
+  public void setRootNode(OrganigramNode rootNode) {
+    this.rootNode = rootNode;
+  }
+
+  public OrganigramNode getSelection() {
+    return this.selection;
+  }
+
+  public void setSelection(OrganigramNode selection) {
+    this.selection = selection;
+  }
+
+  public boolean isZoom() {
+    return this.zoom;
+  }
+
+  public void setZoom(boolean zoom) {
+    this.zoom = zoom;
+  }
+
+  public String getEmployeeName() {
+    return this.employeeName;
+  }
+
+  public void setEmployeeName(String employeeName) {
+    this.employeeName = employeeName;
+  }
+
+  public String getStyle() {
+    return this.style;
+  }
+
+  public void setStyle(String style) {
+    this.style = style;
+  }
+
+  public int getLeafNodeConnectorHeight() {
+    return this.leafNodeConnectorHeight;
+  }
+
+  public void setLeafNodeConnectorHeight(int leafNodeConnectorHeight) {
+    this.leafNodeConnectorHeight = leafNodeConnectorHeight;
+  }
+
+  public boolean isAutoScrollToSelection() {
+    return this.autoScrollToSelection;
+  }
+
+  public void setAutoScrollToSelection(boolean autoScrollToSelection) {
+    this.autoScrollToSelection = autoScrollToSelection;
+  }
+}

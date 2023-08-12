@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
-    <version>2022.10.1</version>
+    <version>2023.5.1</version>
   </parent>
 
   <groupId>de.gedoplan.showcase</groupId>
@@ -18,12 +18,12 @@
   <properties>
     <java.code.version>17</java.code.version>
 
-    <quarkus.version>3.0.3.Final</quarkus.version>
+    <quarkus.version>3.2.4.Final</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 
-    <myfaces.version>4.0.0</myfaces.version>
+    <myfaces.version>4.0.1</myfaces.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -52,6 +52,7 @@
     <module>quarkus-mail</module>
     <module>quarkus-metrics</module>
     <module>quarkus-mqtt</module>
+    <module>quarkus-my-omni-prime-faces</module>
     <module>quarkus-myfaces</module>
     <module>quarkus-native</module>
     <module>quarkus-opentracing</module>

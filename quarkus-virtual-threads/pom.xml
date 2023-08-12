@@ -83,8 +83,8 @@
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${quarkus.platform.version}</version>
         <configuration>
-          <source>19</source>
-          <target>19</target>
+          <source>${java.code.version}</source>
+          <target>${java.code.version}</target>
           <compilerArgs>
             <arg>--enable-preview</arg>
           </compilerArgs>

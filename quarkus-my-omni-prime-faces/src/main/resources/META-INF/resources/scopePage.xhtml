@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <title>{My|Omni|Prime}Faces</title>
+</h:head>
+<h:body>
+  <p:panelGrid>
+    <f:facet name="header">
+      <p:row>
+        <p:column/>
+        <p:column>referenced 1</p:column>
+        <p:column>referenced 2</p:column>
+        <p:column>instantiated</p:column>
+      </p:row>
+    </f:facet>
+
+    <p:row>
+      <p:column>Dependent</p:column>
+      <p:column>#{scopePresenter1.dependentScopedService}</p:column>
+      <p:column>#{scopePresenter2.dependentScopedService}</p:column>
+      <p:column>#{scopePresenter2.dependentScopedService.instancesAsString}</p:column>
+    </p:row>
+
+    <p:row>
+      <p:column>Request</p:column>
+      <p:column>#{scopePresenter1.requestScopedService}</p:column>
+      <p:column>#{scopePresenter2.requestScopedService}</p:column>
+      <p:column>#{scopePresenter2.requestScopedService.instancesAsString}</p:column>
+    </p:row>
+
+    <p:row>
+      <p:column>View (Faces)</p:column>
+      <p:column>#{scopePresenter1.viewScopedService}</p:column>
+      <p:column>#{scopePresenter2.viewScopedService}</p:column>
+      <p:column>#{scopePresenter2.viewScopedService.instancesAsString}</p:column>
+    </p:row>
+
+    <p:row>
+      <p:column>View (OmniFaces)</p:column>
+      <p:column>#{scopePresenter1.omniFacesViewScopedService}</p:column>
+      <p:column>#{scopePresenter2.omniFacesViewScopedService}</p:column>
+      <p:column>#{scopePresenter2.omniFacesViewScopedService.instancesAsString}</p:column>
+    </p:row>
+
+    <p:row>
+      <p:column>Session</p:column>
+      <p:column>#{scopePresenter1.sessionScopedService}</p:column>
+      <p:column>#{scopePresenter2.sessionScopedService}</p:column>
+      <p:column>#{scopePresenter2.sessionScopedService.instancesAsString}</p:column>
+    </p:row>
+
+    <p:row>
+      <p:column>Application</p:column>
+      <p:column>#{scopePresenter1.applicationScopedService}</p:column>
+      <p:column>#{scopePresenter2.applicationScopedService}</p:column>
+      <p:column>#{scopePresenter2.applicationScopedService.instancesAsString}</p:column>
+    </p:row>
+  </p:panelGrid>
+  <hr/>
+  <h:form>
+    <h:commandButton value="reload (no action)"/>
+    <h:commandButton value="reload (/scopePage.xhtml)" action="/scopePage.xhtml"/>
+    <h:commandButton value="reload (/scopePage.xhtml?faces-redirect=true)"
+                     action="/scopePage.xhtml?faces-redirect=true"/>
+  </h:form>
+  <h:outputLink value="${request.contextPath}/index.xhtml">home</h:outputLink>
+</h:body>
+</html>
