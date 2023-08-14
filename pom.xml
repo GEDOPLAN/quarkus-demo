@@ -23,7 +23,9 @@
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 
-    <myfaces.version>4.0.1</myfaces.version>
+    <quarkus-omnifaces.version>4.2.1</quarkus-omnifaces.version>
+    <quarkus-primefaces.version>3.12.5</quarkus-primefaces.version>
+    <myfaces-quarkus.version>4.0.1</myfaces-quarkus.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
