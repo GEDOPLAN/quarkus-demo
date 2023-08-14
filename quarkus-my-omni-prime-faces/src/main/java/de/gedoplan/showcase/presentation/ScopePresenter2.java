@@ -1,11 +1,11 @@
-package de.gedoplan.seminar.cdi.demo.basics.presentation;
+package de.gedoplan.showcase.presentation;
 
-import de.gedoplan.seminar.cdi.demo.basics.service.ApplicationScopedService;
-import de.gedoplan.seminar.cdi.demo.basics.service.DependentScopedService;
-import de.gedoplan.seminar.cdi.demo.basics.service.OmniFacesViewScopedService;
-import de.gedoplan.seminar.cdi.demo.basics.service.RequestScopedService;
-import de.gedoplan.seminar.cdi.demo.basics.service.SessionScopedService;
-import de.gedoplan.seminar.cdi.demo.basics.service.ViewScopedService;
+import de.gedoplan.showcase.service.ApplicationScopedService;
+import de.gedoplan.showcase.service.DependentScopedService;
+import de.gedoplan.showcase.service.OmniFacesViewScopedService;
+import de.gedoplan.showcase.service.RequestScopedService;
+import de.gedoplan.showcase.service.SessionScopedService;
+import de.gedoplan.showcase.service.ViewScopedService;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;

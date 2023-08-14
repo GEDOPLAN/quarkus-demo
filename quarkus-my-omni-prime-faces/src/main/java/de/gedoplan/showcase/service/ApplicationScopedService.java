@@ -1,12 +1,8 @@
-package de.gedoplan.seminar.cdi.demo.basics.service;
-
-import org.jboss.logging.Logger;
+package de.gedoplan.showcase.service;
 
 import java.util.Date;
 import java.util.Objects;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -41,11 +37,11 @@ public class ApplicationScopedService extends ScopedService {
       return false;
     }
     ApplicationScopedService that = (ApplicationScopedService) o;
-    return instanceCreated.equals(that.instanceCreated);
+    return this.instanceCreated.equals(that.instanceCreated);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), instanceCreated);
+    return Objects.hash(super.hashCode(), this.instanceCreated);
   }
 }

@@ -1,4 +1,4 @@
-package de.gedoplan.seminar.cdi.demo.basics.service;
+package de.gedoplan.showcase.service;
 
 import java.io.Serializable;
 import java.util.Collections;

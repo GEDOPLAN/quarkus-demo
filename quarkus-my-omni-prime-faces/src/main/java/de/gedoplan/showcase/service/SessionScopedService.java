@@ -1,4 +1,4 @@
-package de.gedoplan.seminar.cdi.demo.basics.service;
+package de.gedoplan.showcase.service;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
