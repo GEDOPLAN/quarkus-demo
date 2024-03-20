@@ -16,7 +16,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <java.code.version>17</java.code.version>
+    <java.code.version>21</java.code.version>
 
     <quarkus.version>3.8.3</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -73,34 +73,34 @@
       <dependency>
         <groupId>jakarta.platform</groupId>
         <artifactId>jakarta.jakartaee-api</artifactId>
-        <version>8.0.0</version>
+        <version>10.0.0</version>
       </dependency>
 
       <!-- GEDOPLAN-baselibs -->
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-persistence</artifactId>
-        <version>10.0</version>
+        <version>10.1</version>
       </dependency>
 
       <dependency>
         <groupId>de.gedoplan</groupId>
         <artifactId>baselibs-utils</artifactId>
-        <version>10.2</version>
+        <version>10.3</version>
       </dependency>
 
       <!-- Logging -->
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
-        <version>1.2</version>
+        <version>1.3.0</version>
       </dependency>
 
       <!-- Lombok -->
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.26</version>
+        <version>1.18.30</version>
       </dependency>
 
       <!-- Quarkus -->
@@ -118,6 +118,29 @@
     <finalName>${project.artifactId}</finalName>
 
     <plugins>
+      <!--
+        Use JDK matching ${java.code.version}.
+        Please provide a ~/.m2/toolchains.xml like the sample toolchains.xml.sample
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <toolchains>
+            <jdk>
+              <version>${java.code.version}</version>
+            </jdk>
+          </toolchains>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>${quarkus.platform.group-id}</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
@@ -245,16 +268,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>modules-19</id>
-      <activation>
-        <jdk>[19,)</jdk>
-      </activation>
-      <modules>
-        <module>quarkus-virtual-threads</module>
-      </modules>
     </profile>
   </profiles>
 </project>

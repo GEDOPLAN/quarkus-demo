@@ -12,6 +12,11 @@
 
   <artifactId>quarkus-my-omni-prime-faces</artifactId>
 
+  <properties>
+    <!-- Omnifaces does not yet work with Java 21 -->
+    <java.code.version>17</java.code.version>
+  </properties>
+
   <dependencies>
     <!-- Quarkus -->
     <dependency>

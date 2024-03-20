@@ -1,0 +1,22 @@
+<!-- Sample Maven Toolchains configuration -->
+<toolchains>
+  <toolchain>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17</version>
+    </provides>
+    <configuration>
+      <jdkHome>/full/path/to/java/17</jdkHome>
+    </configuration>
+  </toolchain>
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>21</version>
+    </provides>
+    <configuration>
+      <jdkHome>/full/path/to/java/21</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains>

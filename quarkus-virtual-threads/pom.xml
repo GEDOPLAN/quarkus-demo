@@ -12,10 +12,6 @@
 
   <artifactId>quarkus-virtual-threads</artifactId>
 
-  <properties>
-    <java.code.version>19</java.code.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -55,43 +51,9 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.26</version>
+      <version>1.18.30</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <compilerArgs>
-            <arg>--enable-preview</arg>
-          </compilerArgs>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <argLine>--enable-preview</argLine>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>${quarkus.platform.group-id}</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.platform.version}</version>
-        <configuration>
-          <source>${java.code.version}</source>
-          <target>${java.code.version}</target>
-          <compilerArgs>
-            <arg>--enable-preview</arg>
-          </compilerArgs>
-          <jvmArgs>--enable-preview --add-opens java.base/java.lang=ALL-UNNAMED</jvmArgs>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
