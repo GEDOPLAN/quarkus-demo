@@ -42,7 +42,7 @@ public class PersonResource {
   Log log;
 
   @GET
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Get all persons")
   public List<Person> getAll() {
     return this.personRepository.findAll();
@@ -50,7 +50,7 @@ public class PersonResource {
 
   @GET
   @Path(ID_TEMPLATE)
-  @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Produces(MediaType.APPLICATION_JSON)
   @Operation(summary = "Get a person")
   @APIResponse(description = "Found person (JSON/XML)")
   @APIResponse(responseCode = "404", description = "Person not found")
@@ -62,7 +62,7 @@ public class PersonResource {
 
   @PUT
   @Path(ID_TEMPLATE)
-  @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Consumes(MediaType.APPLICATION_JSON)
   @Operation(summary = "Update a person")
   @APIResponse(responseCode = "400", description = "Id of person must not be changed")
   @APIResponse(responseCode = "404", description = "Person not found")
@@ -79,7 +79,7 @@ public class PersonResource {
   }
 
   @POST
-  @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+  @Consumes(MediaType.APPLICATION_JSON)
   @Operation(summary = "Insert a new person")
   @APIResponse(responseCode = "400", description = "Id of person must not be pre-set")
   public Response create(Person person, @Context UriInfo uriInfo) {

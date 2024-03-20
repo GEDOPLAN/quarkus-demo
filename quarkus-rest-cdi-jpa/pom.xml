@@ -25,10 +25,13 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
     </dependency>
+    <!--
+      Quarkus/RESTEasy does not support serialization of List anymore (see https://github.com/quarkusio/quarkus/issues/33865)
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive-jaxb</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-orm</artifactId>
