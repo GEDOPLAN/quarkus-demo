@@ -62,6 +62,7 @@
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
     <module>quarkus-scheduler</module>
+    <module>quarkus-security-jdbc</module>
     <module>quarkus-testing</module>
     <!-- <module>quarkus-virtual-threads</module> is added in Java 19 profile below -->
     <module>quarkus-websocket</module>

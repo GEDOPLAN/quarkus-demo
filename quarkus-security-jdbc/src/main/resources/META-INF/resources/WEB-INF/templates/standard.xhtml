@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+  <title>quarkus-keycloak</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico"/>
+</h:head>
+
+<h:body>
+  <h2>quarkus-keycloak</h2>
+
+  <ui:insert name="content"/>
+
+  <hr/>
+
+  <h:panelGrid columns="2">
+    <h:outputLabel value="User:" for="user"/>
+    <h:outputText id="user" value="${userInfoPresenter.userName}"/>
+
+    <h:outputLabel value="Roles:" for="roles"/>
+    <h:outputText id="roles" value="${userInfoPresenter.roles}"/>
+  </h:panelGrid>
+
+  <hr/>
+
+  <h:panelGrid columns="2">
+    <h:outputLink value="/index.xhtml">home</h:outputLink>
+    <h:outputLink value="/logout" rendered="${userInfoPresenter.loggedIn}">logout</h:outputLink>
+  </h:panelGrid>
+</h:body>
+</html>

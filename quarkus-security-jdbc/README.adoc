@@ -1,0 +1,94 @@
+= quarkus-keycloak
+
+*Demo project for using Keycloak with Quarkus*
+
+. Setup
+
+.. Dev mode and tests
++
+Keycloak is run as dev service with users and roles configured in `application.properties` (see below).
+
+.. Prod mode
+
+*** Start Keycloak
++
+[source,shell]
+----
+docker run -d --rm --name keycloak \
+  -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin_123 \
+  -p 8180:8080 \
+  quay.io/keycloak/keycloak:20.0.3 \
+  start-dev
+----
+
+*** Setup Keycloak realm
+
+**** Log in at http://localhost:8180 with `admin`/`admin_123`.
+**** Create a new realm `GEDOPLAN`.
+**** In `GEDOPLAN`, create a new client `quarkus-demo`: +
+***** enable `Client authentication`, `Standard flow`, `Direct access grants`, `Implicit flow`, `Service accounts roles`.
+***** disable `Front channel logout`.
+***** set `Valid redirect URIs` to `*`
++
+and `Valid post logout redirect URIs` to `+`
+**** Create realm roles `demoRole` and `otherRole`.
+**** Add users as shown below
+*** Add Keycloak client password to Quarkus configuration
++
+Copy the Client secret of the realm GEDOPLAN from Keycloak (`Credentials` tab) and use it as value for `quarkus.oidc.credentials.secret` in `application.properties` or specify it as system property or environment variable at application start.
+
+. Demo/test users and roles
++
+[cols="1,2,2"]
+|===
+|User|Password (`Credentials` tab)|Roles (`Role mapping` tab)
+
+|`hugo`
+|`hugo_123`
+|`demoRole`, `otherRole`
+
+|`otto`
+|`otto_123`
+|`demoRole`
+
+|`willi`
+|`willi_123`
+|
+|===
+
+. Web application
++
+The JSF based web application offers public pages (`index.xhtml`, `public/user-info.xhtml`) accessible for everyone without authentication and a private page (`private/user-info.xhtml`) for users with role `demoRole` only. If the latter is requested, the application redirects to Keycloak for authentication (Open ID Connect Authorization Code Flow).
++
+In case of a login with unsufficient roles (user `willi`) the application just responded with code `403` resulting in a standard browser error page being displayed. Unfortunately none of the attempts to configure a custom error page (Quarkus properties, `web.xml`) succeeded.
++
+As workaround `ForbiddenExceptionMapper` is included as REST provider, mapping `403` to a redirect response to `/forbidden.xhtml` in case of a non-REST request.
+
+. REST api
++
+`UserInfoResource` publishes these endpoints:
++
+[cols="3,2,2"]
+|===
+|Path|Description|Accessible for
+
+|`/api/user-info`
+|return current JWT as JSON object
+|everyone
+
+|`/api/user-info/name`
+|return current username or `null`, if unauthenticated
+|everyone
+
+|`/api/user-info/restricted`
+|return `"OK"`
+|users with role `demoRole`
+
+|`/api/user-info/restricted2`
+|return `"OK"`
+|users with role `otherRole`
+|===
++
+There are tests in `UserInfoResourceTest` for the last 3 endpoints.
++
+The application uses a dedicated OIDC tenant `"api"` for the REST api enabling the specification of different `quarkus.oidc` settings for web application and REST api. The tenant is resolved by `CustomTenantResolver` based on the request path prefix.
