@@ -50,6 +50,7 @@ public class UserInfoResource {
     addJsonProperty(jsonObjectBuilder, "user", userPrincipal != null ? userPrincipal.getName() : null);
     addJsonProperty(jsonObjectBuilder, "demoRole", securityContext.isUserInRole("demoRole"));
     addJsonProperty(jsonObjectBuilder, "otherRole", securityContext.isUserInRole("otherRole"));
+    addJsonProperty(jsonObjectBuilder, "guest", securityContext.isUserInRole("guest"));
     return jsonObjectBuilder.build();
   }
 

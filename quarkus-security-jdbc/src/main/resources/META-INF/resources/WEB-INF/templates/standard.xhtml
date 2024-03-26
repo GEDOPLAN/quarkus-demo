@@ -2,12 +2,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
-  <title>quarkus-keycloak</title>
+  <title>quarkus-security-jdbc</title>
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico"/>
 </h:head>
 
 <h:body>
-  <h2>quarkus-keycloak</h2>
+  <h2>quarkus-security-jdbc</h2>
 
   <ui:insert name="content"/>
 
@@ -25,7 +25,9 @@
 
   <h:panelGrid columns="2">
     <h:outputLink value="/index.xhtml">home</h:outputLink>
-    <h:outputLink value="/logout" rendered="${userInfoPresenter.loggedIn}">logout</h:outputLink>
+    <h:panelGroup>
+      <h:outputLink value="/logout" rendered="${userInfoPresenter.loggedIn}">logout</h:outputLink>
+    </h:panelGroup>
   </h:panelGrid>
 </h:body>
 </html>
