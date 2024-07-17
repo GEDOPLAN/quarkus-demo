@@ -45,12 +45,12 @@
     <module>quarkus-cdi</module>
     <module>quarkus-cmdmode</module>
     <module>quarkus-config</module>
+    <module>quarkus-data</module>
     <module>quarkus-extension</module>
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-graphql</module>
     <module>quarkus-health</module>
-    <module>quarkus-jdata</module>
     <module>quarkus-kafka</module>
     <module>quarkus-keycloak</module>
     <module>quarkus-lifecycle-events</module>
