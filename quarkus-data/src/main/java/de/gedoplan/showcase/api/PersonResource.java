@@ -1,8 +1,10 @@
-package de.gedoplan.showcase.rest;
+package de.gedoplan.showcase.api;
 
 import java.net.URI;
 import java.util.List;
 
+import de.gedoplan.showcase.entity.Person;
+import de.gedoplan.showcase.persistence.PersonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,16 +23,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
-import org.apache.commons.logging.Log;
-import org.jboss.logging.Logger;
-
-import de.gedoplan.showcase.entity.Person;
-import de.gedoplan.showcase.persistence.PersonRepository;
-
 @ApplicationScoped
 @Path(PersonResource.PATH)
 public class PersonResource {
-  public static final String PATH = "person";
+  public static final String PATH = "persons";
   public static final String ID_NAME = "id";
   public static final String ID_TEMPLATE = "{" + ID_NAME + "}";
 
@@ -39,6 +35,8 @@ public class PersonResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  // TODO Needs @Transactional even for reading only
+  @Transactional(rollbackOn = Exception.class)
   public List<Person> getAll() {
     return this.personRepository.findAll().toList();
   }
@@ -46,6 +44,8 @@ public class PersonResource {
   @GET
   @Path(ID_TEMPLATE)
   @Produces(MediaType.APPLICATION_JSON)
+  // TODO Needs @Transactional even for reading only
+  @Transactional(rollbackOn = Exception.class)
   public Person getById(@PathParam(ID_NAME) Integer id) {
     return this.personRepository
       .findById(id)
@@ -55,7 +55,8 @@ public class PersonResource {
   @PUT
   @Path(ID_TEMPLATE)
   @Consumes(MediaType.APPLICATION_JSON)
-  @Transactional(rollbackOn = Exception.class)
+  // TODO Works even without @Transactional
+  // @Transactional(rollbackOn = Exception.class)
   public void update(@PathParam(ID_NAME) Integer id, Person person) {
     if (!id.equals(person.getId())) {
       throw new BadRequestException("id of updated object must not be changed");
@@ -69,7 +70,8 @@ public class PersonResource {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Transactional(rollbackOn = Exception.class)
+  // TODO Works even without @Transactional
+  // @Transactional(rollbackOn = Exception.class)
   public Response create(Person person, @Context UriInfo uriInfo) {
     if (person.getId() != null) {
       throw new BadRequestException("id of new entry must not be pre-set");
@@ -92,4 +94,12 @@ public class PersonResource {
     this.personRepository.deleteById(id);
   }
 
+  @GET
+  @Path("byname/{name}")
+  @Produces(MediaType.APPLICATION_JSON)
+  // TODO Needs @Transactional even for reading only
+  @Transactional(rollbackOn = Exception.class)
+  public List<Person> findByName(@PathParam("name") String name) {
+    return this.personRepository.findByName(name).toList();
+  }
 }
