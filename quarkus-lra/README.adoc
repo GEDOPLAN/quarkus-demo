@@ -1,0 +1,25 @@
+= quarkus-lra
+
+*Demo for MicroProfile LRA with Quarkus*
+
+Overview::
+LRA is an implementation of the Saga Pattern for ensuring data consistency for Long Running Actions in distributed applications (aka Microservices).
++
+This demo mimicks a simple travel booking application composed of
+
+* quarkus-lra-flight: a microservice for booking flights,
+* quarkus-lra-hotel: a microservice for booking hotel rooms,
+* quarkus-lra-travel: a microservice using both above,
+* quarkus-lra-coordinator: a LRA coordinator based on Narayana.
+
+Demo scenarios::
+There are xxx demos, each represented by a REST resource in quarkus-lra-travel.
+The goal is to show, that the bookings made are consistent (all flights and rooms are booked or none) even after a failure with one of the booking steps or after cancellation.
+For conveniance and simple addressing the bookable flights are named a, b and c while the available hotels are 1, 2 and 3.
+
+. Single-step booking
++
+This scenario is represented by the REST resource SingleStepBookingResource. A PUT request for the method book takes the requested flights and hotel as path parameter.
+
+
+

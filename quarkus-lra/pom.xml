@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <!-- <module>quarkus-lra-flight</module> -->
+    <module>quarkus-lra-flight</module>
     <!-- <module>quarkus-lra-hotel</module> -->
     <module>quarkus-lra-travel</module>
   </modules>
