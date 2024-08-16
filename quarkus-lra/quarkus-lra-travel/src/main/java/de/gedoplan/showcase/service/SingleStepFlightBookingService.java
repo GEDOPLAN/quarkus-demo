@@ -9,7 +9,7 @@ import jakarta.ws.rs.PathParam;
 
 @RegisterRestClient(configKey = "FlightSingleStepBookingService")
 @Path("single")
-public interface FlightSingleStepBookingService {
+public interface SingleStepFlightBookingService {
   @PUT
   @Path("book/{whatToBook}")
   @Consumes("*/*")

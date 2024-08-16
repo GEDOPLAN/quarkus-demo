@@ -11,7 +11,7 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
-import de.gedoplan.showcase.service.FlightSingleStepBookingService;
+import de.gedoplan.showcase.service.SingleStepFlightBookingService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
@@ -22,11 +22,11 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 @Path("single")
-public class SingleStepBookingResource {
+public class SingleStepTravelBookingResource {
 
   @Inject
   @RestClient
-  FlightSingleStepBookingService flightSingleStepBookingService;
+  SingleStepFlightBookingService flightSingleStepBookingService;
 
   @Inject
   Logger logger;
@@ -60,16 +60,6 @@ public class SingleStepBookingResource {
     logger.debugf("bookHotel(%c)", whatToBook);
   }
 
-  @Complete
-  @Path("/complete")
-  @PUT
-  public Response complete(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) URI lraId) {
-
-    logger.debugf("complete: lraId=%s", lraId);
-
-    return Response.ok(ParticipantStatus.Completed.name()).build();
-  }
-
   @AfterLRA
   @Path("/afterLRA")
   @PUT
@@ -77,6 +67,6 @@ public class SingleStepBookingResource {
 
     logger.debugf("afterLRA: lraId=%s, status=%s", lraId, status);
 
-    return Response.ok(ParticipantStatus.Completed.name()).build();
+    return Response.ok(status.name()).build();
   }
 }
