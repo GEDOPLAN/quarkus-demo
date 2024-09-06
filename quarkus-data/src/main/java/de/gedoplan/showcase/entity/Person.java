@@ -17,7 +17,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//public class Person extends GeneratedIntegerIdEntity {
 public class Person {
 
   @Id
