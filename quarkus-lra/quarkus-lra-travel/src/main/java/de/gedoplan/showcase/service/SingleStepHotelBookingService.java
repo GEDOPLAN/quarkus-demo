@@ -7,12 +7,12 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 
-@RegisterRestClient(configKey = "SingleStepFlightBookingService")
+@RegisterRestClient(configKey = "SingleStepHotelBookingService")
 @Path("single")
-public interface SingleStepFlightBookingService {
+public interface SingleStepHotelBookingService {
   @PUT
   @Path("book/{whatToBook}")
   @Consumes("*/*")
-  public void bookFlight(@PathParam("whatToBook") char whatToBook);
+  public void bookHotel(@PathParam("whatToBook") char whatToBook);
 
 }

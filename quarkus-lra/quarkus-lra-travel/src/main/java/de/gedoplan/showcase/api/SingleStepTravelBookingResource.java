@@ -12,6 +12,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import de.gedoplan.showcase.service.SingleStepFlightBookingService;
+import de.gedoplan.showcase.service.SingleStepHotelBookingService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
@@ -26,7 +27,11 @@ public class SingleStepTravelBookingResource {
 
   @Inject
   @RestClient
-  SingleStepFlightBookingService flightSingleStepBookingService;
+  SingleStepFlightBookingService singleStepFlightBookingService;
+
+  @Inject
+  @RestClient
+  SingleStepHotelBookingService singleStepHotelBookingService;
 
   @Inject
   Logger logger;
@@ -53,11 +58,11 @@ public class SingleStepTravelBookingResource {
   }
 
   private void bookFlight(char whatToBook) {
-    this.flightSingleStepBookingService.bookFlight(whatToBook);
+    this.singleStepFlightBookingService.bookFlight(whatToBook);
   }
 
   private void bookHotel(char whatToBook) {
-    logger.debugf("bookHotel(%c)", whatToBook);
+    this.singleStepHotelBookingService.bookHotel(whatToBook);
   }
 
   @AfterLRA

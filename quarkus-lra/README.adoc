@@ -13,13 +13,22 @@ This demo mimicks a simple travel booking application composed of
 * quarkus-lra-coordinator: a LRA coordinator based on Narayana.
 
 Demo scenarios::
-There are xxx demos, each represented by a REST resource in quarkus-lra-travel.
+There are the following demos, each represented by a REST call in quarkus-lra-travel.
 The goal is to show, that the bookings made are consistent (all flights and rooms are booked or none) even after a failure with one of the booking steps or after cancellation.
 For conveniance and simple addressing the bookable flights are named a, b and c while the available hotels are 1, 2 and 3.
 
 . Single-step booking
 +
 This scenario is represented by the REST resource SingleStepBookingResource. A PUT request for the method book takes the requested flights and hotel as path parameter.
+
+** `curl -X PUT localhost:8080/single/book/1a`
+*** books hotel 1 and flight a
+*** should complete without errors, when called first
+
+** `curl -X PUT localhost:8080/single/book/23a`
+*** tries to book hotels 1 and 2 and flight a (again)
+*** will fail, because flight a isn't available anymore
+*** the hotel rooms, while temporarily booked, will be free again (via compensation)
 
 
 
