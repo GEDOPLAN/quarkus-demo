@@ -11,11 +11,11 @@
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
+      <artifactId>quarkus-rest-jsonb</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+      <artifactId>quarkus-messaging-mqtt</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

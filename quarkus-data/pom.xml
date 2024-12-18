@@ -10,6 +10,7 @@
   <artifactId>quarkus-data</artifactId>
   <properties>
     <hibernate.version>6.6.0.Alpha1</hibernate.version>
+    <quarkus.version>3.12.1</quarkus.version>
   </properties>
   <dependencies>
     <dependency>
@@ -36,7 +37,7 @@
 
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
+      <artifactId>quarkus-rest-jsonb</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

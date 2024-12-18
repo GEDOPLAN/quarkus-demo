@@ -6,11 +6,7 @@ import de.gedoplan.showcase.persistence.PersonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import io.quarkus.runtime.StartupEvent;
 import org.jboss.logging.Logger;

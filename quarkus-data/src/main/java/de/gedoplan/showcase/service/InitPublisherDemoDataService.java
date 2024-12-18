@@ -1,20 +1,19 @@
 package de.gedoplan.showcase.service;
 
-import java.util.stream.Stream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import de.gedoplan.showcase.entity.Book;
 import de.gedoplan.showcase.entity.Publisher;
 import de.gedoplan.showcase.persistence.BookRepository;
 import de.gedoplan.showcase.persistence.PublisherRepository;
+
+import java.util.stream.Stream;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.event.Startup;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class InitPublisherDemoDataService {
@@ -24,7 +23,8 @@ public class InitPublisherDemoDataService {
   @Inject
   BookRepository bookRepository;
 
-  private static final Log LOG = LogFactory.getLog(InitPublisherDemoDataService.class);
+  @Inject
+  Logger log;
 
   // Test data
   private Publisher testPublisher1 = new Publisher("O'Melly Publishing");
@@ -67,10 +67,10 @@ public class InitPublisherDemoDataService {
         // TODO Works only in order Publishers/Books, but not Books/Publishers
         Stream.of(this.testPublishers).forEach(this.publisherRepository::insert);
         Stream.of(this.testBooks).forEach(this.bookRepository::insert);
-        LOG.debug("Created demo data");
+        log.debug("Created demo data");
       }
     } catch (Exception e) {
-      LOG.warn("Cannot create demo data", e);
+      log.warn("Cannot create demo data", e);
     }
 
   }
