@@ -43,7 +43,7 @@ public class DemoResource {
   public String getCardCheckResult(
       @QueryParam("cardNo") @DefaultValue("5555555555554444") String cardNo,
       @QueryParam("owner") @DefaultValue("Max Mustermann") String owner,
-      @QueryParam("validToYear") @DefaultValue("2024") int validToYear,
+      @QueryParam("validToYear") @DefaultValue("2029") int validToYear,
       @QueryParam("validToMonth") @DefaultValue("12") int validToMonth,
       @QueryParam("checkNo") @DefaultValue("1234") String checkNo) {
     try {

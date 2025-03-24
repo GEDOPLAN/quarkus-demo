@@ -1,5 +1,7 @@
 package de.gedoplan.showcase.rest;
 
+import java.time.Year;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -21,7 +23,7 @@ public class DemoResourceTest {
   @Test
   public void testgetCardCheck() {
     given()
-        .when().get("/demo/card-check?cardNo=4000000000000")
+        .when().get("/demo/card-check?cardNo=4000000000000&validToYear=" + Year.now())
         .then()
         .statusCode(200)
         .body(is("valid"));
