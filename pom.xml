@@ -7,6 +7,7 @@
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
     <version>2024.2.2</version>
+    <relativePath/>
   </parent>
 
   <groupId>de.gedoplan.showcase</groupId>
@@ -18,7 +19,7 @@
   <properties>
     <java.code.version>21</java.code.version>
 
-    <quarkus.version>3.17.4</quarkus.version>
+    <quarkus.version>3.19.4</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
@@ -27,7 +28,7 @@
     <quarkus-primefaces.version>3.14.2</quarkus-primefaces.version>
     <myfaces-quarkus.version>4.0.2</myfaces-quarkus.version>
 
-    <lombok.version>1.18.30</lombok.version>
+    <lombok.version>1.18.34</lombok.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -62,6 +63,7 @@
     <module>quarkus-myfaces</module>
     <module>quarkus-native</module>
 <!--    <module>quarkus-opentracing</module>-->
+<!--    <module>quarkus-otel</module> Not completed yet-->
     <module>quarkus-panache</module>
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
@@ -105,7 +107,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.30</version>
+        <version>${lombok.version}</version>
       </dependency>
 
       <!-- Quarkus -->
