@@ -16,6 +16,7 @@
     <module>quarkus-lra-flight</module>
     <module>quarkus-lra-hotel</module>
     <module>quarkus-lra-room</module>
+    <module>quarkus-lra-trainer</module>
     <module>quarkus-lra-travel</module>
   </modules>
 
