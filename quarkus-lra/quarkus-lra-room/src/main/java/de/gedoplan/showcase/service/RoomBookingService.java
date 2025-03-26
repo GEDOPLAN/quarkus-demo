@@ -21,14 +21,14 @@ public class RoomBookingService {
   RoomBookingRepository roomBookingRepository;
 
   @Transactional
-  public RoomBooking book(String location, int noOfSeats, LocalDate begin, int noOfDays, String lraId) {
+  public RoomBooking book(String location, int noOfSeats, LocalDate begin, int noOfDays, String reference, String lraId) {
     LocalDate end = begin.plusDays(noOfDays - 1);
     Room room = roomRepository.findAvailable(location, noOfSeats, begin, end)
       .stream()
       .min((r1, r2) -> Integer.compare(r1.getNoOfSeats(), r2.getNoOfSeats()))
-      .orElseThrow(() -> new RuntimeException("No room available"));
+      .orElseThrow(() -> new RoomUnavailableException(location, begin, noOfDays));
 
-    RoomBooking roomBooking = new RoomBooking(room, begin, end, BookingType.BOOKED, lraId);
+    RoomBooking roomBooking = new RoomBooking(room, begin, end, BookingType.BOOKED, reference, lraId);
     this.roomBookingRepository.persist(roomBooking);
     return roomBooking;
   }

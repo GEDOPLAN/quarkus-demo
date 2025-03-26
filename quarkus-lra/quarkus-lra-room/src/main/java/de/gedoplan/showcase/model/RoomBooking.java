@@ -32,6 +32,9 @@ public class RoomBooking extends GeneratedIntegerIdEntity {
 
   @Enumerated(EnumType.STRING)
   private BookingType bookingType;
+
+  private String reference;
+
   private String lraId;
 
 }

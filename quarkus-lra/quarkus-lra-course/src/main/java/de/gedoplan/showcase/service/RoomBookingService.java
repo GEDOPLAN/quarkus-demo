@@ -20,6 +20,7 @@ public interface RoomBookingService {
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats,
     @QueryParam("begin") LocalDate begin,
-    @QueryParam("noOfDays") int noOfDays);
+    @QueryParam("noOfDays") int noOfDays,
+    @QueryParam("reference") String reference);
 
 }

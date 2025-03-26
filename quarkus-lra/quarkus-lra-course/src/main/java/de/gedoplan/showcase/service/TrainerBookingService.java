@@ -19,6 +19,7 @@ public interface TrainerBookingService {
   public Response bookTrainer(
     @QueryParam("course") String course,
     @QueryParam("begin") LocalDate begin,
-    @QueryParam("noOfDays") int noOfDays);
+    @QueryParam("noOfDays") int noOfDays,
+    @QueryParam("reference") String reference);
 
 }

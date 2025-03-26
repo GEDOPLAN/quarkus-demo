@@ -21,14 +21,14 @@ public class TrainerBookingService {
   TrainerBookingRepository trainerBookingRepository;
 
   @Transactional
-  public TrainerBooking book(String course, LocalDate begin, int noOfDays, String lraId) {
+  public TrainerBooking book(String course, LocalDate begin, int noOfDays, String reference, String lraId) {
     LocalDate end = begin.plusDays(noOfDays - 1);
     Trainer trainer = trainerRepository.findAvailable(course, begin, end)
       .stream()
       .findAny()
-      .orElseThrow(() -> new RuntimeException("No trainer available"));
+      .orElseThrow(() -> new TrainerUnavailableException(course, begin));
 
-    TrainerBooking trainerBooking = new TrainerBooking(trainer, course, begin, end, BookingType.BOOKED, lraId);
+    TrainerBooking trainerBooking = new TrainerBooking(trainer, course, begin, end, BookingType.BOOKED, reference, lraId);
     this.trainerBookingRepository.persist(trainerBooking);
     return trainerBooking;
   }

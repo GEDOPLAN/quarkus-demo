@@ -10,6 +10,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,7 +28,6 @@ import jakarta.ws.rs.core.UriInfo;
 
 @ApplicationScoped
 @Path("room-booking")
-@Produces(MediaType.APPLICATION_JSON)
 public class RoomBookingResource {
   @Inject
   RoomBookingRepository roomBookingRepository;
@@ -39,8 +39,19 @@ public class RoomBookingResource {
   UriInfo uriInfo;
 
   @GET
-  public List<RoomBooking> getAll() {
-    return this.roomBookingRepository.findAll();
+  @Produces(MediaType.TEXT_PLAIN)
+  public String getAll() {
+    return this.roomBookingRepository
+      .findAll()
+      .stream()
+      .map(tb -> String.format("%-35s  %-22s  %td.%<tm.%<ty-%td.%<tm.%<ty  %-8s  %s",
+        tb.getReference(),
+        tb.getRoom().getName(),
+        tb.getBegin(),
+        tb.getEnd(),
+        tb.getBookingType(),
+        tb.getLraId()))
+      .collect(Collectors.joining("\n", "", ""));
   }
 
   @POST
@@ -49,9 +60,10 @@ public class RoomBookingResource {
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats,
     @QueryParam("begin") LocalDate begin,
-    @QueryParam("noOfDays") int noOfDays) {
+    @QueryParam("noOfDays") int noOfDays,
+    @QueryParam("reference") String reference) {
 
-    RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, null);
+    RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, null);
 
     URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
     return Response.created(uri).build();
