@@ -13,6 +13,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>quarkus-lra-coordinator</module>
     <module>quarkus-lra-course</module>
     <module>quarkus-lra-room</module>
     <module>quarkus-lra-trainer</module>
