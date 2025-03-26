@@ -32,4 +32,9 @@ public class TrainerBookingService {
     this.trainerBookingRepository.persist(trainerBooking);
     return trainerBooking;
   }
+
+  @Transactional
+  public void unbook(String lraId) {
+    this.trainerBookingRepository.findByLraId(lraId).ifPresent(trainerBookingRepository::remove);
+  }
 }

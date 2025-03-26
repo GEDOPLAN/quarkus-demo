@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.Response;
 public interface RoomBookingService {
   @POST
   @Consumes("*/*")
-  public Response bookRoom(
+  public void bookRoom(
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats,
     @QueryParam("begin") LocalDate begin,

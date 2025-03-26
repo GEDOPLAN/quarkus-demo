@@ -16,7 +16,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 public interface TrainerBookingService {
   @POST
   @Consumes("*/*")
-  public Response bookTrainer(
+  public void bookTrainer(
     @QueryParam("course") String course,
     @QueryParam("begin") LocalDate begin,
     @QueryParam("noOfDays") int noOfDays,
