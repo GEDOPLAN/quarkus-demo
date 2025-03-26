@@ -58,3 +58,13 @@ Here room ans trainer are reserved by seperate REST calls and the booking is con
 or cancelled by another REST call in the end.
 +
 _This scenario is still under development_.
+
+LRA coordinator image::
+
+Instead of `quarkus-lra-coordinator` the CRI image 
+`quay.io/jbosstm/lra-coordinator`
+can be used for production scenarios.
+Don't use it for this demo though, because we are running services on `localhost`.
+They would not be reachable for the coordinator (unless you bind the container to 
+the host network).
+
