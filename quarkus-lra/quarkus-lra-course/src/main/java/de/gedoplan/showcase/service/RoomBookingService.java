@@ -12,9 +12,10 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 @RegisterRestClient(configKey = "RoomBookingService")
-@Path("room-booking")
+@Path("room")
 public interface RoomBookingService {
   @POST
+  @Path("book")
   @Consumes("*/*")
   public void bookRoom(
     @QueryParam("location") String location,

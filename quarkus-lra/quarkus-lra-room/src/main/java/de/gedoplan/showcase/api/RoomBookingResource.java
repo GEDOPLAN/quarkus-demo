@@ -1,15 +1,11 @@
 package de.gedoplan.showcase.api;
 
-import de.gedoplan.showcase.model.Room;
 import de.gedoplan.showcase.model.RoomBooking;
 import de.gedoplan.showcase.persistence.RoomBookingRepository;
-import de.gedoplan.showcase.persistence.RoomRepository;
 import de.gedoplan.showcase.service.RoomBookingService;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,7 +16,6 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
@@ -34,7 +29,7 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
-@Path("room-booking")
+@Path("room")
 public class RoomBookingResource {
   @Inject
   RoomBookingRepository roomBookingRepository;
@@ -49,8 +44,9 @@ public class RoomBookingResource {
   Logger logger;
 
   @GET
+  @Path("used")
   @Produces(MediaType.TEXT_PLAIN)
-  public String getAll() {
+  public String getUsedRooms() {
     return this.roomBookingRepository
       .findAll()
       .stream()
@@ -65,9 +61,10 @@ public class RoomBookingResource {
   }
 
   @POST
+  @Path("book")
   @Consumes("*/*")
   @LRA(value = LRA.Type.MANDATORY, end = false)
-  public Response createBooking(
+  public Response bookRoom(
     @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats,
@@ -91,7 +88,7 @@ public class RoomBookingResource {
     logger.debugf("Cancel room booking in LRA %s", lraId);
 
     try {
-      this.roomBookingService.unbook(lraId);
+      this.roomBookingService.cancel(lraId);
       return Response.ok(ParticipantStatus.Compensated.name()).build();
 
     } catch (Exception e) {

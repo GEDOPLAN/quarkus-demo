@@ -25,7 +25,7 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
-@Path("course-booking")
+@Path("course")
 public class CourseBookingResource {
 
   @Inject
@@ -40,6 +40,7 @@ public class CourseBookingResource {
   Logger logger;
 
   @POST
+  @Path("book")
   @Consumes("*/*")
   @Produces(MediaType.TEXT_PLAIN)
   @LRA(LRA.Type.REQUIRES_NEW)

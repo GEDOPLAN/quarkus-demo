@@ -6,7 +6,6 @@ import de.gedoplan.showcase.service.TrainerBookingService;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,7 +29,7 @@ import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
-@Path("trainer-booking")
+@Path("trainer")
 public class TrainerBookingResource {
   @Inject
   TrainerBookingRepository trainerBookingRepository;
@@ -45,8 +44,9 @@ public class TrainerBookingResource {
   Logger logger;
 
   @GET
+  @Path("engaged")
   @Produces(MediaType.TEXT_PLAIN)
-  public String getAll() {
+  public String getEngagedTrainers() {
     return this.trainerBookingRepository
       .findAll()
       .stream()
@@ -62,9 +62,10 @@ public class TrainerBookingResource {
   }
 
   @POST
+  @Path("book")
   @Consumes("*/*")
   @LRA(value = LRA.Type.MANDATORY, end = false)
-  public Response createBooking(
+  public Response bookTrainer(
     @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
     @QueryParam("course") String course,
     @QueryParam("begin") LocalDate begin,
@@ -87,7 +88,7 @@ public class TrainerBookingResource {
     logger.debugf("Cancel trainer booking in LRA %s", lraId);
 
     try {
-      this.trainerBookingService.unbook(lraId);
+      this.trainerBookingService.cancel(lraId);
       return Response.ok(ParticipantStatus.Compensated.name()).build();
 
     } catch (Exception e) {

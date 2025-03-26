@@ -3,32 +3,58 @@
 *Demo for MicroProfile LRA with Quarkus*
 
 Overview::
-LRA is an implementation of the Saga Pattern for ensuring data consistency for Long Running Actions in distributed applications (aka Microservices).
+LRA is an implementation of the Saga Pattern for ensuring data consistency for Long 
+Running Actions in distributed applications (aka Microservices).
 +
-This demo mimicks a simple travel booking application composed of
+This demo mimicks a simplified course booking application composed of
 
-* quarkus-lra-flight: a microservice for booking flights,
-* quarkus-lra-hotel: a microservice for booking hotel rooms,
-* quarkus-lra-travel: a microservice using both above,
-* quarkus-lra-coordinator: a LRA coordinator based on Narayana.
+* `quarkus-lra-room` using port `8180`: a microservice for booking (seminar) rooms,
+* `quarkus-lra-trainer` using port `8280`: a microservice for booking a trainer for the course,
+* `quarkus-lra-course` usng port `8080`: a microservice using both above,
+* `quarkus-lra-coordinator` using port `8380`: a LRA coordinator based on Narayana.
+
+{empty}::
+Every microservice can by started by running `mvn quarkus:dev`
+
+Demo data::
+
+* Three rooms in Berlin (location `"B"`) and two rooms in Bielefeld (`"BI"`) 
+with different seat capacities.
+* Three trainers capable of holding some or all of the courses `"JSE"` (Java SE), 
+`"JEE"` (Jakarta EE) and `"K8s"` (Kubernetes).
 
 Demo scenarios::
-There are the following demos, each represented by a REST call in quarkus-lra-travel.
-The goal is to show, that the bookings made are consistent (all flights and rooms are booked or none) even after a failure with one of the booking steps or after cancellation.
-For conveniance and simple addressing the bookable flights are named a, b and c while the available hotels are 1, 2 and 3.
+There are the following demos, each represented by a REST call in `quarkus-lra-course`.
+The goal is to show, that the bookings made are consistent (room and trainer are booked 
+or none of them) even after a failure with one of the booking steps or after cancellation.
++
+By calling the REST endpoints `room/used` and `trainer/engaged` on the microservices
+`quarkus-lra-room` and `quarkus-lra-trainer` resp. we can see, which rooms and trainers
+are currently engaged.
 
 . Single-step booking
 +
-This scenario is represented by the REST resource SingleStepBookingResource. A PUT request for the method book takes the requested flights and hotel as path parameter.
+Here room and trainer are booked in one step, namely by calling the REST endpoint 
+`course/book` (see `CourseBookingResource#bookCourse`). Query parameters are used
+for specifying course, date, location and number of participants.
++
+Let's try to book 3 courses with overlapping dates in Berlin:
 
-** `curl -X PUT localhost:8080/single/book/1a`
-*** books hotel 1 and flight a
-*** should complete without errors, when called first
+** `curl -X POST "localhost:8080/course/book?course=JEE&begin=2025-04-15&noOfDays=4&location=B&noOfSeats=5"`
+*** books a 4-day `JEE` course in Berlin for 5 participants starting on April 15, 2025.
+*** should complete without errors
 
-** `curl -X PUT localhost:8080/single/book/23a`
-*** tries to book hotels 1 and 2 and flight a (again)
-*** will fail, because flight a isn't available anymore
-*** the hotel rooms, while temporarily booked, will be free again (via compensation)
+** `curl -X POST "localhost:8080/course/book?course=K8s&begin=2025-04-16&noOfDays=3&location=B&noOfSeats=7"`
+*** books a 3-day `K8s` course in Berlin for 7 participants starting on April 16, 2025.
+*** should complete without errors
 
+** `curl -X POST "localhost:8080/course/book?course=SBT&begin=2025-04-14&noOfDays=4&location=B&noOfSeats=3"`
+*** books a 4-day `SBT` course in Berlin for 3 participants starting on April 14, 2025.
+*** should fail, because of a trainer conflict
 
-
+. Multi-step booking
++
+Here room ans trainer are reserved by seperate REST calls and the booking is confirmed 
+or cancelled by another REST call in the end.
++
+_This scenario is still under development_.

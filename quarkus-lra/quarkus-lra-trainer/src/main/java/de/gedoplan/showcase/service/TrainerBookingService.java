@@ -34,7 +34,7 @@ public class TrainerBookingService {
   }
 
   @Transactional
-  public void unbook(String lraId) {
+  public void cancel(String lraId) {
     this.trainerBookingRepository.findByLraId(lraId).ifPresent(trainerBookingRepository::remove);
   }
 }

@@ -12,9 +12,10 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient(configKey = "TrainerBookingService")
-@Path("trainer-booking")
+@Path("trainer")
 public interface TrainerBookingService {
   @POST
+  @Path("book")
   @Consumes("*/*")
   public void bookTrainer(
     @QueryParam("course") String course,
