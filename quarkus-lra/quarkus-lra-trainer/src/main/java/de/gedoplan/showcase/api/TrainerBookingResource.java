@@ -13,17 +13,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
-import jakarta.ws.rs.core.Response.Status.Family;
 import jakarta.ws.rs.core.UriInfo;
 
 import org.eclipse.microprofile.lra.annotation.Compensate;
-import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.jboss.logging.Logger;
 
@@ -47,16 +43,16 @@ public class TrainerBookingResource {
   @Consumes("*/*")
   @LRA(value = LRA.Type.MANDATORY, end = false, cancelOnFamily = {})
   public Response bookTrainer(
-    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
+    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) URI lraId,
     @QueryParam("course") String course,
     @QueryParam("begin") LocalDate begin,
     @QueryParam("noOfDays") int noOfDays,
     @QueryParam("reference") String reference) {
 
-    logger.debugf("Book trainer in LRA %s", shortenLraId(lraId));
+    logger.debugf("Book trainer in LRA %s", getShortLraId(lraId));
 
     try {
-      TrainerBooking booking = trainerBookingService.book(course, begin, noOfDays, reference, lraId);
+      TrainerBooking booking = trainerBookingService.book(course, begin, noOfDays, reference, lraId.toString());
 
       URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
       return Response.created(uri).build();
@@ -65,26 +61,24 @@ public class TrainerBookingResource {
     }
   }
 
-  @PUT
-  @Path("compensate")
   @Compensate
-  public Response compensate(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId) {
+  public void compensate(URI lraId) {
 
-    logger.debugf("Cancel trainer booking in LRA %s", shortenLraId(lraId));
+    logger.debugf("Cancel trainer booking in LRA %s", getShortLraId(lraId));
 
     try {
-      this.trainerBookingService.cancel(lraId);
-      return Response.ok().build();
-
-    } catch (Exception e) {
-      return Response.status(409).entity(ParticipantStatus.FailedToCompensate.name()).build();
+      this.trainerBookingService.cancel(lraId.toString());
     }finally {
       showEngagedTrainers();
     }
   }
 
-  private static String shortenLraId(String lraId) {
-    return lraId != null ? lraId.substring(lraId.lastIndexOf('/') + 1) : "null";
+  private static String getShortLraId(Object lraId) {
+    if (lraId == null)
+      return "null";
+
+    String lraIdString = lraId.toString();
+    return lraIdString.substring(lraIdString.lastIndexOf('/') + 1);
   }
 
   private void showEngagedTrainers() {
@@ -98,7 +92,7 @@ public class TrainerBookingResource {
           tb.getBegin(),
           tb.getEnd(),
           tb.getBookingType(),
-          shortenLraId(tb.getLraId())))
+          getShortLraId(tb.getLraId())))
         .collect(Collectors.joining("\n ", "Engaged trainers:\n ", "")));
   }
 

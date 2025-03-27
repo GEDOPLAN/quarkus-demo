@@ -48,17 +48,17 @@ public class RoomBookingResource {
   @Consumes("*/*")
   @LRA(value = LRA.Type.MANDATORY, end = false, cancelOnFamily = {})
   public Response bookRoom(
-    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
+    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) URI lraId,
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats,
     @QueryParam("begin") LocalDate begin,
     @QueryParam("noOfDays") int noOfDays,
     @QueryParam("reference") String reference) {
 
-    logger.debugf("Book room in LRA %s", shortenLraId(lraId));
+    logger.debugf("Book room in LRA %s", getShortLraId(lraId));
 
     try {
-      RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId);
+      RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId.toString());
 
       URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
       return Response.created(uri).build();
@@ -67,27 +67,25 @@ public class RoomBookingResource {
     }
   }
 
-  @PUT
-  @Path("compensate")
   @Compensate
-  public Response compensate(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId) {
+  public void compensate(URI lraId) {
 
-    logger.debugf("Cancel room booking in LRA %s", shortenLraId(lraId));
+    logger.debugf("Cancel room booking in LRA %s", getShortLraId(lraId));
 
     try {
-      this.roomBookingService.cancel(lraId);
-      return Response.ok().build();
-
-    } catch (Exception e) {
-      return Response.status(409).entity(ParticipantStatus.FailedToCompensate.name()).build();
+      this.roomBookingService.cancel(lraId.toString());
     } finally {
       showUsedRooms();
     }
 
   }
 
-  private static String shortenLraId(String lraId) {
-    return lraId != null ? lraId.substring(lraId.lastIndexOf('/') + 1) : "null";
+  private static String getShortLraId(Object lraId) {
+    if (lraId == null)
+      return "null";
+
+    String lraIdString = lraId.toString();
+    return lraIdString.substring(lraIdString.lastIndexOf('/') + 1);
   }
 
   private void showUsedRooms() {
@@ -100,7 +98,7 @@ public class RoomBookingResource {
           tb.getBegin(),
           tb.getEnd(),
           tb.getBookingType(),
-          shortenLraId(tb.getLraId())))
+          getShortLraId(tb.getLraId())))
         .collect(Collectors.joining("\n ", "Used rooms:\n ", "")));
   }
 }
