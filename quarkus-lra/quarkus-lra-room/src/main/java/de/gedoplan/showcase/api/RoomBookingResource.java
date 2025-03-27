@@ -43,27 +43,10 @@ public class RoomBookingResource {
   @Inject
   Logger logger;
 
-  @GET
-  @Path("used")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getUsedRooms() {
-    return this.roomBookingRepository
-      .findAll()
-      .stream()
-      .map(tb -> String.format("%-35s  %-22s  %td.%<tm.%<ty-%td.%<tm.%<ty  %-8s  %s",
-        tb.getReference(),
-        tb.getRoom().getName(),
-        tb.getBegin(),
-        tb.getEnd(),
-        tb.getBookingType(),
-        tb.getLraId()))
-      .collect(Collectors.joining("\n", "", ""));
-  }
-
   @POST
   @Path("book")
   @Consumes("*/*")
-  @LRA(value = LRA.Type.MANDATORY, end = false)
+  @LRA(value = LRA.Type.MANDATORY, end = false, cancelOnFamily = {})
   public Response bookRoom(
     @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
     @QueryParam("location") String location,
@@ -72,12 +55,16 @@ public class RoomBookingResource {
     @QueryParam("noOfDays") int noOfDays,
     @QueryParam("reference") String reference) {
 
-    logger.debugf("Book room in LRA %s", lraId);
+    logger.debugf("Book room in LRA %s", shortenLraId(lraId));
 
-    RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId);
+    try {
+      RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId);
 
-    URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
-    return Response.created(uri).build();
+      URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
+      return Response.created(uri).build();
+    } finally {
+      showUsedRooms();
+    }
   }
 
   @PUT
@@ -85,16 +72,35 @@ public class RoomBookingResource {
   @Compensate
   public Response compensate(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId) {
 
-    logger.debugf("Cancel room booking in LRA %s", lraId);
+    logger.debugf("Cancel room booking in LRA %s", shortenLraId(lraId));
 
     try {
       this.roomBookingService.cancel(lraId);
-      return Response.ok(ParticipantStatus.Compensated.name()).build();
+      return Response.ok().build();
 
     } catch (Exception e) {
-      return Response.ok(ParticipantStatus.FailedToCompensate.name()).build();
+      return Response.status(409).entity(ParticipantStatus.FailedToCompensate.name()).build();
+    } finally {
+      showUsedRooms();
     }
 
   }
 
+  private static String shortenLraId(String lraId) {
+    return lraId != null ? lraId.substring(lraId.lastIndexOf('/') + 1) : "null";
+  }
+
+  private void showUsedRooms() {
+    this.logger.debug(
+      this.roomBookingRepository
+        .findAll()
+        .stream()
+        .map(tb -> String.format("%-22s %td.%<tm-%td.%<tm %-1.1s %s",
+          tb.getRoom().getName(),
+          tb.getBegin(),
+          tb.getEnd(),
+          tb.getBookingType(),
+          shortenLraId(tb.getLraId())))
+        .collect(Collectors.joining("\n ", "Used rooms:\n ", "")));
+  }
 }

@@ -28,9 +28,9 @@ There are the following demos, each represented by a REST call in `quarkus-lra-c
 The goal is to show, that the bookings made are consistent (room and trainer are booked 
 or none of them) even after a failure with one of the booking steps or after cancellation.
 +
-By calling the REST endpoints `room/used` and `trainer/engaged` on the microservices
-`quarkus-lra-room` and `quarkus-lra-trainer` resp. we can see, which rooms and trainers
-are currently engaged.
+The services log their actions in conjunction with an LRA.
+Additionally `quarkus-lra-room` and `quarkus-lra-trainer` write the currently
+used rooms and trainers into their logs after every action processed.
 
 . Single-step booking
 +

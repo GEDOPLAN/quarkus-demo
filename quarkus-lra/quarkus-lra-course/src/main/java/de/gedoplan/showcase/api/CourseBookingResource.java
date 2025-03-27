@@ -20,7 +20,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.lra.annotation.AfterLRA;
+import org.eclipse.microprofile.lra.annotation.Compensate;
+import org.eclipse.microprofile.lra.annotation.Complete;
 import org.eclipse.microprofile.lra.annotation.LRAStatus;
+import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
 import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -44,30 +47,67 @@ public class CourseBookingResource {
   @Consumes("*/*")
   @Produces(MediaType.TEXT_PLAIN)
   @LRA(LRA.Type.REQUIRES_NEW)
-  public void bookCourse(
-    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) URI lraId,
+  public Response bookCourse(
+    @HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId,
     @QueryParam("course") String course,
     @QueryParam("begin") LocalDate begin,
     @QueryParam("noOfDays") int noOfDays,
     @QueryParam("location") String location,
     @QueryParam("noOfSeats") int noOfSeats) {
 
-    logger.debugf("Starting LRA %s", lraId);
+    logger.debugf("LRA %s: start", shortenLraId(lraId));
 
     String reference = UUID.randomUUID().toString();
 
-    this.roomBookingService.bookRoom(location, noOfSeats, begin, noOfDays, reference);
-    this.trainerBookingService.bookTrainer(course, begin, noOfDays, reference);
+    try {
+      this.roomBookingService.bookRoom(location, noOfSeats, begin, noOfDays, reference);
+    } catch (Exception e) {
+      logger.debugf("LRA %s: error booking room", shortenLraId(lraId));
+      return Response.status(400).build();
+    }
+
+    try {
+      this.trainerBookingService.bookTrainer(course, begin, noOfDays, reference);
+    } catch (Exception e) {
+      logger.debugf("LRA %s: error booking trainer", shortenLraId(lraId));
+      return Response.status(400).build();
+    }
+
+    return Response.ok().build();
+  }
+
+  @Complete
+  @Path("/complete")
+  @PUT
+  public Response complete(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId) {
+
+    logger.debugf("LRA %s: complete", shortenLraId(lraId));
+
+    return Response.ok().build();
+  }
+
+  @Compensate
+  @Path("/compensate")
+  @PUT
+  public Response compensate(@HeaderParam(LRA.LRA_HTTP_CONTEXT_HEADER) String lraId) {
+
+    logger.debugf("LRA %s: compensate", shortenLraId(lraId));
+
+    return Response.ok().build();
   }
 
   @AfterLRA
   @Path("/afterLRA")
   @PUT
-  public Response afterLRA(@HeaderParam(LRA.LRA_HTTP_ENDED_CONTEXT_HEADER) URI lraId, LRAStatus status) {
+  public Response afterLRA(@HeaderParam(LRA.LRA_HTTP_ENDED_CONTEXT_HEADER) String lraId, LRAStatus status) {
 
-    logger.debugf("after LRA %s (status=%s)", lraId, status);
+    logger.debugf("LRA %s: final state: %s", shortenLraId(lraId), status);
 
-    return Response.ok(status.name()).build();
+    return Response.ok().build();
+  }
+
+  private static String shortenLraId(String lraId) {
+    return lraId != null ? lraId.substring(lraId.lastIndexOf('/') + 1) : "null";
   }
 
 }
