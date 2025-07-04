@@ -63,7 +63,7 @@
     <module>quarkus-myfaces</module>
     <module>quarkus-native</module>
 <!--    <module>quarkus-opentracing</module>-->
-<!--    <module>quarkus-otel</module> Not completed yet-->
+    <module>quarkus-otel</module>
     <module>quarkus-panache</module>
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
