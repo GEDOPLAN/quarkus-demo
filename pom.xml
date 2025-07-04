@@ -19,7 +19,7 @@
   <properties>
     <java.code.version>21</java.code.version>
 
-    <quarkus.version>3.23.2</quarkus.version>
+    <quarkus.version>3.24.2</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
