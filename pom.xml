@@ -65,6 +65,7 @@
 <!--    <module>quarkus-opentracing</module>-->
 <!--    <module>quarkus-otel</module> Not completed yet-->
     <module>quarkus-panache</module>
+    <module>quarkus-qute</module>
     <module>quarkus-rest-cdi-jpa</module>
     <module>quarkus-rest-client</module>
     <module>quarkus-scheduler</module>

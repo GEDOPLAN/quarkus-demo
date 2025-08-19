@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{#if action == Action:EDIT}{planet.name} - Planet bearbeiten{#else}Neuen Planeten hinzufügen{/if}</title>
+  {#bundle /}
+</head>
+<body>
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/planets/ui">Planeten</a></li>
+      {#if action == Action:EDIT}
+      <li class="breadcrumb-item"><a href="/planets/ui/{planet.name}">{planet.name}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Bearbeiten</li>
+      {#else}
+      <li class="breadcrumb-item active" aria-current="page">Neuen Planeten hinzufügen</li>
+      {/if}
+    </ol>
+  </nav>
+
+  <h1>{#if action == Action:EDIT}Planet bearbeiten: {planet.name}{#else}Neuen Planeten hinzufügen{/if}</h1>
+
+  {#if action == Action:NEW && cdi:vertxRequest.getParam('error') == 'exists'}
+  <div class="alert alert-danger">
+    Ein Planet mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen.
+  </div>
+  {/if}
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form id="planetForm" method="post"
+                action="{#if action == Action:EDIT}/planets/ui/{planet.name}/edit{#else}/planets/ui/new{/if}">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name*</label>
+              <input type="text" class="form-control" id="name" name="name" value="{planet.name}"
+                     {#if action == Action:EDIT}readonly{/if} required>
+              <div class="form-text">Der Name des Planeten (für bestehende Planeten kann der Name nicht geändert
+                werden)
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="diameterKm" class="form-label">Durchmesser (km)*</label>
+              <input type="number" step="0.01" class="form-control" id="diameterKm" name="diameterKm"
+                     value="{planet.diameterKm}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="distanceFromSunMillionKm" class="form-label">Entfernung von der Sonne (Millionen
+                km)*</label>
+              <input type="number" step="0.01" class="form-control" id="distanceFromSunMillionKm"
+                     name="distanceFromSunMillionKm" value="{planet.distanceFromSunMillionKm}" required>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="hasRings" name="hasRings"
+                     {#if planet.hasRings}checked{/if}>
+              <label class="form-check-label" for="hasRings">Hat Ringe</label>
+            </div>
+
+            <div class="mb-3">
+              <label for="numberOfMoons" class="form-label">Anzahl der Monde*</label>
+              <input type="number" min="0" class="form-control" id="numberOfMoons" name="numberOfMoons"
+                     value="{planet.numberOfMoons}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Beschreibung*</label>
+              <textarea class="form-control" id="description" name="description" rows="3"
+                        required>{planet.description}</textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary">
+                {#if action == Action:EDIT}Planet aktualisieren{#else}Planet hinzufügen{/if}
+              </button>
+              <a href="{#if action == Action:EDIT}/planets/ui/{planet.name}{#else}/planets/ui{/if}"
+                 class="btn btn-secondary">Abbrechen</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

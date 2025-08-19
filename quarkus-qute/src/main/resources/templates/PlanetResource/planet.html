@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{planet.name} - Planetendetails</title>
+  {#bundle /}
+  <style>
+    .planet-property {
+      margin-bottom: 1rem;
+    }
+
+    .property-label {
+      font-weight: bold;
+      color: #495057;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/planets/ui">Planeten</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{planet.name}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h1>{planet.name}</h1>
+      <p class="lead">{planet.description}</p>
+
+      <div class="planet-property">
+        <div class="property-label">Durchmesser:</div>
+        <div>{planet.diameterKm} km</div>
+      </div>
+
+      <div class="planet-property">
+        <div class="property-label">Abstand zur Sonne:</div>
+        <div>{planet.distanceFromSunMillionKm} Millionen km &asymp; {str:fmt("%.3f", planet.distanceFromSunAU)} AE</div>
+      </div>
+
+      <div class="planet-property">
+        <div class="property-label">Hat Ringe:</div>
+        <div>{planet.hasRings ? 'Ja' : 'Nein'}</div>
+      </div>
+
+      <div class="planet-property">
+        <div class="property-label">Anzahl der Monde:</div>
+        <div>{planet.numberOfMoons}</div>
+      </div>
+
+      <div class="mt-4">
+        <a href="/planets/ui/{planet.name}/edit" class="btn btn-warning me-2">Planet bearbeiten</a>
+        <form action="/planets/ui/{planet.name}/delete" method="post" style="display: inline;">
+          <button type="submit" class="btn btn-danger"
+                  onclick="return confirm('Sind Sie sicher, dass Sie {planet.name} löschen möchten?')">Planet löschen
+          </button>
+        </form>
+        <a href="/planets/ui" class="btn btn-secondary ms-2">Zurück zur Liste</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
