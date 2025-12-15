@@ -3,7 +3,6 @@ package de.gedoplan.showcase.api.provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 import jakarta.ws.rs.ext.ParamConverter;

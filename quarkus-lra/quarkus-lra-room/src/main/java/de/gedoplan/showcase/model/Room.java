@@ -1,11 +1,8 @@
 package de.gedoplan.showcase.model;
 
 import de.gedoplan.baselibs.persistence.entity.StringIdEntity;
-
 import jakarta.persistence.Entity;
-
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

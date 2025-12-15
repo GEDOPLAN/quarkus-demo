@@ -1,32 +1,26 @@
 package de.gedoplan.showcase.api;
 
-import de.gedoplan.showcase.model.RoomBooking;
-import de.gedoplan.showcase.persistence.RoomBookingRepository;
-import de.gedoplan.showcase.service.RoomBookingService;
-
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+import org.eclipse.microprofile.lra.annotation.Compensate;
+import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
+import org.jboss.logging.Logger;
+
+import de.gedoplan.showcase.model.RoomBooking;
+import de.gedoplan.showcase.persistence.RoomBookingRepository;
+import de.gedoplan.showcase.service.RoomBookingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-
-import org.eclipse.microprofile.lra.annotation.Compensate;
-import org.eclipse.microprofile.lra.annotation.ParticipantStatus;
-import org.eclipse.microprofile.lra.annotation.ws.rs.LRA;
-import org.jboss.logging.Logger;
 
 @ApplicationScoped
 @Path("room")
