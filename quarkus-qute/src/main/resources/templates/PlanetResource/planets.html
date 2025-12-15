@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonnensystem Planeten</title>
+  {#bundle /}
+  <style>
+    .planet-row:hover {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Sonnensystem Planeten</h1>
+      <p class="lead">Entdecke die Planeten unseres Sonnensystems</p>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <a href="/planets/ui/new" class="btn btn-primary">Neuen Planeten hinzufügen</a>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <form action="/planets/ui" method="get">
+        <div class="input-group">
+          <input type="text" name="search" class="form-control" placeholder="Suche Planeten..."
+                 value="{cdi:vertxRequest.getParam('search', '')}">
+          <button class="btn btn-outline-secondary" type="submit">Suche</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Durchmesser (km)</th>
+        <th>Abstand zur Sonne (Mio. km)</th>
+        <th>Hat Ringe</th>
+        <th>Anzahl der Monde</th>
+        <th>Aktionen</th>
+      </tr>
+      </thead>
+      <tbody>
+      {#for planet in planets}
+      <tr class="planet-row">
+        <td><a href="/planets/ui/{planet.name}">{planet.name}</a></td>
+        <td>{planet.diameterKm}</td>
+        <td>{planet.distanceFromSunMillionKm}</td>
+        <td>{planet.hasRings ? 'Ja' : 'Nein'}</td>
+        <td>{planet.numberOfMoons}</td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <a href="/planets/ui/{planet.name}" class="btn btn-info">Anzeigen</a>
+            <a href="/planets/ui/{planet.name}/edit" class="btn btn-warning">Bearbeiten</a>
+            <form action="/planets/ui/{planet.name}/delete" method="post">
+              <button type="submit" class="btn btn-danger btn-sm"
+                      style="border-top-left-radius: 0; border-bottom-left-radius: 0;"
+                      onclick="return confirm('Möchten Sie {planet.name} wirklich löschen?')">
+                Löschen
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {/for}
+      {#if planets.isEmpty()}
+      <tr>
+        <td colspan="6" class="text-center">
+          Keine Planeten gefunden.
+          <a href="/planets/ui/new">Fügen Sie einen Planeten hinzu</a>.
+        </td>
+      </tr>
+      {/if}
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
