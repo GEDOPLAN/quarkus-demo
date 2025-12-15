@@ -52,7 +52,7 @@ public class TrainerBookingResource {
     logger.debugf("Book trainer in LRA %s", getShortLraId(lraId));
 
     try {
-      TrainerBooking booking = trainerBookingService.book(course, begin, noOfDays, reference, lraId.toString());
+      TrainerBooking booking = trainerBookingService.book(course, begin, noOfDays, reference, lraId + "");
 
       URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
       return Response.created(uri).build();

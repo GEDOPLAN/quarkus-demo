@@ -52,7 +52,7 @@ public class RoomBookingResource {
     logger.debugf("Book room in LRA %s", getShortLraId(lraId));
 
     try {
-      RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId.toString());
+      RoomBooking booking = roomBookingService.book(location, noOfSeats, begin, noOfDays, reference, lraId + "");
 
       URI uri = this.uriInfo.getAbsolutePathBuilder().path(booking.getId().toString()).build();
       return Response.created(uri).build();
