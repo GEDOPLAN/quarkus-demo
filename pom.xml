@@ -6,7 +6,7 @@
   <parent>
     <groupId>de.gedoplan</groupId>
     <artifactId>build-master</artifactId>
-    <version>2024.2.2</version>
+    <version>2025.11.1</version>
     <relativePath/>
   </parent>
 
@@ -19,16 +19,16 @@
   <properties>
     <java.code.version>21</java.code.version>
 
-    <quarkus.version>3.24.2</quarkus.version>
+    <quarkus.version>3.30.4</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 
-    <quarkus-omnifaces.version>4.4.1</quarkus-omnifaces.version>
-    <quarkus-primefaces.version>3.14.2</quarkus-primefaces.version>
-    <myfaces-quarkus.version>4.0.2</myfaces-quarkus.version>
+    <quarkus-omnifaces.version>4.6.5</quarkus-omnifaces.version>
+    <quarkus-primefaces.version>4.15.10</quarkus-primefaces.version>
+    <myfaces-quarkus.version>4.1.1</myfaces-quarkus.version>
 
-    <lombok.version>1.18.34</lombok.version>
+    <lombok.version>1.18.42</lombok.version>
 
     <dockerfile>${project.basedir}/src/main/docker/Dockerfile.jvm</dockerfile>
   </properties>
@@ -46,13 +46,13 @@
     <module>quarkus-cdi</module>
     <module>quarkus-cmdmode</module>
     <module>quarkus-config</module>
-<!--    <module>quarkus-data</module> Tests fail with references to javax packages - RestAssured bug?-->
-    <module>quarkus-extension</module>
+    <module>quarkus-data</module>
+    <!-- <module>quarkus-extension</module> Tests finden Klassen nicht -->
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
     <module>quarkus-graphql</module>
     <module>quarkus-health</module>
-    <module>quarkus-kafka</module>
+    <!-- <module>quarkus-kafka</module> Deserialisierer wird nicht gefunden -->
     <module>quarkus-keycloak</module>
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-lra</module>
