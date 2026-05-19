@@ -19,7 +19,7 @@
   <properties>
     <java.code.version>21</java.code.version>
 
-    <quarkus.version>3.30.4</quarkus.version>
+    <quarkus.version>3.31.3</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
@@ -57,7 +57,7 @@
     <module>quarkus-lifecycle-events</module>
     <module>quarkus-lra</module>
     <module>quarkus-mail</module>
-    <module>quarkus-metrics</module>
+    <!-- <module>quarkus-metrics</module> Deprecated -->
     <module>quarkus-mqtt</module>
 <!--    <module>quarkus-my-omni-prime-faces</module> Mismatching Omnifaces and Primefaces versions? -->
     <module>quarkus-myfaces</module>

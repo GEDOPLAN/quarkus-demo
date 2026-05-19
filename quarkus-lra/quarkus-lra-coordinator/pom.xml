@@ -12,7 +12,7 @@
   <artifactId>quarkus-lra-coordinator</artifactId>
 
   <properties>
-    <narayana.version>7.0.2.Final</narayana.version>
+    <narayana.version>7.1.0.Final</narayana.version>
   </properties>
 
   <dependencyManagement>
