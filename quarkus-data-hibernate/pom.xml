@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.gedoplan.showcase</groupId>
+		<artifactId>quarkus-demo</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>quarkus-data-hibernate</artifactId>
+	<dependencies>
+		<!-- Import the Quarkus Data Hibernate extension -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-data-hibernate</artifactId>
+		</dependency>
+		<!-- Pick your database driver -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-jdbc-h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-rest-jackson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-rest-jsonb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-hibernate-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-jdbc-mariadb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-junit5</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPathsUseDepMgmt>true</annotationProcessorPathsUseDepMgmt>
+					<annotationProcessorPaths>
+						<annotationProcessorPath>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</annotationProcessorPath>
+						<path>
+							<groupId>org.hibernate.orm</groupId>
+							<artifactId>hibernate-processor</artifactId>
+							<!-- Note, no artifact version is required, it's managed by Quarkus.  -->
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

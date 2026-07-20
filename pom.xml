@@ -19,7 +19,7 @@
   <properties>
     <java.code.version>21</java.code.version>
 
-    <quarkus.version>3.31.3</quarkus.version>
+    <quarkus.version>3.37.2</quarkus.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
@@ -47,6 +47,7 @@
     <module>quarkus-cmdmode</module>
     <module>quarkus-config</module>
     <module>quarkus-data</module>
+    <module>quarkus-data-hibernate</module>
     <!-- <module>quarkus-extension</module> Tests finden Klassen nicht -->
     <module>quarkus-fault-tolerance</module>
     <module>quarkus-getting-started</module>
